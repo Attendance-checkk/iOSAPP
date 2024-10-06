@@ -9,7 +9,19 @@ import SwiftUI
 
 struct MapView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            Form {
+                Section {
+                    ForEach(0..<5) { index in
+                        NavigationLink(destination: MapDetailView(floorNumber: index)) {
+                            Text("\(index + 1)층")
+                        }
+                    }
+                }
+            }
+            .navigationTitle("위치")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 

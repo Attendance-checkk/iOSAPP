@@ -49,7 +49,7 @@ struct MenuView: View {
                     .foregroundColor(.primary)
                 ) {
                     Toggle(isOn: $isNotification) {
-                        Text("🔔 알림 설정")
+                        Text("🔔 알림설정")
                     }
                     
                     Link(destination: faqURL) {
