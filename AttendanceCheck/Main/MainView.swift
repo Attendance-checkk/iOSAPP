@@ -36,7 +36,7 @@ struct MainView: View {
                 }
                 .tag(3)
             
-            MenuView()
+            MenuView(departmentString: "사물인터넷학과", studentNumber: "20181520", studentName: "장경호")
                 .tabItem {
                     Label("Menu", systemImage: "gear")
                 }
