@@ -6,6 +6,23 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FD37FE502CB282D30077365C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD37FE492CB282D30077365C /* Preview Assets.xcassets */; };
+		FD37FE512CB282D30077365C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD37FE4B2CB282D30077365C /* Assets.xcassets */; };
+		FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE4C2CB282D30077365C /* AttendanceCheckApp.swift */; };
+		FD37FE532CB282D30077365C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE4D2CB282D30077365C /* ContentView.swift */; };
+		FD37FE542CB282D30077365C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE4E2CB282D30077365C /* Item.swift */; };
+		FD37FE572CB282F70077365C /* AttendanceCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE552CB282F70077365C /* AttendanceCheckTests.swift */; };
+		FD37FE5B2CB282F90077365C /* AttendanceCheckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE582CB282F90077365C /* AttendanceCheckUITests.swift */; };
+		FD37FE5C2CB282F90077365C /* AttendanceCheckUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE592CB282F90077365C /* AttendanceCheckUITestsLaunchTests.swift */; };
+		FD37FE662CB283690077365C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE652CB283690077365C /* MainView.swift */; };
+		FD37FE682CB283970077365C /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE672CB283970077365C /* QRView.swift */; };
+		FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE692CB2839C0077365C /* MapView.swift */; };
+		FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6B2CB283A00077365C /* HomeView.swift */; };
+		FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6D2CB283A80077365C /* ScheduleView.swift */; };
+		FD37FE702CB283B30077365C /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6F2CB283B30077365C /* MenuView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FD37FE2C2CB282BD0077365C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,25 +44,21 @@
 		FD37FE192CB282BC0077365C /* AttendanceCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AttendanceCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD37FE2B2CB282BD0077365C /* AttendanceCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AttendanceCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD37FE352CB282BD0077365C /* AttendanceCheckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AttendanceCheckUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD37FE492CB282D30077365C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD37FE4B2CB282D30077365C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FD37FE4C2CB282D30077365C /* AttendanceCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceCheckApp.swift; sourceTree = "<group>"; };
+		FD37FE4D2CB282D30077365C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FD37FE4E2CB282D30077365C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		FD37FE552CB282F70077365C /* AttendanceCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceCheckTests.swift; sourceTree = "<group>"; };
+		FD37FE582CB282F90077365C /* AttendanceCheckUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceCheckUITests.swift; sourceTree = "<group>"; };
+		FD37FE592CB282F90077365C /* AttendanceCheckUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceCheckUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FD37FE652CB283690077365C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		FD37FE672CB283970077365C /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
+		FD37FE692CB2839C0077365C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		FD37FE6B2CB283A00077365C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FD37FE6D2CB283A80077365C /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		FD37FE6F2CB283B30077365C /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		FD37FE1B2CB282BC0077365C /* AttendanceCheck */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AttendanceCheck;
-			sourceTree = "<group>";
-		};
-		FD37FE2E2CB282BD0077365C /* AttendanceCheckTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AttendanceCheckTests;
-			sourceTree = "<group>";
-		};
-		FD37FE382CB282BD0077365C /* AttendanceCheckUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AttendanceCheckUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		FD37FE162CB282BC0077365C /* Frameworks */ = {
@@ -75,9 +88,9 @@
 		FD37FE102CB282BC0077365C = {
 			isa = PBXGroup;
 			children = (
-				FD37FE1B2CB282BC0077365C /* AttendanceCheck */,
-				FD37FE2E2CB282BD0077365C /* AttendanceCheckTests */,
-				FD37FE382CB282BD0077365C /* AttendanceCheckUITests */,
+				FD37FE4F2CB282D30077365C /* AttendanceCheck */,
+				FD37FE562CB282F70077365C /* AttendanceCheckTests */,
+				FD37FE5A2CB282F90077365C /* AttendanceCheckUITests */,
 				FD37FE1A2CB282BC0077365C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +103,113 @@
 				FD37FE352CB282BD0077365C /* AttendanceCheckUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FD37FE4A2CB282D30077365C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE492CB282D30077365C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FD37FE4F2CB282D30077365C /* AttendanceCheck */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE4B2CB282D30077365C /* Assets.xcassets */,
+				FD37FE4C2CB282D30077365C /* AttendanceCheckApp.swift */,
+				FD37FE4D2CB282D30077365C /* ContentView.swift */,
+				FD37FE4E2CB282D30077365C /* Item.swift */,
+				FD37FE5D2CB282FB0077365C /* Login */,
+				FD37FE642CB283560077365C /* Main */,
+				FD37FE5E2CB283000077365C /* QR */,
+				FD37FE5F2CB283040077365C /* Map */,
+				FD37FE602CB283090077365C /* Home */,
+				FD37FE612CB2830F0077365C /* Schedule */,
+				FD37FE622CB2831C0077365C /* Menu */,
+				FD37FE632CB2832E0077365C /* Model */,
+				FD37FE4A2CB282D30077365C /* Preview Content */,
+			);
+			path = AttendanceCheck;
+			sourceTree = "<group>";
+		};
+		FD37FE562CB282F70077365C /* AttendanceCheckTests */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE552CB282F70077365C /* AttendanceCheckTests.swift */,
+			);
+			path = AttendanceCheckTests;
+			sourceTree = "<group>";
+		};
+		FD37FE5A2CB282F90077365C /* AttendanceCheckUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE582CB282F90077365C /* AttendanceCheckUITests.swift */,
+				FD37FE592CB282F90077365C /* AttendanceCheckUITestsLaunchTests.swift */,
+			);
+			path = AttendanceCheckUITests;
+			sourceTree = "<group>";
+		};
+		FD37FE5D2CB282FB0077365C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		FD37FE5E2CB283000077365C /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE672CB283970077365C /* QRView.swift */,
+			);
+			path = QR;
+			sourceTree = "<group>";
+		};
+		FD37FE5F2CB283040077365C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE692CB2839C0077365C /* MapView.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		FD37FE602CB283090077365C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE6B2CB283A00077365C /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		FD37FE612CB2830F0077365C /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE6D2CB283A80077365C /* ScheduleView.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		FD37FE622CB2831C0077365C /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE6F2CB283B30077365C /* MenuView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		FD37FE632CB2832E0077365C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FD37FE642CB283560077365C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				FD37FE652CB283690077365C /* MainView.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -106,9 +226,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				FD37FE1B2CB282BC0077365C /* AttendanceCheck */,
 			);
 			name = AttendanceCheck;
 			packageProductDependencies = (
@@ -130,9 +247,6 @@
 			dependencies = (
 				FD37FE2D2CB282BD0077365C /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				FD37FE2E2CB282BD0077365C /* AttendanceCheckTests */,
-			);
 			name = AttendanceCheckTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +266,6 @@
 			);
 			dependencies = (
 				FD37FE372CB282BD0077365C /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				FD37FE382CB282BD0077365C /* AttendanceCheckUITests */,
 			);
 			name = AttendanceCheckUITests;
 			packageProductDependencies = (
@@ -212,6 +323,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD37FE502CB282D30077365C /* Preview Assets.xcassets in Resources */,
+				FD37FE512CB282D30077365C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +349,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
+				FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */,
+				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
+				FD37FE662CB283690077365C /* MainView.swift in Sources */,
+				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
+				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
+				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
+				FD37FE682CB283970077365C /* QRView.swift in Sources */,
+				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD37FE572CB282F70077365C /* AttendanceCheckTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +373,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD37FE5B2CB282F90077365C /* AttendanceCheckUITests.swift in Sources */,
+				FD37FE5C2CB282F90077365C /* AttendanceCheckUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,11 +524,12 @@
 				DEVELOPMENT_TEAM = 8RN9H3Z673;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -411,9 +537,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = KyeonghoJang.AttendanceCheck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -428,11 +558,12 @@
 				DEVELOPMENT_TEAM = 8RN9H3Z673;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -440,9 +571,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = KyeonghoJang.AttendanceCheck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
