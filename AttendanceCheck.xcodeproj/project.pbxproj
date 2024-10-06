@@ -21,6 +21,8 @@
 		FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6B2CB283A00077365C /* HomeView.swift */; };
 		FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6D2CB283A80077365C /* ScheduleView.swift */; };
 		FD37FE702CB283B30077365C /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6F2CB283B30077365C /* MenuView.swift */; };
+		FD37FE722CB285880077365C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE712CB285880077365C /* LoginView.swift */; };
+		FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		FD37FE6B2CB283A00077365C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FD37FE6D2CB283A80077365C /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		FD37FE6F2CB283B30077365C /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		FD37FE712CB285880077365C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +157,7 @@
 		FD37FE5D2CB282FB0077365C /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				FD37FE712CB285880077365C /* LoginView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE6B2CB283A00077365C /* HomeView.swift */,
+				FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -357,6 +363,8 @@
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
+				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
+				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
