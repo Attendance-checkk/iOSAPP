@@ -11,12 +11,13 @@ struct MapDetailView: View {
     let floorNumber: Int
     
     var body: some View {
-        NavigationView {
-            Image(systemName: "map.circle.fill")
-            
+        VStack {
+                    Image(systemName: "map.circle.fill")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                }
                 .navigationTitle("\(floorNumber + 1)층 지도")
                 .navigationBarTitleDisplayMode(.inline)
-        }
     }
 }
 

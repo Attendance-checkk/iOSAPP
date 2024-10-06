@@ -20,25 +20,25 @@ struct MainView: View {
             
             MapView()
                 .tabItem {
-                    Label("Location", systemImage: "map.fill")
+                    Label("위치", systemImage: "map.fill")
                 }
                 .tag(1)
             
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label("홈", systemImage: "house.fill")
                 }
                 .tag(2)
             
             ScheduleView()
                 .tabItem {
-                    Label("Schedule", systemImage: "calendar")
+                    Label("일정", systemImage: "calendar")
                 }
                 .tag(3)
             
             MenuView(departmentString: "사물인터넷학과", studentNumber: "20181520", studentName: "장경호")
                 .tabItem {
-                    Label("Menu", systemImage: "gear")
+                    Label("메뉴", systemImage: "gear")
                 }
                 .tag(4)
         }

@@ -27,6 +27,8 @@
 		FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE772CB28DD00077365C /* ScannerDelegate.swift */; };
 		FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE792CB28E440077365C /* CameraView.swift */; };
 		FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */; };
+		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
+		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		FD37FE772CB28DD00077365C /* ScannerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerDelegate.swift; sourceTree = "<group>"; };
 		FD37FE792CB28E440077365C /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
+		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE6D2CB283A80077365C /* ScheduleView.swift */,
+				FD37FE7D2CB2C9260077365C /* CalendarView.swift */,
+				FD37FE7F2CB2C92A0077365C /* TimelineView.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -369,6 +375,7 @@
 			files = (
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
+				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,
 				FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
@@ -381,6 +388,7 @@
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
 				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
+				FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
