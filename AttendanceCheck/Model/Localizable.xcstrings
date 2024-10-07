@@ -1,17 +1,8 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld층" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld floor"
-          }
-        }
-      }
-    },
     "%lld층 지도" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -37,6 +28,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "🔔 Notification"
+          }
+        }
+      }
+    },
+    "1층" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1st floor"
+          }
+        }
+      }
+    },
+    "2층" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2nd floor"
+          }
+        }
+      }
+    },
+    "3층" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3rd floor"
+          }
+        }
+      }
+    },
+    "4층" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4th floor"
+          }
+        }
+      }
+    },
+    "5층" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5th floor"
           }
         }
       }
@@ -213,7 +254,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk consert\n[Raehoon Kim]"
+            "value" : "Talk concert\n[Raehoon Kim]"
           }
         }
       }
@@ -223,7 +264,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk consert\n[Taesik Yang]"
+            "value" : "Talk concert\n[Taesik Yang]"
           }
         }
       }
@@ -233,7 +274,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk consert\n[Kyeongho Jang]"
+            "value" : "Talk concert\n[Kyeongho Jang]"
           }
         }
       }
@@ -243,7 +284,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk consert\n[Sion Jeon]"
+            "value" : "Talk concert\n[Sion Jeon]"
           }
         }
       }
@@ -253,7 +294,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk consert\n[Hayoon Jeon]"
+            "value" : "Talk concert\n[Hayoon Jeon]"
           }
         }
       }

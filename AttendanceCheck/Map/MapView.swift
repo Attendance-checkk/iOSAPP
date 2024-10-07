@@ -12,10 +12,20 @@ struct MapView: View {
         NavigationView {
             Form {
                 Section {
-                    ForEach(0..<5) { index in
-                        NavigationLink(destination: MapDetailView(floorNumber: index)) {
-                            Text("\(index + 1)층")
-                        }
+                    NavigationLink(destination: MapDetailView(floorNumber: 1)) {
+                        Text("1층")
+                    }
+                    NavigationLink(destination: MapDetailView(floorNumber: 2)) {
+                        Text("2층")
+                    }
+                    NavigationLink(destination: MapDetailView(floorNumber: 3)) {
+                        Text("3층")
+                    }
+                    NavigationLink(destination: MapDetailView(floorNumber: 4)) {
+                        Text("4층")
+                    }
+                    NavigationLink(destination: MapDetailView(floorNumber: 5)) {
+                        Text("5층")
                     }
                 }
             }

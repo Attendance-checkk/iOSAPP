@@ -23,7 +23,7 @@ struct MainView: View {
                     Label("위치", systemImage: "map.fill")
                 }
                 .tag(1)
-            
+                
             HomeView()
                 .tabItem {
                     Label("홈", systemImage: "house.fill")
