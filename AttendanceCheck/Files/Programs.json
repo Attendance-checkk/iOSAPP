@@ -1,0 +1,67 @@
+{
+    "events": [
+        {
+          "index": 0,
+          "title": "개회식",
+          "location": "6129",
+          "description": "개회식에 대한 설명",
+          "qrString": "SWCUAF_Opening"
+        },
+        {
+          "index": 1,
+          "title": "프로젝트 발표",
+          "location": "6129",
+          "description": "프로젝트 발표에 대한 설명",
+          "qrString": "SWCUAF_ProjectPresentation"
+        },
+        {
+          "index": 2,
+          "title": "졸업생 토크 콘서트\n[장경호]",
+          "location": "6129",
+          "description": "졸업생 토크 콘서트에 대한 설명\n[장경호]",
+          "qrString": "SWCUAF_TalkConcert1"
+        },
+        {
+          "index": 3,
+          "title": "졸업생 토크 콘서트\n[전시온]",
+          "location": "6129",
+          "description": "졸업생 토크 콘서트에 대한 설명\n[전시온]",
+          "qrString": "SWCUAF_TalkConcert2"
+        },
+        {
+          "index": 4,
+          "title": "졸업생 토크 콘서트\n[양태식]",
+          "location": "6129",
+          "description": "졸업생 토크 콘서트에 대한 설명\n[양태식]",
+          "qrString": "SWCUAF_TalkConcert3"
+        },
+        {
+          "index": 5,
+          "title": "졸업생 토크 콘서트\n[전하윤]",
+          "location": "6129",
+          "description": "졸업생 토크 콘서트에 대한 설명\n[전하윤]",
+          "qrString": "SWCUAF_TalkConcert4"
+        },
+        {
+          "index": 6,
+          "title": "졸업생 토크 콘서트\n[김래훈]",
+          "location": "6129",
+          "description": "졸업생 토크 콘서트에 대한 설명\n[김래훈]",
+          "qrString": "SWCUAF_TalkConcert5"
+        },
+        {
+          "index": 7,
+          "title": "게임 경진대회",
+          "location": "6129",
+          "description": "게임 경진대회에 대한 설명",
+          "qrString": "SWCUAF_GameContest"
+        },
+        {
+          "index": 8,
+          "title": "폐회식 & 시상식",
+          "location": "6129",
+          "description": "폐회식 & 시상식에 대한 설명",
+          "qrString": "SWCUAF_Ending"
+        }
+    ]
+}

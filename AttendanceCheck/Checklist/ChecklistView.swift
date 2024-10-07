@@ -52,9 +52,21 @@ struct ChecklistView: View {
                             Spacer()
                             
                             GeometryReader { geometry in
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: geometry.size.height, height: geometry.size.height)
-                                    .foregroundColor(.white)
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: geometry.size.height, height: geometry.size.height)
+                                        .foregroundColor(.white)
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(Color.black, lineWidth: 1)
+                                        }
+                                    
+                                    Image("SCHUCSTAMP")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+                                        .hidden()
+                                }
                             }
                             .frame(width: 50, height: 50)
                         }
