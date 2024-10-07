@@ -29,6 +29,7 @@
 		FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */; };
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
 		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
+		FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4B67FB2CB382F80096FBAB /* Programs.swift */; };
 		FDF0CD842CB3643600ED7714 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */; };
 		FDF0CD872CB380CE00ED7714 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FDF0CD862CB380CE00ED7714 /* Programs.json */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		FD4B67FB2CB382F80096FBAB /* Programs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Programs.swift; sourceTree = "<group>"; };
 		FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		FDF0CD862CB380CE00ED7714 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE752CB28D600077365C /* Permission.swift */,
+				FD4B67FB2CB382F80096FBAB /* Programs.swift */,
 				FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */,
 			);
 			path = Model;
@@ -392,6 +395,7 @@
 			files = (
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
+				FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */,
 				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
