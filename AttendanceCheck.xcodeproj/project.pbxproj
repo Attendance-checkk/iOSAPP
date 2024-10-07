@@ -18,7 +18,7 @@
 		FD37FE662CB283690077365C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE652CB283690077365C /* MainView.swift */; };
 		FD37FE682CB283970077365C /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE672CB283970077365C /* QRView.swift */; };
 		FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE692CB2839C0077365C /* MapView.swift */; };
-		FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6B2CB283A00077365C /* HomeView.swift */; };
+		FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6B2CB283A00077365C /* ChecklistView.swift */; };
 		FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6D2CB283A80077365C /* ScheduleView.swift */; };
 		FD37FE702CB283B30077365C /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE6F2CB283B30077365C /* MenuView.swift */; };
 		FD37FE722CB285880077365C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE712CB285880077365C /* LoginView.swift */; };
@@ -64,7 +64,7 @@
 		FD37FE652CB283690077365C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FD37FE672CB283970077365C /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		FD37FE692CB2839C0077365C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		FD37FE6B2CB283A00077365C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FD37FE6B2CB283A00077365C /* ChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistView.swift; sourceTree = "<group>"; };
 		FD37FE6D2CB283A80077365C /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		FD37FE6F2CB283B30077365C /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		FD37FE712CB285880077365C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 				FD37FE642CB283560077365C /* Main */,
 				FD37FE5E2CB283000077365C /* QR */,
 				FD37FE5F2CB283040077365C /* Map */,
-				FD37FE602CB283090077365C /* Home */,
+				FD37FE602CB283090077365C /* Checklist */,
 				FD37FE612CB2830F0077365C /* Schedule */,
 				FD37FE622CB2831C0077365C /* Menu */,
 				FD37FE632CB2832E0077365C /* Model */,
@@ -195,13 +195,13 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
-		FD37FE602CB283090077365C /* Home */ = {
+		FD37FE602CB283090077365C /* Checklist */ = {
 			isa = PBXGroup;
 			children = (
-				FD37FE6B2CB283A00077365C /* HomeView.swift */,
+				FD37FE6B2CB283A00077365C /* ChecklistView.swift */,
 				FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */,
 			);
-			path = Home;
+			path = Checklist;
 			sourceTree = "<group>";
 		};
 		FD37FE612CB2830F0077365C /* Schedule */ = {
@@ -381,7 +381,7 @@
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
 				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,
-				FD37FE6C2CB283A00077365C /* HomeView.swift in Sources */,
+				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,

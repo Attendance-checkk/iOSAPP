@@ -1,17 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld층 지도" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld floor map"
-          }
-        }
-      }
-    },
     "🌐 문의하기" : {
       "localizations" : {
         "en" : {
@@ -28,6 +17,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "🔔 Notification"
+          }
+        }
+      }
+    },
+    "🥳 스탬프 모으기 완료!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🥳 Stamp collection is done!"
           }
         }
       }
@@ -85,6 +84,9 @@
     "Add Item" : {
 
     },
+    "Hello" : {
+
+    },
     "Item at %@" : {
 
     },
@@ -104,7 +106,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scan QR code"
+            "value" : "QR"
           }
         }
       }
@@ -319,6 +321,16 @@
         }
       }
     },
+    "카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you not allow camera authorization, you can’t scan QR code"
+          }
+        }
+      }
+    },
     "캘린더 보기" : {
       "localizations" : {
         "en" : {
@@ -417,17 +429,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stamp & Get rewards!"
-          }
-        }
-      }
-    },
-    "홈" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home"
           }
         }
       }

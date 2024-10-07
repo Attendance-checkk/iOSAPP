@@ -21,12 +21,12 @@ struct MainView: View {
             MapView()
                 .tabItem {
                     Label("위치", systemImage: "map.fill")
-                }
+                } 
                 .tag(1)
                 
-            HomeView()
+            ChecklistView()
                 .tabItem {
-                    Label("홈", systemImage: "house.fill")
+                    Label("체크리스트", systemImage: "checkmark.seal")
                 }
                 .tag(2)
             

@@ -145,11 +145,11 @@ struct QRView: View {
                     cameraSetting()
                 } else {
                     cameraPermission = .denied
-                    presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
+                    presentErrorMessage(String(localized: "카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다"))
                 }
             case .denied, .restricted:
                 cameraPermission = .denied
-                presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
+                presentErrorMessage(String(localized: "카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다"))
             default:
                 break
             }
