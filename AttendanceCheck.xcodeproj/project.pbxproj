@@ -29,6 +29,7 @@
 		FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */; };
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
 		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
+		FDF0CD842CB3643600ED7714 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE752CB28D600077365C /* Permission.swift */,
+				FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = FD37FE102CB282BC0077365C;
 			minimizedProjectReferenceProxies = 1;
@@ -349,6 +353,7 @@
 			files = (
 				FD37FE502CB282D30077365C /* Preview Assets.xcassets in Resources */,
 				FD37FE512CB282D30077365C /* Assets.xcassets in Resources */,
+				FDF0CD842CB3643600ED7714 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +490,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -541,6 +547,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

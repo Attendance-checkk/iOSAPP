@@ -12,12 +12,12 @@ struct MapDetailView: View {
     
     var body: some View {
         VStack {
-                    Image(systemName: "map.circle.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                }
-                .navigationTitle("\(floorNumber + 1)층 지도")
-                .navigationBarTitleDisplayMode(.inline)
+            Image(systemName: "map.circle.fill")
+                .resizable()
+                .frame(width: 100, height: 100)
+        }
+        .navigationTitle("\(floorNumber + 1)층 지도")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

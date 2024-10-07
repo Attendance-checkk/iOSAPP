@@ -12,15 +12,15 @@ struct HomeView: View {
     @State private var completedEvenets: Set<Int> = []
     
     let events = [
-        "개회식",
-        "프로젝트 발표",
-        "졸업생 토크 콘서트\n[장경호]",
-        "졸업생 토크 콘서트\n[전시온]",
-        "졸업생 토크 콘서트\n[양태식]",
-        "졸업생 토크 콘서트\n[전하윤]",
-        "졸업생 토크 콘서트\n[김래훈]",
-        "게임 경진대회",
-        "폐회식"
+        String(localized: "개회식"),
+        String(localized: "프로젝트 발표"),
+        String(localized: "졸업생 토크 콘서트\n[장경호]"),
+        String(localized: "졸업생 토크 콘서트\n[전시온]"),
+        String(localized: "졸업생 토크 콘서트\n[양태식]"),
+        String(localized: "졸업생 토크 콘서트\n[전하윤]"),
+        String(localized: "졸업생 토크 콘서트\n[김래훈]"),
+        String(localized: "게임 경진대회"),
+        String(localized: "폐회식 & 시상식")
     ]
     
     let gridItems = [
@@ -44,7 +44,7 @@ struct HomeView: View {
                 
                 LazyVGrid(columns: gridItems, spacing: 10) {
                     ForEach(events.indices, id: \.self) { index in
-                        NavigationLink(destination: ChecklistDetailView()) {
+                        NavigationLink(destination: ChecklistDetailView(eventName: events[index], eventLocation: "6129", description: events[index])) {
                             GeometryReader { geometry in
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)

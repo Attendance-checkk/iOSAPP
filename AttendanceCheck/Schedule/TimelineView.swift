@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimelineView: View {
     var body: some View {
-        Text("This is timeline view")
+        Text("타임라인 뷰")
     }
 }
 
