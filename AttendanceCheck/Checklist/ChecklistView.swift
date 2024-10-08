@@ -12,18 +12,6 @@ struct ChecklistView: View {
     @State private var completedEvenets: Set<Int> = []
     @State private var programs: Programs? = nil
     
-    let events = [
-        "개회식",
-        "프로젝트 발표",
-        "졸업생 토크 콘서트\n[장경호]",
-        "졸업생 토크 콘서트\n[전시온]",
-        "졸업생 토크 콘서트\n[양태식]",
-        "졸업생 토크 콘서트\n[전하윤]",
-        "졸업생 토크 콘서트\n[김래훈]",
-        "게임 경진대회",
-        "폐회식 & 시상식"
-    ]
-    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -36,42 +24,44 @@ struct ChecklistView: View {
                     .progressViewStyle(LinearProgressViewStyle())
                     .padding(.horizontal, 20)
                 
-                List(events.indices, id: \.self) { index in
-                    NavigationLink(destination: detailView(for: index)) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("Hello")
-                                    .font(.body)
-                                    .foregroundColor(.primary)
-                                
-                                Text(events[index])
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                            }
-                            
-                            Spacer()
-                            
-                            GeometryReader { geometry in
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: geometry.size.height, height: geometry.size.height)
-                                        .foregroundColor(.white)
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.black, lineWidth: 1)
-                                        }
+                if let events = programs?.events {
+                    List(events.indices, id: \.self) { index in
+                        NavigationLink(destination: detailView(for: index)) {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text("Hello")
+                                        .font(.body)
+                                        .foregroundColor(.primary)
                                     
-                                    Image("SCHUCSTAMP")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
-                                        .opacity(completedEvenets.contains(index) ? 1.0 : 0.0)
+                                    Text(events[index].title)
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary)
                                 }
+                                
+                                Spacer()
+                                
+                                GeometryReader { geometry in
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .frame(width: geometry.size.height, height: geometry.size.height)
+                                            .foregroundColor(.white)
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .stroke(Color.black, lineWidth: 1)
+                                            }
+                                        
+                                        Image("SCHUCSTAMP")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+                                            .opacity(completedEvenets.contains(index) ? 1.0 : 0.0)
+                                    }
+                                }
+                                .frame(width: 50, height: 50)
                             }
-                            .frame(width: 50, height: 50)
+                            .padding(.vertical, 10)
                         }
-                        .padding(.vertical, 10)
                     }
                 }
             }

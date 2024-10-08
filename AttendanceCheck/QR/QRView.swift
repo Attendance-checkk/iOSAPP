@@ -23,7 +23,7 @@ struct QRView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 8) {
+            VStack(spacing: 16) {
                 GeometryReader {
                     let size = $0.size
                     
@@ -43,6 +43,8 @@ struct QRView: View {
                     .frame(width: size.width, height: size.width)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
+                .padding(20)
                 
                 Button {
                     if !session.isRunning && cameraPermission == .approved {
@@ -51,8 +53,6 @@ struct QRView: View {
                 } label: {
                     Label("QR코드 인식 시작", systemImage: "qrcode")
                 }
-                
-                Spacer(minLength: 150)
             }
             .padding(.horizontal, 45)
             

@@ -21,10 +21,20 @@ struct LoginView: View {
         NavigationStack {
             if loginState.loginState ?? false {
                 MainView()
+                    .environmentObject(userInformation)
+                    .environmentObject(loginState)
                     .transition(.move(edge: .trailing))
                     .animation(.easeInOut(duration: 0.5), value: loginState.loginState)
             } else {
                 VStack(spacing: 10) {
+                    Image("SCHULogo_Rect")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                        .cornerRadius(5)
+                    
+                    Spacer()
+                    
                     Text("학과 선택")
                         .font(.body)
                         .fontWeight(.bold)
@@ -36,7 +46,7 @@ struct LoginView: View {
                     }) {
                         HStack {
                             Text(selectedDepartment)
-                                .foregroundColor(selectedDepartment == "학과를 선택하세요" ? .gray : .primary) // placeholder 색상
+                                .foregroundColor(selectedDepartment == "학과를 선택하세요" ? .gray : .primary)
                             Spacer()
                         }
                         .padding(20)
@@ -44,7 +54,6 @@ struct LoginView: View {
                         .cornerRadius(10)
                     }
                     .sheet(isPresented: $showDepartmentSelection) {
-                        // 학과 선택 뷰 표시
                         DepartmentSelectionView(selectedDepartment: $selectedDepartment)
                     }
                     
@@ -101,6 +110,8 @@ struct LoginView: View {
                             )
                         }
                     }
+                    
+                    Spacer()
                 }
                 .padding(30)
                 
@@ -111,6 +122,7 @@ struct LoginView: View {
     
     private func login() {
         if studentIDValidation() {
+            userInformation.department = selectedDepartment
             userInformation.studentID = inputStudentID
             userInformation.studentName = inputStudentName
             showAlert = .success

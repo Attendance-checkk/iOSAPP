@@ -16,6 +16,7 @@ struct ContentView: View {
         if loginState.loginState ?? false {
             MainView()
                 .environmentObject(userInformation)
+                .environmentObject(loginState)
                 .onAppear {
                     printUserInformation()
                 }
