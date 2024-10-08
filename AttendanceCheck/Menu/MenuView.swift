@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct MenuView: View {
+    @EnvironmentObject private var userInformation: UserInformation
+    
     let departmentString: String
-    let studentNumber: String
+    let studentID: String
     let studentName: String
     let faqURL: URL = URL(string: "https://potent-barnacle-025.notion.site/FAQ-116c07204d29805a8418d9a37bf330a2?pvs=4")!
     let surveyURL: URL = URL(string: "https://www.google.com/")!
@@ -27,19 +29,19 @@ struct MenuView: View {
                     HStack {
                         Text("학과")
                         Spacer()
-                        Text(departmentString)
+                        Text(userInformation.department ?? "DepartmentGetFromAppStorageError")
                     }
                     
                     HStack {
                         Text("학번")
                         Spacer()
-                        Text(studentNumber)
+                        Text(userInformation.studentID ?? "StudentIDGetFromAppStorageError")
                     }
                     
                     HStack {
                         Text("이름")
                         Spacer()
-                        Text(studentName)
+                        Text(userInformation.studentName ?? "StudentNameGetFromAppStorageError")
                     }
                 }
                 
@@ -74,5 +76,5 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(departmentString: "사물인터넷학과", studentNumber: "20181520", studentName: "장경호")
+    MenuView(departmentString: "사물인터넷학과", studentID: "20181520", studentName: "장경호")
 }

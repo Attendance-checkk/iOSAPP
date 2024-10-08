@@ -9,22 +9,7 @@ import SwiftUI
 
 struct MapDetailView: View {
     let floorNumber: Int
-    var floorString: String {
-        switch floorNumber {
-        case 1:
-            return "1st floor"
-        case 2:
-            return "2nd floor"
-        case 3:
-            return "3rd floor"
-        case 4:
-            return "4th floor"
-        case 5:
-            return "5th floor"
-        default:
-            return "Unknown floor"
-        }
-    }
+    var floorString: String
     
     var body: some View {
         VStack {
@@ -38,5 +23,5 @@ struct MapDetailView: View {
 }
 
 #Preview {
-    MapDetailView(floorNumber: 1)
+    MapDetailView(floorNumber: 1, floorString: "1층 지도")
 }

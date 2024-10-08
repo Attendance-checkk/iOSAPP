@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct AttendanceCheckApp: App {
+    @StateObject private var userInformation = UserInformation()
+    @StateObject private var loginState = LoginState()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -25,7 +28,9 @@ struct AttendanceCheckApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            ContentView()
+                .environmentObject(userInformation)
+                .environmentObject(loginState)
         }
         .modelContainer(sharedModelContainer)
     }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject private var userInformation: UserInformation
+    
     @State private var selectedIndex: Int = 2
     
     var body: some View {
@@ -36,7 +38,7 @@ struct MainView: View {
                 }
                 .tag(3)
             
-            MenuView(departmentString: "사물인터넷학과", studentNumber: "20181520", studentName: "장경호")
+            MenuView(departmentString: userInformation.department ?? "DepartmentGetFromAppStorageError", studentID: userInformation.studentID ?? "StudentIDGetFromAppStorageError", studentName: userInformation.studentName ?? "StudentNameGetFromAppStorageError")
                 .tabItem {
                     Label("메뉴", systemImage: "gear")
                 }

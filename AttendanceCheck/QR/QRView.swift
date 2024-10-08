@@ -52,7 +52,7 @@ struct QRView: View {
                     Label("QR코드 인식 시작", systemImage: "qrcode")
                 }
                 
-                Spacer(minLength: 100)
+                Spacer(minLength: 150)
             }
             .padding(.horizontal, 45)
             

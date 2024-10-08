@@ -101,7 +101,6 @@ struct ChecklistView: View {
     }
     
     private func loadPrograms(from fileName: String) -> Programs? {
-        print("Start load json file: \(fileName).json")
         
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
             print("Cannot find JSON file: \(fileName).json")
@@ -111,7 +110,6 @@ struct ChecklistView: View {
         do {
             let data = try Data(contentsOf: url)
             let programs = try JSONDecoder().decode(Programs.self, from: data)
-            print("Successfully loaded")
             return programs
         } catch {
             print("JSON decoding error: \(error.localizedDescription)")
