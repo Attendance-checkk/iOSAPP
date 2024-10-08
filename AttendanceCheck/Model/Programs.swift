@@ -15,6 +15,6 @@ struct Program: Codable {
     var index: Int
     var title: String
     var location: String
-    var description: String
+    var descriptionString: String
     var qrString: String
 }

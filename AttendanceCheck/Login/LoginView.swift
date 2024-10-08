@@ -8,8 +8,27 @@
 import SwiftUI
 
 struct LoginView: View {
+    
+    
     var body: some View {
-        Text("안녕하세요")
+        NavigationView {
+            VStack(spacing: 10, content: {
+                
+                
+                TextField("학번", text: .constant(""))
+                    .padding(20)
+                    .background(Color.gray.opacity(0.5))
+                    .cornerRadius(10)
+                
+                TextField("이름", text: .constant(""))
+                    .padding(20)
+                    .background(Color.gray.opacity(0.5))
+                    .cornerRadius(10)
+                
+            })
+            
+                .navigationTitle("로그인")
+        }
     }
 }
 

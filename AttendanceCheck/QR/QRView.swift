@@ -60,14 +60,14 @@ struct QRView: View {
             
             .alert(errorMessage, isPresented: $showError) {
                 if cameraPermission == .denied {
-                    Button("세팅") {
+                    Button("Settings") {
                         let settingString = UIApplication.openSettingsURLString
                         if let settingsURL = URL(string: settingString) {
                             openURL(settingsURL)
                         }
                     }
                     
-                    Button("취소", role: .cancel) { }
+                    Button("Cancel", role: .cancel) { }
                 }
             }
             
@@ -145,11 +145,11 @@ struct QRView: View {
                     cameraSetting()
                 } else {
                     cameraPermission = .denied
-                    presentErrorMessage(String(localized: "카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다"))
+                    presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
                 }
             case .denied, .restricted:
                 cameraPermission = .denied
-                presentErrorMessage(String(localized: "카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다"))
+                presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
             default:
                 break
             }

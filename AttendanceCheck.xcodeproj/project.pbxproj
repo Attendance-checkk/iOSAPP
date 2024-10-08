@@ -29,9 +29,9 @@
 		FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */; };
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
 		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
+		FD42AADF2CB39AC800B63392 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FD42AADE2CB39AC800B63392 /* Programs.json */; };
 		FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4B67FB2CB382F80096FBAB /* Programs.swift */; };
-		FDF0CD842CB3643600ED7714 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */; };
-		FDF0CD872CB380CE00ED7714 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FDF0CD862CB380CE00ED7714 /* Programs.json */; };
+		FD6B5C642CB4B64A00771254 /* DepartmentSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,9 +77,9 @@
 		FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		FD42AADE2CB39AC800B63392 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
 		FD4B67FB2CB382F80096FBAB /* Programs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Programs.swift; sourceTree = "<group>"; };
-		FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		FDF0CD862CB380CE00ED7714 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
+		FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FD2F6BC92CB3986D00AB82D6 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD42AADE2CB39AC800B63392 /* Programs.json */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
 		FD37FE102CB282BC0077365C = {
 			isa = PBXGroup;
 			children = (
@@ -150,7 +158,7 @@
 				FD37FE612CB2830F0077365C /* Schedule */,
 				FD37FE622CB2831C0077365C /* Menu */,
 				FD37FE632CB2832E0077365C /* Model */,
-				FDF0CD852CB380B700ED7714 /* Files */,
+				FD2F6BC92CB3986D00AB82D6 /* Files */,
 				FD37FE4A2CB282D30077365C /* Preview Content */,
 			);
 			path = AttendanceCheck;
@@ -177,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE712CB285880077365C /* LoginView.swift */,
+				FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -232,7 +241,6 @@
 			children = (
 				FD37FE752CB28D600077365C /* Permission.swift */,
 				FD4B67FB2CB382F80096FBAB /* Programs.swift */,
-				FDF0CD832CB3643600ED7714 /* Localizable.xcstrings */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -243,14 +251,6 @@
 				FD37FE652CB283690077365C /* MainView.swift */,
 			);
 			path = Main;
-			sourceTree = "<group>";
-		};
-		FDF0CD852CB380B700ED7714 /* Files */ = {
-			isa = PBXGroup;
-			children = (
-				FDF0CD862CB380CE00ED7714 /* Programs.json */,
-			);
-			path = Files;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -365,10 +365,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDF0CD872CB380CE00ED7714 /* Programs.json in Resources */,
+				FD42AADF2CB39AC800B63392 /* Programs.json in Resources */,
 				FD37FE502CB282D30077365C /* Preview Assets.xcassets in Resources */,
 				FD37FE512CB282D30077365C /* Assets.xcassets in Resources */,
-				FDF0CD842CB3643600ED7714 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +396,7 @@
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
 				FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */,
 				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,
+				FD6B5C642CB4B64A00771254 /* DepartmentSelectionView.swift in Sources */,
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
