@@ -63,7 +63,7 @@ struct MenuView: View {
                     
                     Link(destination: surveyURL) {
                         HStack {
-                            Text("🌐 문의하기")
+                            Text("🌐 만족도 조사")
                                 .foregroundColor(.blue)
                         }
                     }

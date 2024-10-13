@@ -16,8 +16,6 @@ class ScannerDelegate: NSObject, ObservableObject, AVCaptureMetadataOutputObject
             guard let readbleObject = metaObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let code = readbleObject.stringValue else { return }
             
-            print(code)
-            
             scannedCode = code
         }
     }

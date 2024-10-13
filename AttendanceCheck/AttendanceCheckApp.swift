@@ -12,6 +12,7 @@ import SwiftData
 struct AttendanceCheckApp: App {
     @StateObject private var userInformation = UserInformation()
     @StateObject private var loginState = LoginState()
+    @StateObject private var eventManager = EventManager()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -31,6 +32,7 @@ struct AttendanceCheckApp: App {
             ContentView()
                 .environmentObject(userInformation)
                 .environmentObject(loginState)
+                .environmentObject(eventManager)
         }
         .modelContainer(sharedModelContainer)
     }

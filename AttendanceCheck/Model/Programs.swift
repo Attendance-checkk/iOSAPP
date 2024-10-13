@@ -7,11 +7,15 @@
 
 import Foundation
 
-struct Programs: Codable {
+struct Programs: Codable, Equatable {
     var events: [Program] = []
+    
+    static func == (lhs: Programs, rhs: Programs) -> Bool {
+        return lhs.events == rhs.events
+    }
 }
 
-struct Program: Codable {
+struct Program: Codable, Equatable {
     var index: Int
     var title: String
     var location: String

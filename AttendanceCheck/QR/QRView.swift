@@ -16,8 +16,13 @@ struct QRView: View {
     @State private var cameraPermission: Permission = .idle
     @State private var scannedCode: String = ""
     @State private var showCode: Bool = false
+    @State private var alreadyScanned: Bool = false
+    
+    @Binding var selectedIndex: Int
     
     @Environment(\.openURL) private var openURL
+    
+    @EnvironmentObject private var eventManager: EventManager
     
     @StateObject private var outputDelegate = ScannerDelegate()
     
@@ -57,7 +62,20 @@ struct QRView: View {
             .padding(.horizontal, 45)
             
             .onAppear(perform: checkingCameraPermission)
+            .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
+                if let code = newValue {
+                    scannedCode = code
+                    checkIfScanned(code: code)
+//                    print("Scanned QR code from QRView: \(code)")
+                    showCode = true
+                    session.stopRunning()
+                    outputDelegate.scannedCode = nil
+                    
+                    eventManager.completeEventByQRCode(code)
+                }
+            }
             
+            // MARK: - Alert
             .alert(errorMessage, isPresented: $showError) {
                 if cameraPermission == .denied {
                     Button("Settings") {
@@ -70,25 +88,36 @@ struct QRView: View {
                     Button("Cancel", role: .cancel) { }
                 }
             }
-            
             .alert(isPresented: $showCode) {
                 Alert(
-                    title: Text("인식된 QR"),
-                    message: Text(scannedCode),
-                    dismissButton: .default(Text("확인"))
+                    title: Text(alreadyScanned ? "이미 인식된 코드입니다" : "인식이 완료되었습니다!"),
+                    message: Text(alreadyScanned ? "이미 완료한 활동의 스탬프는 다시 찍을 수 없어요.." : "스탬프를 찍었어요!"),
+                    dismissButton: .default(Text("확인"), action: {
+                        if !alreadyScanned {
+                            DispatchQueue.main.async {
+                                selectedIndex = 2
+                            }
+                        }
+                    })
                 )
             }
             
-            .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
-                if let code = newValue {
-                    scannedCode = code
-                    showCode = true
-                    session.stopRunning()
-                    outputDelegate.scannedCode = nil
-                }
-            }
             .navigationTitle("QR코드 인식")
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+    
+    // MARK: - Check if scanned QR code is not stamped.
+    private func checkIfScanned(code: String) {
+        guard let programs = eventManager.programs else {
+            alreadyScanned = false
+            return
+        }
+        
+        if let index = programs.events.firstIndex(where: { $0.qrString == code }) {
+            alreadyScanned = eventManager.isEventCompleted(index: index)
+        } else {
+            alreadyScanned = false
         }
     }
     
@@ -163,5 +192,6 @@ struct QRView: View {
 }
 
 #Preview {
-    QRView()
+    @Previewable @State var selectedIndex: Int = 2
+    QRView(selectedIndex: $selectedIndex)
 }
