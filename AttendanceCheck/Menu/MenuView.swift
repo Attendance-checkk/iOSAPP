@@ -10,7 +10,6 @@ import SwiftUI
 struct MenuView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
-//    @Environment(\.presentationMode) var presentationMode
     
     let departmentString: String
     let studentID: String
@@ -77,13 +76,12 @@ struct MenuView: View {
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.red)
-                ) {
+                ) { 
                     Button(action: {
                         showAlert = true
                     }) {
                         Text("계정 삭제")
                             .foregroundColor(.red)
-                            .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding()
                     .alert(isPresented: $showAlert) {

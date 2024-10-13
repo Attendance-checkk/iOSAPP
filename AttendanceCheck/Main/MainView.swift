@@ -53,6 +53,16 @@ struct MainView: View {
                     }
                     .tag(4)
             }
+            .onAppear {
+                userInformation.login { success in
+                    print("Login success: \(success)")
+                }
+                
+                guard let jwt = userInformation.accessToken else {
+                    return
+                }
+                print("Java Web Token: \(jwt)")
+            }
         }
     }
 }

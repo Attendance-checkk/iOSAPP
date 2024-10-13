@@ -14,7 +14,8 @@ class UserInformation: ObservableObject {
     @AppStorage("department") var department: String?
     @AppStorage("studentID") var studentID: String?
     @AppStorage("studentName") var studentName: String?
-    @AppStorage("JWT") var javaWebToken: String?
+    @AppStorage("accessToken") var accessToken: String?
+    @AppStorage("refreshToken") var refreshToken: String?
     
     init() {
         self.loginState = storedLoginState ?? false
@@ -56,9 +57,11 @@ class UserInformation: ObservableObject {
                 if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                     let code = responseJSON["code"] as? Int, code == 200,
                     let tokenInfo = responseJSON["token"] as? [String: Any],
-                    let accessToken = tokenInfo["access_token"] as? String {
+                    let accessToken = tokenInfo["access_token"] as? String,
+                    let refreshToken = tokenInfo["refresh_token"] as? String {
                     DispatchQueue.main.async {
-                        self.javaWebToken = accessToken
+                        self.accessToken = accessToken
+                        self.refreshToken = refreshToken
                         completion(true)
                     }
                     return
@@ -78,12 +81,47 @@ class UserInformation: ObservableObject {
         task.resume()
     }
     
+    public func accessTokenRefresh() {
+        guard let refreshToken = refreshToken else { return }
+        guard let requrestURL = URL(string: "http://54.180.7.191:9999/jwt/refresh") else { return }
+        
+        var request = URLRequest(url: requrestURL, timeoutInterval: Double.infinity)
+        request.addValue(refreshToken, forHTTPHeaderField: "Authorization")
+
+        request.httpMethod = "POST"
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                return
+            }
+            
+            do {
+                if let reponseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let code = reponseJSON["code"] as? Int, code == 200,
+                   let tokenInfo = reponseJSON["token"] as? [String: Any],
+                   let accessToken = tokenInfo["accessToken"] as? String,
+                   let refreshToken = tokenInfo["refreshToken"] as? String {
+                    DispatchQueue.main.async {
+                        self.accessToken = accessToken
+                    }
+                    return
+                }
+            } catch {
+                print("Access Token refresh error: \(error)")
+            }
+        }
+
+        task.resume()
+
+    }
+    
     public func userDelete() {
-        guard let javaWebToken, !javaWebToken.isEmpty else { return }
+        guard let accessToken, !accessToken.isEmpty else { return }
         guard let requestURL = URL(string: "http://54.180.7.191:9999/user") else { return }
         
         var request = URLRequest(url: requestURL,timeoutInterval: Double.infinity)
-                request.addValue(javaWebToken, forHTTPHeaderField: "Authorization")
+                request.addValue(accessToken, forHTTPHeaderField: "Authorization")
 
         request.httpMethod = "DELETE"
 
@@ -102,7 +140,7 @@ class UserInformation: ObservableObject {
         department = nil
         studentID = nil
         studentName = nil
-        javaWebToken = nil
+        accessToken = nil
         
         loginState = false
         storedLoginState = false
