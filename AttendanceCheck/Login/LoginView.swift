@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var userInformation: UserInformation
-    @EnvironmentObject private var loginState: LoginState
     
     @State private var showDepartmentSelection: Bool = false
     @State private var selectedDepartment: String = "학과를 선택하세요"
@@ -19,12 +18,11 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            if loginState.loginState ?? false {
+            if userInformation.loginState {
                 MainView()
                     .environmentObject(userInformation)
-                    .environmentObject(loginState)
                     .transition(.move(edge: .trailing))
-                    .animation(.easeInOut(duration: 0.5), value: loginState.loginState)
+                    .animation(.easeInOut(duration: 0.5), value: userInformation.loginState)
             } else {
                 VStack(spacing: 10) {
                     Image("SCHULogo_Rect")
@@ -81,7 +79,7 @@ struct LoginView: View {
                         .cornerRadius(10)
                     
                     Button(action: {
-                        login()
+                        loginButtonClicked()
                     }) {
                         Text("로그인")
                             .foregroundColor(.white)
@@ -98,8 +96,16 @@ struct LoginView: View {
                                 title: Text("로그인 성공"),
                                 message: Text("반갑습니다! \(userInformation.studentName ?? "학생")님!"),
                                 dismissButton: .default(Text("확인"), action: {
-                                    loginState.loginState = true
+                                    userInformation.loginState = true
+                                    userInformation.storedLoginState = true
                                 })
+                            )
+                            
+                        case .loginFailed:
+                            return Alert(
+                                title: Text("로그인 실패"),
+                                message: Text("로그인 중 문제가 발생하였습니다! 로그인을 다시 시도해주세요"),
+                                dismissButton: .default(Text("확인"))
                             )
                             
                         case .idFormatError:
@@ -120,12 +126,19 @@ struct LoginView: View {
         }
     }
     
-    private func login() {
+    private func loginButtonClicked() {
         if studentIDValidation() {
             userInformation.department = selectedDepartment
             userInformation.studentID = inputStudentID
             userInformation.studentName = inputStudentName
-            showAlert = .success
+            
+            userInformation.login { success in
+                if success {
+                    showAlert = .success
+                } else {
+                    showAlert = .loginFailed
+                }
+            }
         } else {
             showAlert = .idFormatError
         }

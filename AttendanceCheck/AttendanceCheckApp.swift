@@ -11,7 +11,6 @@ import SwiftData
 @main
 struct AttendanceCheckApp: App {
     @StateObject private var userInformation = UserInformation()
-    @StateObject private var loginState = LoginState()
     @StateObject private var eventManager = EventManager()
     
     var sharedModelContainer: ModelContainer = {
@@ -31,7 +30,6 @@ struct AttendanceCheckApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(userInformation)
-                .environmentObject(loginState)
                 .environmentObject(eventManager)
         }
         .modelContainer(sharedModelContainer)

@@ -10,14 +10,12 @@ import SwiftData
 
 struct ContentView: View {
     @EnvironmentObject private var userInformation: UserInformation
-    @EnvironmentObject private var loginState: LoginState
     @EnvironmentObject private var eventManager: EventManager
     
     var body: some View {
-        if loginState.loginState ?? false {
+        if userInformation.loginState {
             MainView()
                 .environmentObject(userInformation)
-                .environmentObject(loginState)
                 .environmentObject(eventManager)
                 .onAppear {
                     printUserInformation()
@@ -25,7 +23,6 @@ struct ContentView: View {
         } else {
             LoginView()
                 .environmentObject(userInformation)
-                .environmentObject(loginState)
         }
     }
     

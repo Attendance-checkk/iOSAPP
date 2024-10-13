@@ -9,11 +9,13 @@ import SwiftUI
 
 enum AlertType: Identifiable {
     case success
+    case loginFailed
     case idFormatError
     
     var id: String {
         switch self {
         case .success: return "success"
+        case .loginFailed: return "loginFailed"
         case .idFormatError: return "idFormatError"
         }
     }
