@@ -76,7 +76,7 @@ struct MenuView: View {
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.red)
-                ) { 
+                ) {
                     Button(action: {
                         showAlert = true
                     }) {
@@ -97,9 +97,9 @@ struct MenuView: View {
                     }
                 }
             }
+            .navigationTitle("메뉴")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationTitle("메뉴")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

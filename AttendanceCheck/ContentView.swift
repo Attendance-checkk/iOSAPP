@@ -12,6 +12,8 @@ struct ContentView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         if userInformation.loginState {
             MainView()
@@ -30,5 +32,6 @@ struct ContentView: View {
         print(userInformation.department ?? "No Department")
         print(userInformation.studentID ?? "No Student ID")
         print(userInformation.studentName ?? "No Student Name")
+        print("Current color mode: \(colorScheme)")
     }
 }

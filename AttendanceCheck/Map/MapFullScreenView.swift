@@ -21,11 +21,12 @@ struct MapFullScreenView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
+                .ignoresSafeArea(.all)
             
             Image(imageName)
                 .resizable()
                 .scaledToFit()
-                .cornerRadius(30)
+                .cornerRadius(20)
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
                 .rotationEffect(.degrees(isMapLandscape ? 90 : 0))
