@@ -104,6 +104,7 @@ class UserInformation: ObservableObject {
                    let refreshToken = tokenInfo["refreshToken"] as? String {
                     DispatchQueue.main.async {
                         self.accessToken = accessToken
+                        self.refreshToken = refreshToken
                     }
                     return
                 }

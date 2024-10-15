@@ -1,67 +1,139 @@
 {
     "events": [
         {
-          "index": 0,
-          "title": "개회식",
+          "eventCode": "SCHUSWCU1stAF_OpeningCeremony",
+          "eventName": "개회식",
           "location": "6129",
           "descriptionString": "SW융합대학 학술제 개회식",
-          "qrString": "SCHUSWCU1stAF_OpeningCeremony"
+          "eventStartTime": "5일(화) 10:30",
+          "eventEndTime": "5일(화) 11:00",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 1,
-          "title": "프로젝트 발표",
+          "eventCode": "SCHUSWCU1stAF_ProjectPresentationParticipation",
+          "eventName": "프로젝트 발표",
           "location": "6129",
           "descriptionString": "AI∙SW분야 프로젝트 작품 전시 및 발표, 시상",
-          "qrString": "SCHUSWCU1stAF_ProjectPresentationParticipation"
+          "eventStartTime": "5일(화) 11:00",
+          "eventEndTime": "6일(수) 15:30",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 2,
-          "title": "졸업생 토크 콘서트\n[장경호]",
+          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_01",
+          "eventName": "졸업생 토크 콘서트\n[장경호]",
           "location": "6129",
           "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "qrString": "SCHUSWCU1stAF_GraduatedTalkConcert_01"
+          "eventStartTime": "5일(화) 14:00",
+          "eventEndTime": "5일(화) 14:20",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 3,
-          "title": "졸업생 토크 콘서트\n[전시온]",
+          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_02",
+          "eventName": "졸업생 토크 콘서트\n[전시온]",
           "location": "6129",
           "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "qrString": "SCHUSWCU1stAF_GraduatedTalkConcert_02"
+          "eventStartTime": "5일(화) 14:25",
+          "eventEndTime": "5일(화) 14:45",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 4,
-          "title": "졸업생 토크 콘서트\n[양태식]",
+          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_03",
+          "eventName": "졸업생 토크 콘서트\n[양태식]",
           "location": "6129",
           "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "qrString": "SCHUSWCU1stAF_GraduatedTalkConcert_03"
+          "eventStartTime": "5일(화) 14:50",
+          "eventEndTime": "5일(화) 15:10",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 5,
-          "title": "졸업생 토크 콘서트\n[전하윤]",
+          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_04",
+          "eventName": "졸업생 토크 콘서트\n[전하윤]",
           "location": "6129",
           "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "qrString": "SCHUSWCU1stAF_GraduatedTalkConcert_04"
+          "eventStartTime": "5일(화) 15:15",
+          "eventEndTime": "5일(화) 15:35",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 6,
-          "title": "졸업생 토크 콘서트\n[김래훈]",
+          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_05",
+          "eventName": "졸업생 토크 콘서트\n[김래훈]",
           "location": "6129",
           "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "qrString": "SCHUSWCU1stAF_GraduatedTalkConcert_05"
+          "eventStartTime": "5일(화) 15:40",
+          "eventEndTime": "5일(화) 16:00",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 7,
-          "title": "게임 경진대회",
+          "eventCode": "SCHUSWCU1stAF_SWCUGameContest",
+          "eventName": "게임 경진대회",
           "location": "6129",
           "descriptionString": "개발 경진대회 수상작으로 경진대회 진행",
-          "qrString": "SCHUSWCU1stAF_SWCUGameContest"
+          "eventStartTime": "5일(화) 11:00",
+          "eventEndTime": "6일(수) 12:00",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         },
         {
-          "index": 8,
-          "title": "폐회식 & 시상식",
+          "eventCode": "SCHUSWCU1stAF_IndustryExpertSpecialLecutre",
+          "eventName": "전문가 특강",
           "location": "6129",
           "descriptionString": "시상식 및 참여 학생 추첨 진행 등",
-          "qrString": "SCHUSWCU1stAF_EndingCeremony&AwardAndGiveaway"
+          "eventStartTime": "6일(수) 10:00",
+          "eventEndTime": "6일(수) 12:00",
+          "createdAt": "2024-10-14",
+          "participants": {
+              "id": 1,
+              "createdAt": "2024-10-14",
+              "userId": 1,
+              "eventCode": "clear"
+          }
         }
     ]
 }

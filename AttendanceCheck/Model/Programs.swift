@@ -16,9 +16,19 @@ struct Programs: Codable, Equatable {
 }
 
 struct Program: Codable, Equatable {
-    var index: Int
-    var title: String
-    var location: String
+    var eventCode: String
+    var eventName: String
     var descriptionString: String
-    var qrString: String
+    var location: String
+    var eventStartTime: String
+    var eventEndTime: String
+    var createdAt: String
+    var participants: Participants
+}
+
+struct Participants: Codable, Equatable {
+    var id: Int
+    var createdAt: String
+    var userId: Int
+    var eventCode: String
 }

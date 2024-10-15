@@ -35,6 +35,7 @@
 		FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C652CB4C1ED00771254 /* UserInformation.swift */; };
 		FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C672CB4EF4200771254 /* AlertType.swift */; };
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
+		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		FD6B5C672CB4EF4200771254 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		FDABB1E92CBA990B006CF22D /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				FD37FE4C2CB282D30077365C /* AttendanceCheckApp.swift */,
 				FD37FE4D2CB282D30077365C /* ContentView.swift */,
 				FD37FE4E2CB282D30077365C /* Item.swift */,
+				FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */,
 				FD37FE5D2CB282FB0077365C /* Login */,
 				FD37FE642CB283560077365C /* Main */,
 				FD37FE5E2CB283000077365C /* QR */,
@@ -209,10 +212,10 @@
 		FD37FE5E2CB283000077365C /* QR */ = {
 			isa = PBXGroup;
 			children = (
-				FDABB1ED2CBB8683006CF22D /* Model */,
 				FD37FE672CB283970077365C /* QRView.swift */,
 				FD37FE792CB28E440077365C /* CameraView.swift */,
 				FD37FE772CB28DD00077365C /* ScannerDelegate.swift */,
+				FDABB1ED2CBB8683006CF22D /* Model */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
+				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,

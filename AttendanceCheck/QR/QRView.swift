@@ -66,12 +66,9 @@ struct QRView: View {
                 if let code = newValue {
                     scannedCode = code
                     checkIfScanned(code: code)
-//                    print("Scanned QR code from QRView: \(code)")
                     showCode = true
                     session.stopRunning()
                     outputDelegate.scannedCode = nil
-                    
-                    eventManager.completeEventByQRCode(code)
                 }
             }
             
@@ -114,10 +111,13 @@ struct QRView: View {
             return
         }
         
-        if let index = programs.events.firstIndex(where: { $0.qrString == code }) {
+        if let index = programs.events.firstIndex(where: { $0.eventCode == code }) {
             alreadyScanned = eventManager.isEventCompleted(index: index)
+            print("New qr code scanned")
+            eventManager.completeEventByQRCode(code)
         } else {
             alreadyScanned = false
+            
         }
     }
     

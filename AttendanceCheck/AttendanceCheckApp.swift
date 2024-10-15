@@ -11,8 +11,12 @@ import SwiftData
 @main
 struct AttendanceCheckApp: App {
     @StateObject private var userInformation = UserInformation()
-    @StateObject private var eventManager = EventManager()
+    @StateObject private var eventManager: EventManager
     
+    init() {
+        _eventManager = StateObject(wrappedValue: EventManager(userInformation: UserInformation()))
+    }
+     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,

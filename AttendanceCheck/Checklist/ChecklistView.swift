@@ -30,11 +30,11 @@ struct ChecklistView: View {
                             HStack {
                                 VStack(alignment: .leading, spacing: 5) {
                                     
-                                    Text("Hello")
+                                    Text("\(eventManager.programs?.events[index].eventStartTime ?? "") ~ \(eventManager.programs?.events[index].eventEndTime ?? "")")
                                         .font(.body)
                                         .foregroundColor(.primary)
                                     
-                                    Text(events[index].title)
+                                    Text(events[index].eventName)
                                         .font(.title3)
                                         .fontWeight(.bold)
                                         .foregroundColor(.primary)
@@ -62,9 +62,6 @@ struct ChecklistView: View {
                                 .frame(width: 50, height: 50)
                             }
                             .padding(.vertical, 10)
-                            .onAppear {
-                                print("ChecklistView - VStack - \(index)")
-                            }
                         }
                         
                     }
@@ -76,52 +73,17 @@ struct ChecklistView: View {
     }
     
     private func detailView(for index: Int) -> some View {
-        let title: String = eventManager.programs?.events[index].title ?? "TitleStringError"
+        let title: String = eventManager.programs?.events[index].eventName ?? "TitleStringError"
         let location: String = eventManager.programs?.events[index].location ?? "LocationStringError"
         let description: String = eventManager.programs?.events[index].descriptionString ?? "DescriptionStringError"
+        let startTime: String = eventManager.programs?.events[index].eventStartTime ?? "StartTimeStringError"
+        let endTime: String = eventManager.programs?.events[index].eventEndTime ?? "EndTimeStringError"
         
-        return ChecklistDetailView(eventName: title, eventLocation: location, description: description)
+        return ChecklistDetailView(eventName: title, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
     }
     
     private func changeProgressTitle() -> String {
         return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "학술제 참여하고 경품 받자!"
-    }
-    
-    private func calculateProgress() {
-        var newProgress: Double = 0.0
-        
-        let completedSet = Set(eventManager.completedEvents.split(separator: ",").compactMap{ Int($0) })
-        
-        if completedSet.contains(0) { newProgress += 0.2 }
-        if completedSet.contains(1) { newProgress += 0.2 }
-        if completedSet.contains(2...6) { newProgress += 0.2 }
-        if completedSet.contains(7) { newProgress += 0.2 }
-        if completedSet.contains(8) { newProgress += 0.2 }
-        
-        eventManager.progress = newProgress
-    }
-    
-    private func completeEvent(index: Int) {
-        var completedSet = Set(eventManager.completedEvents.split(separator: ",").compactMap { Int($0) })
-        
-        if !completedSet.contains(index) {
-            completedSet.insert(index)
-            eventManager.completedEvents = completedSet.map { String($0) }.joined(separator: ",")
-            
-            calculateProgress()
-        }
-    }
-    
-    // If correct QR code scanned from QRView, then run this function
-    public func completeEventByQR(_ qrcode:  String) {
-        guard let events = eventManager.programs?.events else { return }
-        
-        if let matchingEvent = events.first(where: { $0.qrString == qrcode }) {
-            print("Matched qrcode: \(qrcode)")
-            completeEvent(index: matchingEvent.index)
-        } else {
-            print("No matched event: \(qrcode)")
-        }
     }
 }
 

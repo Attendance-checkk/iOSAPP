@@ -11,6 +11,8 @@ struct ChecklistDetailView: View {
     let eventName: String
     let eventLocation: String
     let description: String
+    let startTime: String
+    let endTime: String
     
     var body: some View {
         VStack(spacing: 20) {
@@ -21,6 +23,11 @@ struct ChecklistDetailView: View {
                 .multilineTextAlignment(.center)
             
             Text("위치: \(eventLocation)")
+                .font(.title3)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+            
+            Text("시간: \(startTime) ~ \(endTime)")
                 .font(.title3)
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
@@ -44,5 +51,5 @@ struct ChecklistDetailView: View {
 }
 
 #Preview {
-    ChecklistDetailView(eventName: "개회식", eventLocation: "6129", description: "DetailView Test: 개회식 테스트")
+    ChecklistDetailView(eventName: "개회식", eventLocation: "6129", description: "DetailView Test: 개회식 테스트", startTime: "5일(화) 10:30", endTime: "5일(수) 11:00")
 }
