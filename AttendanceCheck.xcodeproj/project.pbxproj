@@ -26,7 +26,6 @@
 		FD37FE762CB28D600077365C /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE752CB28D600077365C /* Permission.swift */; };
 		FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE772CB28DD00077365C /* ScannerDelegate.swift */; };
 		FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE792CB28E440077365C /* CameraView.swift */; };
-		FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */; };
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
 		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
 		FD42AADF2CB39AC800B63392 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FD42AADE2CB39AC800B63392 /* Programs.json */; };
@@ -37,6 +36,7 @@
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
 		FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */; };
+		FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +79,6 @@
 		FD37FE752CB28D600077365C /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Permission.swift; path = AttendanceCheck/QR/Model/Permission.swift; sourceTree = SOURCE_ROOT; };
 		FD37FE772CB28DD00077365C /* ScannerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerDelegate.swift; sourceTree = "<group>"; };
 		FD37FE792CB28E440077365C /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		FD42AADE2CB39AC800B63392 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
@@ -91,6 +90,7 @@
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlretType.swift; sourceTree = "<group>"; };
+		FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFullScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,7 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE692CB2839C0077365C /* MapView.swift */,
-				FD37FE7B2CB2C64A0077365C /* MapDetailView.swift */,
+				FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -446,10 +446,10 @@
 				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
+				FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
-				FD37FE7C2CB2C64A0077365C /* MapDetailView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
 				FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */,

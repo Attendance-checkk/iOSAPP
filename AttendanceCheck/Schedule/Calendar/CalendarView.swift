@@ -8,73 +8,74 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var programs: [Events]? = nil
+    @State private var scale: CGFloat = 1.0
+    @State private var lastScale: CGFloat = 1.0
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
     
     var body: some View {
-        Text("Hello, World!")
-        
-//        ScrollView {
-//            VStack {
-//                ForEach(0..<24) { hour in
-//                    HStack(alignment: .top) {
-//                        let timeString: String = ""
-//                        if hour < 10 { timeString = "0\(hour):00" } else { timeString = "\(hour):00" }
-//                        
-//                        Text(timeString)
-//                            .frame(width: 50)
-//                            .padding(.leading)
-//                        
-//                        ZStack {
-//                            Rectangle()
-//                                .stroke(Color.gray, lineWidth: 1)
-//                                .frame(height: 50)
-//                                .background(Color.clear)
-//                            
-//                            if let programs = programs {
-//                                ForEach(programs.events) { event in
-//                                    
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    private func isEventInHour(event: Program, hour: Int) -> Bool {
-//        guard let startTime = event.startTime, let endTime = event.endTime else { return false }
-//        
-//        let calendar = Calendar.current
-//        let eventStartHour = calendar.component(.hour, from: startTime)
-//        let eventEndHour = calendar.component(.hour, from: endTime)
-//        
-//        return hour >= eventStartHour && hour <= eventEndHour
-//    }
-//    
-//    private func loadProgramsData() {
-//        if let loadedPrograms = loadPrograms(from: "Programs") {
-//            programs = loadedPrograms
-//        } else {
-//            print("Failed to load programs")
-//        }
-//    }
-//    
-//    private func loadPrograms(from fileName: String) -> Programs? {
-//        
-//        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-//            print("Cannot find JSON file: \(fileName).json")
-//            return nil
-//        }
-//        
-//        do {
-//            let data = try Data(contentsOf: url)
-//            let programs = try JSONDecoder().decode(Programs.self, from: data)
-//            return programs
-//        } catch {
-//            print("JSON decoding error: \(error.localizedDescription)")
-//            return nil
-//        }
+        NavigationStack {
+            VStack {
+                Text("🔍 이미지를 줌인해보세요!")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                    .padding(.bottom, 30)
+                
+                Image("SWCUAFTIMETABLE")
+                    .resizable()
+                    .scaledToFit()
+                    .cornerRadius(20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.primary, lineWidth: 5)
+                            .cornerRadius(20)
+                    )
+                    .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
+                    .scaleEffect(scale, anchor: .center)
+                    .offset(x: offset.width, y: offset.height)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                offset = CGSize(width: gesture.translation.width + lastOffset.width, height: gesture.translation.height + lastOffset.height)
+                            }
+                            .onEnded { _ in
+                                lastOffset = offset
+                            }
+                    )
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged { value in
+                                scale = lastScale * value.magnitude
+                            }
+                            .onEnded { value in
+                                lastScale = scale
+                                if scale < 1.0 {
+                                    scale = 1.0
+                                    resetToCenter()
+                                }
+                            }
+                    )
+                    .onTapGesture {
+                        withAnimation {
+                            resetToCenter()
+                        }
+                    }
+            }
+            .padding()
+            .onAppear {
+                withAnimation {
+                    resetToCenter()
+                }
+            }
+        }
+    }
+    
+    private func resetToCenter() {
+        offset = .zero
+        lastOffset = .zero
+        scale = 1.0
+        lastScale = 1.0
     }
 }
 

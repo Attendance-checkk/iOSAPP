@@ -12,25 +12,27 @@ struct ScheduleView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                if showCalendarView {
-                    CalendarView()
-                } else {
-                    TimelineView()
-                }
-            }
-            .navigationTitle(showCalendarView ? "캘린더 보기" : "타임라인 보기")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack {
-                        Button(action: {
-                            showCalendarView.toggle()
-                        }) {
-                            Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
-                        }
+            ZStack {
+                VStack {
+                    if showCalendarView {
+                        CalendarView()
+                    } else {
+                        TimelineView()
                     }
-                    .padding()
+                }
+                .navigationTitle(showCalendarView ? "캘린더 보기" : "타임라인 보기")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack {
+                            Button(action: {
+                                showCalendarView.toggle()
+                            }) {
+                                Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
+                            }
+                        }
+                        .padding()
+                    }
                 }
             }
         }
