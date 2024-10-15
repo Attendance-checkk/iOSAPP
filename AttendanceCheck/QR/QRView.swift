@@ -17,6 +17,7 @@ struct QRView: View {
     @State private var scannedCode: String = ""
     @State private var showCode: Bool = false
     @State private var alreadyScanned: Bool = false
+    @State private var showProcessingView: Bool = false
     
     @Binding var selectedIndex: Int
     
@@ -61,29 +62,21 @@ struct QRView: View {
             }
             .padding(.horizontal, 45)
             
-            .onAppear(perform: checkingCameraPermission)
-            .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
-                if let code = newValue {
-                    scannedCode = code
-                    checkIfScanned(code: code)
-                    showCode = true
-                    session.stopRunning()
-                    outputDelegate.scannedCode = nil
-                }
-            }
-            
             // MARK: - Alert
-            .alert(errorMessage, isPresented: $showError) {
-                if cameraPermission == .denied {
-                    Button("Settings") {
-                        let settingString = UIApplication.openSettingsURLString
-                        if let settingsURL = URL(string: settingString) {
-                            openURL(settingsURL)
+            .alert(isPresented: $showError) {
+                Alert(
+                    title: Text("오류"),
+                    message: Text(errorMessage),
+                    primaryButton: .default(Text("확인")) {
+                        if cameraPermission == .denied {
+                            let settingString = UIApplication.openSettingsURLString
+                            if let settingsURL = URL(string: settingString) {
+                                openURL(settingsURL)
+                            }
                         }
-                    }
-                    
-                    Button("Cancel", role: .cancel) { }
-                }
+                    },
+                    secondaryButton: .cancel()
+                )
             }
             .alert(isPresented: $showCode) {
                 Alert(
@@ -102,22 +95,56 @@ struct QRView: View {
             .navigationTitle("QR코드 인식")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .onAppear(perform: checkingCameraPermission)
+        .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
+            if let code = newValue {
+                scannedCode = code
+                checkIfScanned(code: code)
+                session.stopRunning()
+                outputDelegate.scannedCode = nil
+            }
+        }
+
     }
     
     // MARK: - Check if scanned QR code is not stamped.
     private func checkIfScanned(code: String) {
         guard let programs = eventManager.programs else {
             alreadyScanned = false
+            print("------------------------------------------------")
+            print("Check if scanned test: \(alreadyScanned)")
+            print("------------------------------------------------")
             return
         }
         
-        if let index = programs.events.firstIndex(where: { $0.eventCode == code }) {
-            alreadyScanned = eventManager.isEventCompleted(index: index)
-            print("New qr code scanned")
-            eventManager.completeEventByQRCode(code)
+        if programs.firstIndex(where: { $0.event_code == code }) != nil {
+            alreadyScanned = eventManager.isEventCompleted(code: code)
+            print("------------------------------------------------")
+            print("alreadyScanned = eventManager.isEventCompleted test: \(code), \(alreadyScanned)")
+            print("------------------------------------------------")
+            
+            showProcessingView = true
+            
+            DispatchQueue.main.async {
+                eventManager.completeEventByQRCode(code) { success, statusCode, message in
+                    showProcessingView = false
+                    
+                    if success {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            print("showCode = true")
+                            showCode = true
+                        }
+                    } else {
+                        if let message = message {
+                            presentErrorMessage(message)
+                        } else {
+                            presentErrorMessage("이벤트 처리에 실패하였습니다.")
+                        }
+                    }
+                }
+            }
         } else {
             alreadyScanned = false
-            
         }
     }
     
@@ -187,7 +214,7 @@ struct QRView: View {
     
     private func presentErrorMessage(_ message: String) {
         errorMessage = message
-        showError.toggle()
+        showError = true
     }
 }
 

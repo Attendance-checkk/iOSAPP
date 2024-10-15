@@ -24,17 +24,17 @@ struct ChecklistView: View {
                     .progressViewStyle(LinearProgressViewStyle())
                     .padding(.horizontal, 20)
                 
-                if let events = eventManager.programs?.events {
-                    List(events.indices, id: \.self) { index in
-                        NavigationLink(destination: detailView(for: index)) {
+                if let events = eventManager.programs {
+                    List(events, id: \.event_code) { event in
+                        NavigationLink(destination: detailView(for: event)) {
                             HStack {
                                 VStack(alignment: .leading, spacing: 5) {
                                     
-                                    Text("\(eventManager.programs?.events[index].eventStartTime ?? "") ~ \(eventManager.programs?.events[index].eventEndTime ?? "")")
+                                    Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
                                         .font(.body)
                                         .foregroundColor(.primary)
                                     
-                                    Text(events[index].eventName)
+                                    Text(event.event_name)
                                         .font(.title3)
                                         .fontWeight(.bold)
                                         .foregroundColor(.primary)
@@ -56,7 +56,7 @@ struct ChecklistView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
-                                            .opacity(eventManager.isEventCompleted (index: index) ? 1.0 : 0.0)
+                                            .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
                                     }
                                 }
                                 .frame(width: 50, height: 50)
@@ -72,12 +72,12 @@ struct ChecklistView: View {
         }
     }
     
-    private func detailView(for index: Int) -> some View {
-        let title: String = eventManager.programs?.events[index].eventName ?? "TitleStringError"
-        let location: String = eventManager.programs?.events[index].location ?? "LocationStringError"
-        let description: String = eventManager.programs?.events[index].descriptionString ?? "DescriptionStringError"
-        let startTime: String = eventManager.programs?.events[index].eventStartTime ?? "StartTimeStringError"
-        let endTime: String = eventManager.programs?.events[index].eventEndTime ?? "EndTimeStringError"
+    private func detailView(for event: Events) -> some View {
+        let title: String = event.event_name
+        let location: String = event.location
+        let description: String = event.description
+        let startTime: String = event.event_start_time ?? "EVENTSTARTTIMEERROR"
+        let endTime: String = event.event_end_time ?? "EVENTENDTIMEERROR"
         
         return ChecklistDetailView(eventName: title, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
     }

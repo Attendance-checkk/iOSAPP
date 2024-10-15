@@ -7,28 +7,20 @@
 
 import Foundation
 
-struct Programs: Codable, Equatable {
-    var events: [Program] = []
-    
-    static func == (lhs: Programs, rhs: Programs) -> Bool {
-        return lhs.events == rhs.events
-    }
-}
-
-struct Program: Codable, Equatable {
-    var eventCode: String
-    var eventName: String
-    var descriptionString: String
+struct Events: Codable, Equatable, Hashable {
+    var event_code: String
+    var event_name: String
+    var description: String
     var location: String
-    var eventStartTime: String
-    var eventEndTime: String
+    var event_start_time: String?
+    var event_end_time: String?
     var createdAt: String
-    var participants: Participants
+    var participants: [Participant]?
 }
 
-struct Participants: Codable, Equatable {
+struct Participant: Codable, Equatable, Hashable {
     var id: Int
     var createdAt: String
-    var userId: Int
-    var eventCode: String
+    var user_id: Int
+    var event_code: String
 }

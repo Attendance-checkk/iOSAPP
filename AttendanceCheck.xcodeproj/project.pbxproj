@@ -203,6 +203,7 @@
 		FD37FE5D2CB282FB0077365C /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				FDABB1F32CBE0F12006CF22D /* Model */,
 				FD37FE712CB285880077365C /* LoginView.swift */,
 				FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */,
 			);
@@ -278,6 +279,13 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE752CB28D600077365C /* Permission.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FDABB1F32CBE0F12006CF22D /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				FD6B5C672CB4EF4200771254 /* AlertType.swift */,
 			);
 			path = Model;

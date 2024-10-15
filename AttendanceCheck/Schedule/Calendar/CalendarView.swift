@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var programs: Programs? = nil
+    @State private var programs: [Events]? = nil
     
     var body: some View {
         Text("Hello, World!")

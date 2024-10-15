@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var userInformation: UserInformation
+    @EnvironmentObject private var eventManager: EventManager
     
     @State private var showDepartmentSelection: Bool = false
     @State private var selectedDepartment: String = "학과를 선택하세요"
@@ -23,6 +24,9 @@ struct LoginView: View {
                     .environmentObject(userInformation)
                     .transition(.move(edge: .trailing))
                     .animation(.easeInOut(duration: 0.5), value: userInformation.loginState)
+                    .onAppear {
+                        eventManager.changeDateFormat()
+                    }
             } else {
                 VStack(spacing: 10) {
                     Image("SCHULogo_Rect")

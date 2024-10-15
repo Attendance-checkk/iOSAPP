@@ -20,6 +20,7 @@ struct MainView: View {
                 .padding()
                 .onAppear {
                     eventManager.loadProgramsData()
+                    eventManager.changeDateFormat()
                 }
         } else {
             TabView(selection: $selectedIndex) {

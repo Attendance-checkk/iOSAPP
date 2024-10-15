@@ -39,9 +39,8 @@ class EventManager: ObservableObject {
     }
     @AppStorage("progress") var progress: Double = 0.0
     
-    @Published var programs: Programs? = nil
+    @Published var programs: [Events]? = nil
     @Published var isLoading: Bool = true
-    @Published var eventsCompletion: [Bool] = [false, false, false, false, false, false, false, false, false]
     
     private var userInformation: UserInformation
     
@@ -50,25 +49,23 @@ class EventManager: ObservableObject {
         loadProgramsData()
     }
     
-    public func isEventCompleted(index: Int) -> Bool {
-        print("isEventCompleted function called: \(index)")
-        
-        switch index {
-        case 0: return event1
-        case 1: return event2
-        case 2: return event3
-        case 3: return event4
-        case 4: return event5
-        case 5: return event6
-        case 6: return event7
-        case 7: return event8
-        case 8: return event9
+    public func isEventCompleted(code: String) -> Bool {
+        switch code {
+        case programs?[0].event_code: return event1
+        case programs?[1].event_code: return event2
+        case programs?[2].event_code: return event3
+        case programs?[3].event_code: return event4
+        case programs?[4].event_code: return event5
+        case programs?[5].event_code: return event6
+        case programs?[6].event_code: return event7
+        case programs?[7].event_code: return event8
+        case programs?[8].event_code: return event9
         default: return false
         }
     }
     
     // MARK: - API(POST event code to server) 01(External)
-    public func completeEventByQRCode(_ qrcode: String) {
+    public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
         print("completeEventByQRCode function called: \(qrcode)")
         
         isLoading = true
@@ -79,13 +76,15 @@ class EventManager: ObservableObject {
                 
                 guard success else {
                     print("이벤트 처리 실패: \(statusCode ?? -1), \(message ?? "알 수 없는 오류")")
+                    completion(false, statusCode, message)
                     return
                 }
                 
-                for (index, event) in self.programs?.events.enumerated() ?? [].enumerated() {
-                    if event.eventCode == qrcode {
-                        self.markEventAsCompleted(index: index)
+                for (_, event) in self.programs?.enumerated() ?? [].enumerated() {
+                    if event.event_code == qrcode {
+                        self.markEventAsCompleted(code: event.event_code)
                         self.calculateProgress()
+                        completion(true, statusCode, nil)
                         break
                     }
                 }
@@ -169,61 +168,142 @@ class EventManager: ObservableObject {
         progress = min(newProgress, 1.0)
     }
     
-    private func markEventAsCompleted(index: Int) {
-        print("markEventAsCompleted function called: \(index)")
+    private func markEventAsCompleted(code: String) {
+        print("markEventAsCompleted function called: \(code)")
         
-        eventsCompletion[index] = true
-        
-        switch index {
-        case 0: event1 = true
-        case 1: event2 = true
-        case 2: event3 = true
-        case 3: event4 = true
-        case 4: event5 = true
-        case 5: event6 = true
-        case 6: event7 = true
-        case 7: event8 = true
-        case 8: event9 = true
+        switch code {
+        case programs?[0].event_code: event1 = true
+        case programs?[1].event_code: event2 = true
+        case programs?[2].event_code: event3 = true
+        case programs?[3].event_code: event4 = true
+        case programs?[4].event_code: event5 = true
+        case programs?[5].event_code: event6 = true
+        case programs?[6].event_code: event7 = true
+        case programs?[7].event_code: event8 = true
+        case programs?[8].event_code: event9 = true
         default: break
         }
     }
     
+    public func isAlreadyScanned(code: String) -> Bool {
+        guard let program = programs?.first(where: { $0.event_code == code }) else {
+            return false
+        }
+        
+        return !(program.participants?.isEmpty ?? false)
+    }
+    
     // MARK: - API(GET event list) 01(External)
     public func loadProgramsData() {
-        if let loadedPrograms = loadPrograms(from: "Programs") {
-            programs = loadedPrograms
-            
-            isLoading = false
-        } else {
-            print("Failed to load programs")
+        self.isLoading = true
+        
+        loadPrograms { success, statusCode, message in
+            DispatchQueue.main.async {
+                self.isLoading = false
+                
+                if success {
+                    print("Successfully GET events")
+                    if let programs = self.programs {
+                        self.checkSuccessStatus(programs)
+                        self.objectWillChange.send()
+                        self.changeDateFormat()
+                    } else {
+                        print("No programs found")
+                    }
+                } else {
+                    print("GET event failed with status code: \(statusCode ?? 0), message: \(message)")
+                }
+            }
         }
     }
     
     // MARK: - API(GET event list) 02(Internal)
-    private func loadPrograms(from fileName: String) -> Programs? {
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-            print("Cannot find JSON file: \(fileName).json")
-            return nil
+    private func loadPrograms(completion: @escaping(Bool, Int?, String) -> Void) {
+        guard let token = userInformation.accessToken else {
+            print("No token existed")
+            completion(false, 800, "No token existed")
+            return
         }
         
-        do {
-            let data = try Data(contentsOf: url)
-            let programs = try JSONDecoder().decode(Programs.self, from: data)
+        var request = URLRequest(url: URL(string: "http://54.180.7.191:9999/user/event/list")!,timeoutInterval: Double.infinity)
+        request.addValue(token, forHTTPHeaderField: "Authorization")
+
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print("Network error: \(String(describing: error))")
+                completion(false, 801, "\(String(describing: error))")
+                return
+            }
             
-            return programs
-        } catch {
-            print("JSON decoding error: \(error.localizedDescription)")
-            return nil
+            do {
+                let programs = try JSONDecoder().decode([Events].self, from: data)
+                DispatchQueue.main.async {
+                    self.programs = programs
+                    completion(true, 200, "events GET success")
+                }
+            } catch {
+                print("JSON decoding error: \(error.localizedDescription)")
+                completion(false, 802, "\(error.localizedDescription)")
+            }
+        }
+
+        task.resume()
+    }
+    
+    // MARK: - Initial events success status checking
+    private func checkSuccessStatus(_ events: [Events]) {
+        for event in events {
+            if let participants = event.participants, !participants.isEmpty {
+                markEventAsCompleted(code: event.event_code)
+            }
         }
     }
     
-//    public func loadEventsData() {
-//        if let loadedEvents =
-//    }
-//    
-//    public func loadEvents(from fileName: String) -> Events? {
-//        
-//    }
+    public func changeDateFormat() {
+        guard let programs = programs else {
+            print("No programs available")
+            return
+        }
+        
+        var updatedPrograms = programs
+        
+        for index in updatedPrograms.indices {
+            if let startTime = updatedPrograms[index].event_start_time,
+               let formattedStartTime = dateFormatChanger(from: startTime) {
+                updatedPrograms[index].event_start_time = formattedStartTime
+            } else {
+                print("Error formatting start time for event at index \(index)")
+            }
+            
+            if let endTime = updatedPrograms[index].event_end_time,
+               let formattedEndTime = dateFormatChanger(from: endTime) {
+                updatedPrograms[index].event_end_time = formattedEndTime
+            } else {
+                print("Error formatting end time for event at index \(index)")
+            }
+        }
+        
+        self.programs = updatedPrograms
+    }
+    
+    private func dateFormatChanger(from iso8601String: String) -> String? {
+        let isoformatter = ISO8601DateFormatter()
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "d일(E) HH:mm"
+        
+        isoformatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        guard let date = isoformatter.date(from: iso8601String) else {
+            print("Error from here: \(iso8601String)")
+            return nil
+        }
+        
+        let resultString = outputFormatter.string(from: date)
+        print(resultString)
+        return resultString
+    }
     
     public func clearEventManager() {
         event1 = false
