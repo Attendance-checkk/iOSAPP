@@ -16,6 +16,7 @@ struct LoginView: View {
     @State private var inputStudentID: String = ""
     @State private var inputStudentName: String = ""
     @State private var showAlert: AlertType? = nil
+    @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -23,7 +24,7 @@ struct LoginView: View {
                 MainView()
                     .environmentObject(userInformation)
                     .transition(.move(edge: .trailing))
-                    .animation(.easeInOut(duration: 0.5), value: userInformation.loginState)
+                    .animation(.easeInOut(duration: 1), value: userInformation.loginState)
                     .onAppear {
                         eventManager.changeDateFormat()
                     }
@@ -121,6 +122,12 @@ struct LoginView: View {
                         }
                     }
                     
+                    if isLoading {
+                        ProgressView("로그인 중...")
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding(.top, 20)
+                    }
+                    
                     Spacer()
                 }
                 .padding(30)
@@ -132,13 +139,18 @@ struct LoginView: View {
     
     private func loginButtonClicked() {
         if studentIDValidation() {
+            isLoading = true
+            
             userInformation.department = selectedDepartment
             userInformation.studentID = inputStudentID
             userInformation.studentName = inputStudentName
             
             userInformation.login { success in
                 if success {
-                    showAlert = .success
+                    eventManager.loadProgramsData { success in
+                        isLoading = false
+                        showAlert = .success
+                    }
                 } else {
                     showAlert = .loginFailed
                 }

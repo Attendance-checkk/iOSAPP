@@ -46,7 +46,13 @@ class EventManager: ObservableObject {
     
     init(userInformation: UserInformation) {
         self.userInformation = userInformation
-        loadProgramsData()
+        loadProgramsData { success in
+            if success {
+                print("loadProgramsData_init success")
+            } else {
+                print("loadProgramsData_init failed")
+            }
+        }
     }
     
     public func isEventCompleted(code: String) -> Bool {
@@ -194,7 +200,7 @@ class EventManager: ObservableObject {
     }
     
     // MARK: - API(GET event list) 01(External)
-    public func loadProgramsData() {
+    public func loadProgramsData(completion: @escaping(Bool) -> Void) {
         self.isLoading = true
         
         loadPrograms { success, statusCode, message in
@@ -207,11 +213,14 @@ class EventManager: ObservableObject {
                         self.checkSuccessStatus(programs)
                         self.objectWillChange.send()
                         self.changeDateFormat()
+                        completion(true)
                     } else {
                         print("No programs found")
+                        completion(false)
                     }
                 } else {
                     print("GET event failed with status code: \(statusCode ?? 0), message: \(message)")
+                    completion(false)
                 }
             }
         }
@@ -259,6 +268,8 @@ class EventManager: ObservableObject {
                 markEventAsCompleted(code: event.event_code)
             }
         }
+        
+        calculateProgress()
     }
     
     public func changeDateFormat() {
@@ -291,6 +302,7 @@ class EventManager: ObservableObject {
     private func dateFormatChanger(from iso8601String: String) -> String? {
         let isoformatter = ISO8601DateFormatter()
         let outputFormatter = DateFormatter()
+        outputFormatter.locale = Locale(identifier: "ko_KR")
         outputFormatter.dateFormat = "d일(E) HH:mm"
         
         isoformatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -300,9 +312,7 @@ class EventManager: ObservableObject {
             return nil
         }
         
-        let resultString = outputFormatter.string(from: date)
-        print(resultString)
-        return resultString
+        return outputFormatter.string(from: date)
     }
     
     public func clearEventManager() {

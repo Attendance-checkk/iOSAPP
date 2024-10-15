@@ -19,7 +19,15 @@ struct MainView: View {
                 .progressViewStyle(CircularProgressViewStyle())
                 .padding()
                 .onAppear {
-                    eventManager.loadProgramsData()
+                    eventManager.loadProgramsData { success in
+                        if success {
+                            if success {
+                                print("loadProgramsData_MainView success")
+                            } else {
+                                print("loadProgramsData_MainView failed")
+                            }
+                        }
+                    }
                     eventManager.changeDateFormat()
                 }
         } else {
