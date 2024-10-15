@@ -23,7 +23,7 @@ struct LoginView: View {
             if userInformation.loginState {
                 MainView()
                     .environmentObject(userInformation)
-                    .transition(.move(edge: .trailing))
+                    .transition(.opacity)
                     .animation(.easeInOut(duration: 1), value: userInformation.loginState)
                     .onAppear {
                         eventManager.changeDateFormat()
@@ -123,9 +123,8 @@ struct LoginView: View {
                     }
                     
                     if isLoading {
-                        ProgressView("로그인 중...")
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .padding(.top, 20)
+                        ProcessingView(messageString: "로그인 중입니다..")
+                            .transition(.opacity)
                     }
                     
                     Spacer()

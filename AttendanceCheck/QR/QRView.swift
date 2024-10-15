@@ -16,7 +16,7 @@ struct QRView: View {
     @State private var cameraPermission: Permission = .idle
     @State private var scannedCode: String = ""
     @State private var showCode: Bool = false
-    @State private var alreadyScanned: Bool = false
+    @State private var qrAlertType: QRAlretType? = nil
     @State private var showProcessingView: Bool = false
     
     @Binding var selectedIndex: Int
@@ -28,129 +28,121 @@ struct QRView: View {
     @StateObject private var outputDelegate = ScannerDelegate()
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 16) {
-                GeometryReader {
-                    let size = $0.size
-                    
-                    ZStack {
-                        CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
-                            .scaleEffect(0.97)
+        if showProcessingView {
+            ProcessingView(messageString: "통신 중입니다..")
+                .transition(.opacity)
+                .ignoresSafeArea(.all)
+        } else {
+            NavigationView {
+                VStack(spacing: 16) {
+                    GeometryReader {
+                        let size = $0.size
                         
-                        ForEach(0...4, id: \.self) { index in
-                            let rotation = Double(index) * 90
+                        ZStack {
+                            CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
+                                .scaleEffect(0.97)
                             
-                            RoundedRectangle(cornerRadius: 5, style: .circular)
-                                .trim(from: 0.61, to: 0.64)
-                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                                .rotationEffect(.init(degrees: rotation))
+                            ForEach(0...4, id: \.self) { index in
+                                let rotation = Double(index) * 90
+                                
+                                RoundedRectangle(cornerRadius: 5, style: .circular)
+                                    .trim(from: 0.61, to: 0.64)
+                                    .stroke(Color.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                                    .rotationEffect(.init(degrees: rotation))
+                            }
                         }
+                        .frame(width: size.width, height: size.width)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .frame(width: size.width, height: size.width)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
+                    .padding(20)
+                    
+                    Button {
+                        if !session.isRunning && cameraPermission == .approved {
+                            reactiveCamera()
+                        }
+                    } label: {
+                        Label("QR코드 인식 시작", systemImage: "qrcode")
+                    }
                 }
-                .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
-                .padding(20)
+                .padding(.horizontal, 45)
                 
-                Button {
-                    if !session.isRunning && cameraPermission == .approved {
-                        reactiveCamera()
+                // MARK: - Alert
+                .alert(isPresented: $showError) {
+                    Alert(
+                        title: Text("오류"),
+                        message: Text(errorMessage),
+                        primaryButton: .default(Text("확인")) {
+                            if cameraPermission == .denied {
+                                let settingString = UIApplication.openSettingsURLString
+                                if let settingsURL = URL(string: settingString) {
+                                    openURL(settingsURL)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                .alert(isPresented: $showCode) {
+                    if let qrAlertType = qrAlertType {
+                        return Alert(
+                            title: Text(qrAlertType.title),
+                            message: Text(qrAlertType.message),
+                            dismissButton: .default(Text("확인"), action: {
+                                if qrAlertType == .success {
+                                    DispatchQueue.main.async {
+                                        selectedIndex = 2
+                                    }
+                                }
+                            })
+                        )
+                    } else {
+                        return Alert(title: Text("AlertError"), message: Text("Notice to developer plz"), dismissButton: .default(Text("OK")))
                     }
-                } label: {
-                    Label("QR코드 인식 시작", systemImage: "qrcode")
+                }
+                
+                .navigationTitle("QR코드 인식")
+                .navigationBarTitleDisplayMode(.inline)
+            }
+            .onAppear(perform: checkingCameraPermission)
+            .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
+                if let code = newValue {
+                    scannedCode = code
+                    session.stopRunning()
+                    showProcessingView = true
+                    checkIfScanned(code: code)
+                    outputDelegate.scannedCode = nil
                 }
             }
-            .padding(.horizontal, 45)
-            
-            // MARK: - Alert
-            .alert(isPresented: $showError) {
-                Alert(
-                    title: Text("오류"),
-                    message: Text(errorMessage),
-                    primaryButton: .default(Text("확인")) {
-                        if cameraPermission == .denied {
-                            let settingString = UIApplication.openSettingsURLString
-                            if let settingsURL = URL(string: settingString) {
-                                openURL(settingsURL)
-                            }
-                        }
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
-            .alert(isPresented: $showCode) {
-                Alert(
-                    title: Text(alreadyScanned ? "이미 인식된 코드입니다" : "인식이 완료되었습니다!"),
-                    message: Text(alreadyScanned ? "이미 완료한 활동의 스탬프는 다시 찍을 수 없어요.." : "스탬프를 찍었어요!"),
-                    dismissButton: .default(Text("확인"), action: {
-                        if !alreadyScanned {
-                            DispatchQueue.main.async {
-                                selectedIndex = 2
-                            }
-                        }
-                    })
-                )
-            }
-            
-            .navigationTitle("QR코드 인식")
-            .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear(perform: checkingCameraPermission)
-        .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
-            if let code = newValue {
-                scannedCode = code
-                checkIfScanned(code: code)
-                session.stopRunning()
-                outputDelegate.scannedCode = nil
-            }
-        }
-
     }
     
     // MARK: - Check if scanned QR code is not stamped.
     private func checkIfScanned(code: String) {
-        guard let programs = eventManager.programs else {
-            alreadyScanned = false
-            print("------------------------------------------------")
-            print("Check if scanned test: \(alreadyScanned)")
-            print("------------------------------------------------")
-            return
-        }
-        
-        if programs.firstIndex(where: { $0.event_code == code }) != nil {
-            alreadyScanned = eventManager.isEventCompleted(code: code)
-            print("------------------------------------------------")
-            print("alreadyScanned = eventManager.isEventCompleted test: \(code), \(alreadyScanned)")
-            print("------------------------------------------------")
             
-            showProcessingView = true
-            
-            DispatchQueue.main.async {
-                eventManager.completeEventByQRCode(code) { success, statusCode, message in
-                    showProcessingView = false
-                    
-                    if success {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            print("showCode = true")
-                            showCode = true
-                        }
-                    } else {
-                        if let message = message {
-                            presentErrorMessage(message)
-                        } else {
-                            presentErrorMessage("이벤트 처리에 실패하였습니다.")
-                        }
-                    }
+        DispatchQueue.main.async {
+            showProcessingView = false
+            eventManager.completeEventByQRCode(code) { success, statusCode, message in
+                switch statusCode {
+                case 200:
+                    print("New code scanned, stmaping successed")
+                    qrAlertType = .success
+                case 401:
+                    print("Already scanned")
+                    qrAlertType = .alreadyScanned
+                case 402:
+                    qrAlertType = .unknownCode
+                    print("Unknown code")
+                default:
+                    qrAlertType = .unknownError
+                    print("Unknown error")
                 }
+                showCode = true
             }
-        } else {
-            alreadyScanned = false
         }
     }
     
     private func reactiveCamera() {
-        showCode = false
-        
         DispatchQueue.global(qos: .background).async {
             session.startRunning()
         }

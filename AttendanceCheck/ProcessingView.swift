@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ProcessingView: View {
+    let messageString: String
+    
     var body: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -17,7 +19,7 @@ struct ProcessingView: View {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .scaleEffect(1.5)
-                Text("처리 중입니다...")
+                Text(messageString)
                     .foregroundColor(.white)
                     .padding(.top, 10)
             }
@@ -32,5 +34,5 @@ struct ProcessingView: View {
 }
 
 #Preview {
-    ProcessingView()
+    ProcessingView(messageString: "통신 중입니다..")
 }

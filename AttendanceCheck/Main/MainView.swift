@@ -14,64 +14,48 @@ struct MainView: View {
     @State private var selectedIndex: Int = 2
     
     var body: some View {
-        if eventManager.isLoading {
-            ProgressView("Loading...")
-                .progressViewStyle(CircularProgressViewStyle())
-                .padding()
-                .onAppear {
-                    eventManager.loadProgramsData { success in
-                        if success {
-                            if success {
-                                print("loadProgramsData_MainView success")
-                            } else {
-                                print("loadProgramsData_MainView failed")
-                            }
-                        }
-                    }
-                    eventManager.changeDateFormat()
+        TabView(selection: $selectedIndex) {
+            QRView(selectedIndex: $selectedIndex)
+                .tabItem {
+                    Label("QR", systemImage: "qrcode")
                 }
-        } else {
-            TabView(selection: $selectedIndex) {
-                QRView(selectedIndex: $selectedIndex)
-                    .tabItem {
-                        Label("QR", systemImage: "qrcode")
-                    }
-                    .tag(0)
-                
-                MapView()
-                    .tabItem {
-                        Label("위치", systemImage: "map.fill")
-                    }
-                    .tag(1)
-                    
-                ChecklistView()
-                    .tabItem {
-                        Label("체크리스트", systemImage: "checkmark.seal")
-                    }
-                    .tag(2)
-                
-                ScheduleView()
-                    .tabItem {
-                        Label("일정", systemImage: "calendar")
-                    }
-                    .tag(3)
-                
-                MenuView(departmentString: userInformation.department ?? "DepartmentGetFromAppStorageError", studentID: userInformation.studentID ?? "StudentIDGetFromAppStorageError", studentName: userInformation.studentName ?? "StudentNameGetFromAppStorageError")
-                    .tabItem {
-                        Label("메뉴", systemImage: "gear")
-                    }
-                    .tag(4)
+                .tag(0)
+            
+            MapView()
+                .tabItem {
+                    Label("위치", systemImage: "map.fill")
+                }
+                .tag(1)
+            
+            ChecklistView()
+                .tabItem {
+                    Label("체크리스트", systemImage: "checkmark.seal")
+                }
+                .tag(2)
+            
+            ScheduleView()
+                .tabItem {
+                    Label("일정", systemImage: "calendar")
+                }
+                .tag(3)
+            
+            MenuView(departmentString: userInformation.department ?? "DepartmentGetFromAppStorageError", studentID: userInformation.studentID ?? "StudentIDGetFromAppStorageError", studentName: userInformation.studentName ?? "StudentNameGetFromAppStorageError")
+                .tabItem {
+                    Label("메뉴", systemImage: "gear")
+                }
+                .tag(4)
             }
+            
             .onAppear {
                 userInformation.login { success in
                     print("Login success: \(success)")
                 }
+
                 
-                guard let jwt = userInformation.accessToken else {
-                    return
-                }
-                print("Java Web Token: \(jwt)")
+            guard let jwt = userInformation.accessToken else {
+                return
             }
+            print("Java Web Token: \(jwt)")
         }
     }
 }

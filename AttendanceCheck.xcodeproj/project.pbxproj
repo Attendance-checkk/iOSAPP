@@ -36,6 +36,7 @@
 		FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C672CB4EF4200771254 /* AlertType.swift */; };
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
+		FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		FDABB1E92CBA990B006CF22D /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
+		FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlretType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE752CB28D600077365C /* Permission.swift */,
+				FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
+				FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
 				FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */,
 				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,

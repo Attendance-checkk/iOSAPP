@@ -12,63 +12,69 @@ struct ChecklistView: View {
     @EnvironmentObject private var eventManager: EventManager
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text(changeProgressTitle())
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 20)
-                
-                ProgressView(value: eventManager.progress)
-                    .progressViewStyle(LinearProgressViewStyle())
-                    .padding(.horizontal, 20)
-                
-                if let events = eventManager.programs {
-                    List(events, id: \.event_code) { event in
-                        NavigationLink(destination: detailView(for: event)) {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 5) {
-                                    
-                                    Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
-                                        .font(.body)
-                                        .foregroundColor(.primary)
-                                    
-                                    Text(event.event_name)
-                                        .font(.title3)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.primary)
-                                }
-                                
-                                Spacer()
-                                
-                                GeometryReader { geometry in
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: geometry.size.height, height: geometry.size.height)
-                                            .foregroundColor(.white)
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .stroke(Color.black, lineWidth: 1)
-                                            }
+        if eventManager.isLoading {
+            ProcessingView(messageString: "정보를 가져오는 중입니다..")
+                .transition(.opacity)
+                .ignoresSafeArea(.all)
+        } else {
+            NavigationView {
+                VStack(spacing: 20) {
+                    Text(changeProgressTitle())
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 20)
+                    
+                    ProgressView(value: eventManager.progress)
+                        .progressViewStyle(LinearProgressViewStyle())
+                        .padding(.horizontal, 20)
+                    
+                    if let events = eventManager.programs {
+                        List(events, id: \.event_code) { event in
+                            NavigationLink(destination: detailView(for: event)) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 5) {
                                         
-                                        Image("SCHUCSTAMP")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
-                                            .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
+                                        Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
+                                            .font(.body)
+                                            .foregroundColor(.primary)
+                                        
+                                        Text(event.event_name)
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.primary)
                                     }
+                                    
+                                    Spacer()
+                                    
+                                    GeometryReader { geometry in
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: geometry.size.height, height: geometry.size.height)
+                                                .foregroundColor(.white)
+                                                .overlay {
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.black, lineWidth: 1)
+                                                }
+                                            
+                                            Image("SCHUCSTAMP")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+                                                .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
+                                        }
+                                    }
+                                    .frame(width: 50, height: 50)
                                 }
-                                .frame(width: 50, height: 50)
+                                .padding(.vertical, 10)
                             }
-                            .padding(.vertical, 10)
+                            
                         }
-                        
                     }
                 }
+                .navigationTitle("체크리스트")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationTitle("체크리스트")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
