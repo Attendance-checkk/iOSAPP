@@ -380,7 +380,7 @@
 				};
 			};
 			buildConfigurationList = FD37FE142CB282BC0077365C /* Build configuration list for PBXProject "AttendanceCheck" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -626,6 +626,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "출석 췤!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -661,6 +662,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "출석 췤!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
