@@ -33,7 +33,6 @@ class EventManager: ObservableObject {
     
     @Published var programs: [Events]? = nil
     @Published var isLoading: Bool = true
-    @Published var talkConcertCompleted: Bool = false
     
     private var userInformation: UserInformation
     
@@ -165,10 +164,7 @@ class EventManager: ObservableObject {
         if event1 { newProgress += 0.2 }
         if event2 { newProgress += 0.2 }
         if event3 || event4 || event5 || event6 || event7 {
-            if !talkConcertCompleted {
-                newProgress += 0.2
-                talkConcertCompleted = true
-            }
+            newProgress += 0.2
         }
         if event8 { newProgress += 0.2 }
         if event9 { newProgress += 0.2 }

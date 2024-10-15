@@ -16,7 +16,7 @@ struct MapView: View {
             ZStack {
                 if !isMapFullScreen {
                     VStack {
-                        Text("이미지를 클릭하세요!")
+                        Text("👇 이미지를 클릭하세요!")
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.primary)

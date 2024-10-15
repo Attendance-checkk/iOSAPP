@@ -74,7 +74,15 @@ struct ChecklistView: View {
                                     }
                                     .padding(.vertical, 10)
                                 }
-                                
+                            }
+                            .refreshable {
+                                eventManager.loadProgramsData { success in
+                                    if success {
+                                        print("Refreshable loadProgramsData is completed")
+                                    } else {
+                                        print("Refreshable loadProgrmasData is failed")
+                                    }
+                                }
                             }
                         }
                     }
