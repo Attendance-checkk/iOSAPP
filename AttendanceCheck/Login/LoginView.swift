@@ -20,7 +20,10 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            if userInformation.loginState {
+            if isLoading {
+                ProcessingView(messageString: "로그인 중입니다..")
+                    .transition(.opacity)
+            } else if userInformation.loginState {
                 MainView()
                     .environmentObject(userInformation)
                     .transition(.opacity)
@@ -120,11 +123,6 @@ struct LoginView: View {
                                 dismissButton: .default(Text("확인"))
                             )
                         }
-                    }
-                    
-                    if isLoading {
-                        ProcessingView(messageString: "로그인 중입니다..")
-                            .transition(.opacity)
                     }
                     
                     Spacer()

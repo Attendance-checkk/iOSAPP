@@ -28,91 +28,85 @@ struct QRView: View {
     @StateObject private var outputDelegate = ScannerDelegate()
     
     var body: some View {
-        if showProcessingView {
-            ProcessingView(messageString: "통신 중입니다..")
-                .transition(.opacity)
-                .ignoresSafeArea(.all)
-        } else {
-            NavigationView {
-                VStack(spacing: 16) {
-                    GeometryReader {
-                        let size = $0.size
-                        
-                        ZStack {
-                            CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
-                                .scaleEffect(0.97)
-                            
-                            ForEach(0...4, id: \.self) { index in
-                                let rotation = Double(index) * 90
-                                
-                                RoundedRectangle(cornerRadius: 5, style: .circular)
-                                    .trim(from: 0.61, to: 0.64)
-                                    .stroke(Color.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                                    .rotationEffect(.init(degrees: rotation))
-                            }
-                        }
-                        .frame(width: size.width, height: size.width)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
-                    .padding(20)
+        NavigationView {
+            VStack(spacing: 16) {
+                GeometryReader {
+                    let size = $0.size
                     
-                    Button {
-                        if !session.isRunning && cameraPermission == .approved {
-                            reactiveCamera()
+                    ZStack {
+                        CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
+                            .scaleEffect(0.97)
+                        
+                        ForEach(0...4, id: \.self) { index in
+                            let rotation = Double(index) * 90
+                            
+                            RoundedRectangle(cornerRadius: 5, style: .circular)
+                                .trim(from: 0.61, to: 0.64)
+                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                                .rotationEffect(.init(degrees: rotation))
                         }
-                    } label: {
-                        Label("QR코드 인식 시작", systemImage: "qrcode")
                     }
+                    .frame(width: size.width, height: size.width)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding(.horizontal, 45)
+                .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
+                .padding(20)
                 
-                // MARK: - Alert
-                .alert(isPresented: $showError) {
-                    Alert(
-                        title: Text("오류"),
-                        message: Text(errorMessage),
-                        primaryButton: .default(Text("확인")) {
-                            if cameraPermission == .denied {
-                                let settingString = UIApplication.openSettingsURLString
-                                if let settingsURL = URL(string: settingString) {
-                                    openURL(settingsURL)
+                Button {
+                    if !session.isRunning && cameraPermission == .approved {
+                        reactiveCamera()
+                    }
+                } label: {
+                    Label("QR코드 인식 시작", systemImage: "qrcode")
+                }
+            }
+            .padding(.horizontal, 45)
+            
+            // MARK: - Alert
+            .alert(isPresented: $showError) {
+                Alert(
+                    title: Text("오류"),
+                    message: Text(errorMessage),
+                    primaryButton: .default(Text("확인")) {
+                        if cameraPermission == .denied {
+                            let settingString = UIApplication.openSettingsURLString
+                            if let settingsURL = URL(string: settingString) {
+                                openURL(settingsURL)
+                            }
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .alert(isPresented: $showCode) {
+                if let qrAlertType = qrAlertType {
+                    return Alert(
+                        title: Text(qrAlertType.title),
+                        message: Text(qrAlertType.message),
+                        dismissButton: .default(Text("확인"), action: {
+                            if qrAlertType == .success {
+                                DispatchQueue.main.async {
+                                    selectedIndex = 2
                                 }
                             }
-                        },
-                        secondaryButton: .cancel()
+                        })
                     )
+                } else {
+                    return Alert(title: Text("AlertError"), message: Text("Notice to developer plz"), dismissButton: .default(Text("OK")))
                 }
-                .alert(isPresented: $showCode) {
-                    if let qrAlertType = qrAlertType {
-                        return Alert(
-                            title: Text(qrAlertType.title),
-                            message: Text(qrAlertType.message),
-                            dismissButton: .default(Text("확인"), action: {
-                                if qrAlertType == .success {
-                                    DispatchQueue.main.async {
-                                        selectedIndex = 2
-                                    }
-                                }
-                            })
-                        )
-                    } else {
-                        return Alert(title: Text("AlertError"), message: Text("Notice to developer plz"), dismissButton: .default(Text("OK")))
-                    }
-                }
-                
-                .navigationTitle("QR코드 인식")
-                .navigationBarTitleDisplayMode(.inline)
             }
-            .onAppear(perform: checkingCameraPermission)
-            .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
-                if let code = newValue {
-                    scannedCode = code
-                    session.stopRunning()
-                    showProcessingView = true
-                    checkIfScanned(code: code)
-                    outputDelegate.scannedCode = nil
-                }
+            
+            .navigationTitle("QR코드 인식")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .onAppear(perform: checkingCameraPermission)
+        .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
+            if let code = newValue {
+                scannedCode = code
+                session.stopRunning()
+                showProcessingView = true
+                checkIfScanned(code: code)
+                outputDelegate.scannedCode = nil
             }
         }
     }
