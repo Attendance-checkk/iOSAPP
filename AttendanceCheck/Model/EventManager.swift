@@ -8,6 +8,8 @@
 import SwiftUI
 
 class EventManager: ObservableObject {
+    static let instance = EventManager(userInformation: UserInformation.instance)
+    
     private let eventCodeToIndex: [String: Int] = [
         "SCHUSWCU1stAF_OpeningCeremony": 0,
         "SCHUSWCU1stAF_ProjectPresentationParticipation": 1,

@@ -19,6 +19,7 @@ struct MenuView: View {
     
     @State private var isNotification: Bool = true
     @State private var showAlert: Bool = false
+    @State private var showNotificationAlert: Bool = false
     @State private var isDeleteConfirmed: Bool = false
     
     var body: some View {
@@ -99,6 +100,24 @@ struct MenuView: View {
             }
             .navigationTitle("메뉴")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .alert(isPresented: $showNotificationAlert) {
+            Alert(
+                title: Text(""),
+                message: Text(""),
+                primaryButton: .destructive(Text("확인")) {
+                    NotificationManager.instance.disableAllNotifications()
+                },
+                secondaryButton: .cancel({
+                    isNotification = true
+                })
+            )
+        }
+    }
+    
+    private func handleNotificationToggle(isOn: Bool) {
+        if !isOn {
+            showNotificationAlert = true
         }
     }
 }

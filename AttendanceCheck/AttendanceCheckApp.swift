@@ -15,6 +15,7 @@ struct AttendanceCheckApp: App {
     
     init() {
         _eventManager = StateObject(wrappedValue: EventManager(userInformation: UserInformation()))
+        NotificationManager.instance.requestAuthorization()
     }
      
     var sharedModelContainer: ModelContainer = {

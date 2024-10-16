@@ -37,6 +37,8 @@
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
 		FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */; };
 		FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */; };
+		FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03742CBF3D1E00531123 /* NotificationManager.swift */; };
+		FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03772CBF40A200531123 /* NotificationData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlretType.swift; sourceTree = "<group>"; };
 		FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFullScreenView.swift; sourceTree = "<group>"; };
+		FDBC03742CBF3D1E00531123 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		FDBC03772CBF40A200531123 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +182,7 @@
 				FD37FE602CB283090077365C /* Checklist */,
 				FD37FE612CB2830F0077365C /* Schedule */,
 				FD37FE622CB2831C0077365C /* Menu */,
+				FDBC03732CBF3D0400531123 /* Notification */,
 				FD37FE632CB2832E0077365C /* Model */,
 				FD2F6BC92CB3986D00AB82D6 /* Files */,
 				FD37FE4A2CB282D30077365C /* Preview Content */,
@@ -290,6 +295,23 @@
 			isa = PBXGroup;
 			children = (
 				FD6B5C672CB4EF4200771254 /* AlertType.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FDBC03732CBF3D0400531123 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				FDBC03762CBF409C00531123 /* Model */,
+				FDBC03742CBF3D1E00531123 /* NotificationManager.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		FDBC03762CBF409C00531123 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FDBC03772CBF40A200531123 /* NotificationData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -449,12 +471,14 @@
 				FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
+				FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */,
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
 				FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */,
 				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
 				FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */,
+				FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 				FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */,
 			);

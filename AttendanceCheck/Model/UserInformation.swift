@@ -8,6 +8,8 @@
 import SwiftUI
 
 class UserInformation: ObservableObject {
+    static let instance = UserInformation()
+    
     @AppStorage("storedLoginState") var storedLoginState: Bool?
     @Published var loginState: Bool = false
     
