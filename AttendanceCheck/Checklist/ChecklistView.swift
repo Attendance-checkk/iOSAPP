@@ -104,7 +104,7 @@ struct ChecklistView: View {
     }
     
     private func changeProgressTitle() -> String {
-        return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "학술제 참여하고 경품 받자!"
+        return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "스탬프를 모아서 경품을 받아보세요!"
     }
 }
 

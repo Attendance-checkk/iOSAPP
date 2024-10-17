@@ -33,23 +33,63 @@ struct LoginView: View {
                     }
             } else {
                 VStack(spacing: 10) {
+                    Spacer()
+                    
+                    Text("🎉 SW융합대학 첫 학술제에 오신 걸 환영해요! 🎉")
+                        .font(.title3)
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.center)
+                    
                     Image("SCHULogo_Rect")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
-                        .cornerRadius(5)
+                        .cornerRadius(10)
+                        .padding(.vertical, 40)
                     
-                    Spacer()
+                    HStack {
+                        Text("학과 선택")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading)
+                        
+                        Spacer()
+                    }
+                    .padding(.leading, 20)
                     
-                    Text("학과 선택")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.leading)
-                    
-                    Button(action: {
-                        showDepartmentSelection.toggle()
-                    }) {
+                    Menu {
+                        Button {
+                            selectedDepartment = "사물인터넷학과"
+                        } label: {
+                            Text("사물인터넷학과")
+                        }
+                        Button {
+                            selectedDepartment = "의료IT공학과"
+                        } label: {
+                            Text("의료IT공학과")
+                        }
+                        Button {
+                            selectedDepartment = "AI∙빅데이터학과"
+                        } label: {
+                            Text("AI∙빅데이터학과")
+                        }
+                        Button {
+                            selectedDepartment = "정보보호학과"
+                        } label: {
+                            Text("정보보호학과")
+                        }
+                        Button {
+                            selectedDepartment = "컴퓨터소프트웨어공학과"
+                        } label: {
+                            Text("컴퓨터소프트웨어공학과")
+                        }
+                        Button {
+                            selectedDepartment = "메타버스&게임학과"
+                        } label: {
+                            Text("메타버스&게임학과")
+                        }
+                    } label: {
                         HStack {
                             Text(selectedDepartment)
                                 .foregroundColor(selectedDepartment == "학과를 선택하세요" ? .gray : .primary)
@@ -59,28 +99,35 @@ struct LoginView: View {
                         .background(Color.gray.opacity(0.5))
                         .cornerRadius(10)
                     }
-                    .sheet(isPresented: $showDepartmentSelection) {
-                        DepartmentSelectionView(selectedDepartment: $selectedDepartment)
-                    }
                     
-                    Text("학번 입력")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.leading)
-                        .padding(.top, 15)
+                    HStack {
+                        Text("학번 입력")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading)
+                            .padding(.top, 15)
+                        
+                        Spacer()
+                    }
+                    .padding(.leading, 20)
                     TextField("학번", text: $inputStudentID)
                         .padding(20)
                         .background(Color.gray.opacity(0.5))
                         .cornerRadius(10)
                         .keyboardType(.numberPad)
                     
-                    Text("이름 입력")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.leading)
-                        .padding(.top, 15)
+                    HStack {
+                        Text("이름 입력")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading)
+                            .padding(.top, 15)
+                        
+                        Spacer()
+                    }
+                    .padding(.leading, 20)
                     TextField("이름", text: $inputStudentName)
                         .padding(20)
                         .background(Color.gray.opacity(0.5))
@@ -128,8 +175,6 @@ struct LoginView: View {
                     Spacer()
                 }
                 .padding(30)
-                
-                .navigationTitle("로그인")
             }
         }
     }

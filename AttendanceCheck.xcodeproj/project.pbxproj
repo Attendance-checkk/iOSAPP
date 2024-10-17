@@ -30,7 +30,6 @@
 		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
 		FD42AADF2CB39AC800B63392 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FD42AADE2CB39AC800B63392 /* Programs.json */; };
 		FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4B67FB2CB382F80096FBAB /* Programs.swift */; };
-		FD6B5C642CB4B64A00771254 /* DepartmentSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */; };
 		FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C652CB4C1ED00771254 /* UserInformation.swift */; };
 		FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C672CB4EF4200771254 /* AlertType.swift */; };
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
@@ -85,7 +84,6 @@
 		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		FD42AADE2CB39AC800B63392 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
 		FD4B67FB2CB382F80096FBAB /* Programs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Programs.swift; sourceTree = "<group>"; };
-		FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentSelectionView.swift; sourceTree = "<group>"; };
 		FD6B5C652CB4C1ED00771254 /* UserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
 		FD6B5C672CB4EF4200771254 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		FDABB1E92CBA990B006CF22D /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 			children = (
 				FDABB1F32CBE0F12006CF22D /* Model */,
 				FD37FE712CB285880077365C /* LoginView.swift */,
-				FD6B5C632CB4B64A00771254 /* DepartmentSelectionView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -460,7 +457,6 @@
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
 				FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */,
 				FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */,
-				FD6B5C642CB4B64A00771254 /* DepartmentSelectionView.swift in Sources */,
 				FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */,
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,

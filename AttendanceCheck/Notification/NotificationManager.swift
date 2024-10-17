@@ -100,15 +100,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func createDateFromString(dateString: String, format: String = "yyyy-MM-dd HH:mm") -> Date {
-        print("dateString: \(dateString)")
-        
         let formatter = DateFormatter()
         formatter.dateFormat = format
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let result = formatter.date(from: dateString) ?? Date()
-        
-        print("result: \(result)")
         
         return result
     }
