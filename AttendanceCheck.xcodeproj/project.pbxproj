@@ -38,6 +38,8 @@
 		FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */; };
 		FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03742CBF3D1E00531123 /* NotificationManager.swift */; };
 		FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03772CBF40A200531123 /* NotificationData.swift */; };
+		FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D02CC222BA00E7F440 /* Banner.swift */; };
+		FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D22CC2287900E7F440 /* WebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,8 @@
 		FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFullScreenView.swift; sourceTree = "<group>"; };
 		FDBC03742CBF3D1E00531123 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FDBC03772CBF40A200531123 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
+		FDDEF2D02CC222BA00E7F440 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		FDDEF2D22CC2287900E7F440 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,14 +130,6 @@
 				FD42AADE2CB39AC800B63392 /* Programs.json */,
 			);
 			path = Files;
-			sourceTree = "<group>";
-		};
-		FD36C5002CB51F0C000944AE /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-				FD37FE7D2CB2C9260077365C /* CalendarView.swift */,
-			);
-			path = Calendar;
 			sourceTree = "<group>";
 		};
 		FD37FE102CB282BC0077365C = {
@@ -173,6 +169,7 @@
 				FD37FE4D2CB282D30077365C /* ContentView.swift */,
 				FD37FE4E2CB282D30077365C /* Item.swift */,
 				FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */,
+				FDDEF2D22CC2287900E7F440 /* WebView.swift */,
 				FD37FE5D2CB282FB0077365C /* Login */,
 				FD37FE642CB283560077365C /* Main */,
 				FD37FE5E2CB283000077365C /* QR */,
@@ -237,6 +234,7 @@
 		FD37FE602CB283090077365C /* Checklist */ = {
 			isa = PBXGroup;
 			children = (
+				FDDEF2CF2CC222B000E7F440 /* Model */,
 				FD37FE6B2CB283A00077365C /* ChecklistView.swift */,
 				FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */,
 			);
@@ -247,7 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE6D2CB283A80077365C /* ScheduleView.swift */,
-				FD36C5002CB51F0C000944AE /* Calendar */,
+				FD37FE7D2CB2C9260077365C /* CalendarView.swift */,
 				FD37FE7F2CB2C92A0077365C /* TimelineView.swift */,
 			);
 			path = Schedule;
@@ -309,6 +307,14 @@
 			isa = PBXGroup;
 			children = (
 				FDBC03772CBF40A200531123 /* NotificationData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FDDEF2CF2CC222B000E7F440 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FDDEF2D02CC222BA00E7F440 /* Banner.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -467,6 +473,7 @@
 				FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
+				FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */,
 				FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */,
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
@@ -475,6 +482,7 @@
 				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
 				FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */,
 				FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */,
+				FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 				FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */,
 			);
@@ -652,6 +660,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -687,6 +696,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

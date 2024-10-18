@@ -14,13 +14,14 @@ struct MenuView: View {
     let departmentString: String
     let studentID: String
     let studentName: String
-    let faqURL: URL = URL(string: "https://potent-barnacle-025.notion.site/FAQ-116c07204d29805a8418d9a37bf330a2?pvs=4")!
+    let faqURL: String = "https://potent-barnacle-025.notion.site/FAQ-116c07204d29805a8418d9a37bf330a2?pvs=4"
     let surveyURL: URL = URL(string: "https://www.google.com/")!
     
-    @State private var isNotification: Bool = true
+    @State private var notificationOn: Bool = true
     @State private var showAlert: Bool = false
     @State private var showNotificationAlert: Bool = false
     @State private var isDeleteConfirmed: Bool = false
+    @State private var showWebView: Bool = false
     
     var body: some View {
         NavigationView {
@@ -54,13 +55,18 @@ struct MenuView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                 ) {
-                    Toggle(isOn: $isNotification) {
+                    Toggle(isOn: $notificationOn) {
                         Text("🔔 알림설정")
                     }
+                    .onChange(of: notificationOn) { _, newValue in
+                        handleNotificationToggle(isOn: newValue)
+                    }
                     
-                    Link(destination: faqURL) {
+                    Button(action : {
+                        showWebView.toggle()
+                    }) {
                         HStack {
-                            Text("🌐 문의하기")
+                            Text("🙋 문의하기")
                                 .foregroundColor(.blue)
                         }
                     }
@@ -81,7 +87,7 @@ struct MenuView: View {
                     Button(action: {
                         showAlert = true
                     }) {
-                        Text("계정 삭제")
+                        Text("⚠️ 계정 삭제")
                             .foregroundColor(.red)
                     }
                     .padding()
@@ -100,16 +106,20 @@ struct MenuView: View {
             }
             .navigationTitle("메뉴")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showWebView) {
+                WebView(urlString: faqURL)
+            }
         }
         .alert(isPresented: $showNotificationAlert) {
             Alert(
-                title: Text(""),
-                message: Text(""),
+                title: Text("알림을 끄시겠습니까?"),
+                message: Text("알림을 비활성화하시면 공지를 놓치실 수 있어요!"),
                 primaryButton: .destructive(Text("확인")) {
                     NotificationManager.instance.disableAllNotifications()
                 },
                 secondaryButton: .cancel({
-                    isNotification = true
+                    notificationOn = true
+                    NotificationManager.instance.setupNotifications()
                 })
             )
         }
@@ -118,6 +128,8 @@ struct MenuView: View {
     private func handleNotificationToggle(isOn: Bool) {
         if !isOn {
             showNotificationAlert = true
+        } else {
+            NotificationManager.instance.setupNotifications()
         }
     }
 }

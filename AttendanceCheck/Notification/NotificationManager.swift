@@ -49,6 +49,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func disableAllNotifications() {
+        print("Notification disabled")
+        
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             
@@ -56,6 +58,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func setupNotifications() {
+        print("Notification setup")
+        
         for notification in realNotificationSchedule {
             scheduleNotificationByDate(titleString: notification.titleString, bodyString: notification.bodyString, date: notification.date)
         }

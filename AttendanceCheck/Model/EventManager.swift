@@ -13,13 +13,9 @@ class EventManager: ObservableObject {
     private let eventCodeToIndex: [String: Int] = [
         "SCHUSWCU1stAF_OpeningCeremony": 0,
         "SCHUSWCU1stAF_ProjectPresentationParticipation": 1,
-        "SCHUSWCU1stAF_GraduatedTalkConcert_01": 2,
-        "SCHUSWCU1stAF_GraduatedTalkConcert_02": 3,
-        "SCHUSWCU1stAF_GraduatedTalkConcert_03": 4,
-        "SCHUSWCU1stAF_GraduatedTalkConcert_04": 5,
-        "SCHUSWCU1stAF_GraduatedTalkConcert_05": 6,
-        "SCHUSWCU1stAF_SWCUGameContest": 7,
-        "SCHUSWCU1stAF_IndustryExpertSpecialLecture": 8
+        "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": 2,
+        "SCHUSWCU1stAF_SWCUGameContest": 3,
+        "SCHUSWCU1stAF_IndustryExpertSpecialLecture": 4
     ]
     
     @Published var event1: Bool = false
@@ -27,10 +23,6 @@ class EventManager: ObservableObject {
     @Published var event3: Bool = false
     @Published var event4: Bool = false
     @Published var event5: Bool = false
-    @Published var event6: Bool = false
-    @Published var event7: Bool = false
-    @Published var event8: Bool = false
-    @Published var event9: Bool = false
     @Published var progress: Double = 0.0
     
     @Published var programs: [Events]? = nil
@@ -60,10 +52,6 @@ class EventManager: ObservableObject {
         case 2: return event3
         case 3: return event4
         case 4: return event5
-        case 5: return event6
-        case 6: return event7
-        case 7: return event8
-        case 8: return event9
         default: return false
         }
     }
@@ -165,11 +153,9 @@ class EventManager: ObservableObject {
         
         if event1 { newProgress += 0.2 }
         if event2 { newProgress += 0.2 }
-        if event3 || event4 || event5 || event6 || event7 {
-            newProgress += 0.2
-        }
-        if event8 { newProgress += 0.2 }
-        if event9 { newProgress += 0.2 }
+        if event3 { newProgress += 0.2 }
+        if event4 { newProgress += 0.2 }
+        if event5 { newProgress += 0.2 }
         
         progress = min(newProgress, 1.0)
     }
@@ -182,10 +168,6 @@ class EventManager: ObservableObject {
             case 2: event3 = true
             case 3: event4 = true
             case 4: event5 = true
-            case 5: event6 = true
-            case 6: event7 = true
-            case 7: event8 = true
-            case 8: event9 = true
             default: break
             }
         }
@@ -321,10 +303,6 @@ class EventManager: ObservableObject {
         event3 = false
         event4 = false
         event5 = false
-        event6 = false
-        event7 = false
-        event8 = false
-        event9 = false
         progress = 0.0
         
         print("All events cleared")

@@ -33,7 +33,7 @@ struct ChecklistDetailView: View {
                 .multilineTextAlignment(.center)
             
             HStack {
-                Text(description)
+                Text(descriptionParse(description))
                     .font(.body)
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.leading)
@@ -47,6 +47,10 @@ struct ChecklistDetailView: View {
         .padding()
         .navigationTitle("상세 정보")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func descriptionParse(_ string: String) -> String {
+        return string.replacingOccurrences(of: "|", with: "\n")
     }
 }
 

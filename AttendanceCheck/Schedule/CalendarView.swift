@@ -15,12 +15,13 @@ struct CalendarView: View {
     
     var body: some View {
         NavigationStack {
+            Text((lastScale == 1.0 && lastOffset == .zero) ? "🔍 이미지를 줌인해보세요" : "👇 돌아가시려면 이미지를 클릭하세요")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+                .padding(.bottom, 30)
+                .padding(.top, 10)
             VStack {
-                Text((lastScale == 1.0 && lastOffset == .zero) ? "🔍 이미지를 줌인해보세요" : "👇 돌아가시려면 이미지를 클릭하세요")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .padding(.bottom, 30)
                 
                 Image("SWCUAFTIMETABLE")
                     .resizable()

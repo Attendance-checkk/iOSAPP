@@ -10,6 +10,16 @@ import SwiftUI
 struct ChecklistView: View {
 //    @State private var progress: Double = 0.0
     @EnvironmentObject private var eventManager: EventManager
+    @Environment(\.colorScheme) var colorScheme
+    
+    @State private var currentBannerIndex: Int = 0
+    @State private var bannerTimer: Timer? = nil
+    @State private var showWebView: Bool = false
+    @State private var selectedBannerURL: String = ""
+    
+    private let banners = Banners
+    private let animationDuration: Double = 0.5
+    private let bannerInterval: TimeInterval = 7.0
     
     var body: some View {
         ZStack {
@@ -25,15 +35,47 @@ struct ChecklistView: View {
             } else {
                 NavigationView {
                     VStack(spacing: 20) {
+                        TabView(selection: $currentBannerIndex) {
+                            ForEach(banners.indices, id: \.self) { index in
+                                Image(banners[index].bannerImageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 120)
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                    .onTapGesture {
+                                        selectedBannerURL = banners[index].bannerURL
+                                        showWebView = true
+                                    }
+                                    .tag(index)
+                                    .background(.clear)
+                            }
+                            .background(.clear)
+                        }
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
+                        )
+                        .tabViewStyle(PageTabViewStyle())
+                        .frame(height: 120)
+                        .padding(.horizontal, 30)
+                        .padding(.top, 20)
+                        .onAppear {
+                            startBannerAnimation()
+                        }
+                        .onDisappear {
+                            stopBannerAnimation()
+                        }
+                        .onChange(of: currentBannerIndex) { _, _ in
+                            resetBannerAnimation()
+                        }
                         Text(changeProgressTitle())
-                            .font(.title2)
-                            .fontWeight(.bold)
+                            .font(.title3)
                             .multilineTextAlignment(.center)
-                            .padding(.top, 20)
+                            .padding(.top, 10)
                         
                         ProgressView(value: eventManager.progress)
                             .progressViewStyle(LinearProgressViewStyle())
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 30)
                         
                         if let events = eventManager.programs {
                             List(events, id: \.event_code) { event in
@@ -88,6 +130,9 @@ struct ChecklistView: View {
                     }
                     .navigationTitle("체크리스트")
                     .navigationBarTitleDisplayMode(.inline)
+                    .sheet(isPresented: $showWebView) {
+                        WebView(urlString: selectedBannerURL)
+                    }
                 }
             }
         }
@@ -105,6 +150,24 @@ struct ChecklistView: View {
     
     private func changeProgressTitle() -> String {
         return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "스탬프를 모아서 경품을 받아보세요!"
+    }
+    
+    private func startBannerAnimation() {
+        bannerTimer = Timer.scheduledTimer(withTimeInterval: bannerInterval, repeats: true) { _ in
+            withAnimation {
+                currentBannerIndex = (currentBannerIndex + 1) % banners.count
+            }
+        }
+    }
+    
+    private func stopBannerAnimation() {
+        bannerTimer?.invalidate()
+        bannerTimer = nil
+    }
+    
+    private func resetBannerAnimation() {
+        stopBannerAnimation()
+        startBannerAnimation()
     }
 }
 

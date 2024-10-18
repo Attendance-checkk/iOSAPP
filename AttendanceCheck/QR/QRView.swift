@@ -92,7 +92,7 @@ struct QRView: View {
                         })
                     )
                 } else {
-                    return Alert(title: Text("AlertError"), message: Text("Notice to developer plz"), dismissButton: .default(Text("OK")))
+                    return Alert(title: Text("AlertError"), message: Text("Please notice to developer"), dismissButton: .default(Text("OK")))
                 }
             }
             

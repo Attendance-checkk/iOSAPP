@@ -20,7 +20,7 @@ struct ScheduleView: View {
                         TimelineView()
                     }
                 }
-                .navigationTitle(showCalendarView ? "캘린더 보기" : "타임라인 보기")
+                .navigationTitle(showCalendarView ? "캘린더" : "타임라인")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
