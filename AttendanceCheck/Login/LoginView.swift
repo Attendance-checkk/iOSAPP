@@ -35,17 +35,18 @@ struct LoginView: View {
                 VStack(spacing: 10) {
                     Spacer()
                     
-                    Text("🎉 SW융합대학 첫 학술제에 오신 걸 환영해요! 🎉")
+                    Text("👋 SW융합대학 첫 학술제에 오신 걸 환영해요!")
                         .font(.title3)
+                        .fontWeight(.bold)
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.center)
                     
                     Image("SCHULogo_Rect")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
                         .frame(maxWidth: .infinity)
-                        .cornerRadius(10)
-                        .padding(.vertical, 40)
+                        .padding(.vertical, 30)
                     
                     HStack {
                         Text("학과 선택")
@@ -159,7 +160,21 @@ struct LoginView: View {
                         case .loginFailed:
                             return Alert(
                                 title: Text("로그인 실패"),
-                                message: Text("로그인 중 문제가 발생하였습니다! 로그인을 다시 시도해주세요"),
+                                message: Text("로그인 중 문제가 발생하였습니다! 입력 내용을 확인해주세요!"),
+                                dismissButton: .default(Text("확인"))
+                            )
+                            
+                        case .noIDError:
+                            return Alert(
+                                title: Text("학번 없음"),
+                                message: Text("학번을 입력해주세요!"),
+                                dismissButton: .default(Text("확인"))
+                            )
+                            
+                        case .noDepartmentError:
+                            return Alert(
+                                title: Text("학과 없음"),
+                                message: Text("학과를 선택해주세요!"),
                                 dismissButton: .default(Text("확인"))
                             )
                             
@@ -167,6 +182,13 @@ struct LoginView: View {
                             return Alert(
                                 title: Text("학번 오류"),
                                 message: Text("학번 형식이 올바르지 않습니다"),
+                                dismissButton: .default(Text("확인"))
+                            )
+                            
+                        case .noNameError:
+                            return Alert(
+                                title: Text("이름 없음"),
+                                message: Text("이름을 입력해주세요!"),
                                 dismissButton: .default(Text("확인"))
                             )
                         }
@@ -179,10 +201,72 @@ struct LoginView: View {
         }
     }
     
+    private func deviceSpecificImageWidth() -> CGFloat {
+        print(UIScreen.main.bounds.width)
+        
+        let model = UIDevice.current.modelName
+        
+        switch model {
+        case "iPhone12,1": // iPhone 11
+            return 250
+        case "iPhone12,3": // iPhone 11 Pro
+            return 300
+        case "iPhone12,5": // iPhone 11 Pro Max
+            return 350
+        case "iPhone12,8": // iPhone SE 2nd Gen
+            return 200
+        case "iPhone13,1": // iPhone 12 Mini
+            return 250
+        case "iPhone13,2": // iPhone 12
+            return 300
+        case "iPhone13,3": // iPhone 12 Pro
+            return 300
+        case "iPhone13,4": // iPhone 12 Pro Max
+            return 350
+        case "iPhone14,2": // iPhone 13 Pro
+            return 300
+        case "iPhone14,3": // iPhone 13 Pro Max
+            return 350
+        case "iPhone14,4": // iPhone 13 Mini
+            return 250
+        case "iPhone14,5": // iPhone 13
+            return 300
+        case "iPhone14,6": // iPhone SE 3rd Gen
+            return 200
+        case "iPhone14,7": // iPhone 14
+            return 300
+        case "iPhone14,8": // iPhone 14 Plus
+            return 350
+        case "iPhone15,2": // iPhone 14 Pro
+            return 350
+        case "iPhone15,3": // iPhone 14 Pro Max
+            return 400
+        case "iPhone15,4": // iPhone 15
+            return 350
+        case "iPhone15,5": // iPhone 15 Plus
+            return 400
+        case "iPhone16,1": // iPhone 15 Pro
+            return 380
+        case "iPhone16,2": // iPhone 15 Pro Max
+            return 400
+        case "iPhone17,1": // iPhone 16 Pro
+            return 380
+        case "iPhone17,2": // iPhone 16 Pro Max
+            return 400
+        case "iPhone17,3": // iPhone 16
+            return 350
+        case "iPhone17,4": // iPhone 16 Plus
+            return 400
+        default:
+            return 300 // 기본값
+        }
+    }
+    
     private func loginButtonClicked() {
-        if studentIDValidation() {
-            isLoading = true
-            
+        if !studentIDValidation() {
+            showAlert = .idFormatError
+            return
+        } else {
             userInformation.department = selectedDepartment
             userInformation.studentID = inputStudentID
             userInformation.studentName = inputStudentName
@@ -197,8 +281,6 @@ struct LoginView: View {
                     showAlert = .loginFailed
                 }
             }
-        } else {
-            showAlert = .idFormatError
         }
         
         print("Saved User Information: \(String(describing: userInformation.department)), \(String(describing: userInformation.studentID)), \(String(describing: userInformation.studentName))")

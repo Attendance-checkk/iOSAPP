@@ -140,16 +140,27 @@ struct ChecklistView: View {
     
     private func detailView(for event: Events) -> some View {
         let title: String = event.event_name
+        var detailBannerImageName: String {
+            switch event.event_code {
+            case "SCHUSWCU1stAF_OpeningCeremony": return "SWCUAF_EVENT_1"
+            case "SCHUSWCU1stAF_ProjectPresentationParticipation": return "SWCUAF_EVENT_2"
+            case "SCHUSWCU1stAF_SWCUGameContest": return "SWCUAF_EVENT_3"
+            case "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": return "SWCUAF_EVENT_4"
+            case "SCHUSWCU1stAF_IndustryExpertSpecialLecture": return "SWCUAF_EVENT_5"
+            default: return "SWCUAF_Banner_1"
+            }
+        }
+        
         let location: String = event.location
         let description: String = event.description
         let startTime: String = event.event_start_time ?? "EVENTSTARTTIMEERROR"
         let endTime: String = event.event_end_time ?? "EVENTENDTIMEERROR"
         
-        return ChecklistDetailView(eventName: title, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
+        return ChecklistDetailView(eventName: title, detailBannerImageName: detailBannerImageName, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
     }
     
     private func changeProgressTitle() -> String {
-        return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "스탬프를 모아서 경품을 받아보세요!"
+        return eventManager.progress == 1.0 ? "🥳 스탬프 모으기 완료!" : "스탬프를 모아 경품에 도전해보세요!"
     }
     
     private func startBannerAnimation() {

@@ -40,6 +40,9 @@
 		FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03772CBF40A200531123 /* NotificationData.swift */; };
 		FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D02CC222BA00E7F440 /* Banner.swift */; };
 		FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D22CC2287900E7F440 /* WebView.swift */; };
+		FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */; };
+		FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D82CC26A4000E7F440 /* CautionView.swift */; };
+		FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +100,9 @@
 		FDBC03772CBF40A200531123 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
 		FDDEF2D02CC222BA00E7F440 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		FDDEF2D22CC2287900E7F440 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
+		FDDEF2D82CC26A4000E7F440 /* CautionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CautionView.swift; sourceTree = "<group>"; };
+		FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +233,7 @@
 			children = (
 				FD37FE692CB2839C0077365C /* MapView.swift */,
 				FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */,
+				FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -255,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE6F2CB283B30077365C /* MenuView.swift */,
+				FDDEF2D82CC26A4000E7F440 /* CautionView.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -307,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				FDBC03772CBF40A200531123 /* NotificationData.swift */,
+				FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -458,6 +467,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */,
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
 				FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
@@ -467,10 +477,12 @@
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
+				FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */,
 				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
 				FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */,
+				FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
 				FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */,
@@ -654,6 +666,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "출석 췤!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -690,6 +703,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "출석 췤!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for QR code recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

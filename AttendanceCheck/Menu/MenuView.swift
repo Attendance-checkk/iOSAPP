@@ -84,23 +84,31 @@ struct MenuView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.red)
                 ) {
-                    Button(action: {
-                        showAlert = true
-                    }) {
-                        Text("⚠️ 계정 삭제")
-                            .foregroundColor(.red)
+                    NavigationLink(destination: CautionView()) {
+                        HStack {
+                            Text("⚠️ 계정 삭제 주의사항")
+                                .foregroundColor(.red)
+                        }
                     }
-                    .padding()
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text("계정 삭제"),
-                              message: Text("정말로 삭제하시겠습니까? 계정은 다시 복구되지 않습니다."),
-                              primaryButton: .destructive(Text("삭제")) {
-                            eventManager.clearEventManager()
-                            userInformation.userDelete()
-                            userInformation.clearUserInformation()
-                              },
-                              secondaryButton: .cancel()
-                              )
+                    
+                    HStack {
+                        Button(action: {
+                            showAlert = true
+                        }) {
+                            Text("🗑️ 계정 삭제")
+                                .foregroundColor(.red)
+                        }
+                        .alert(isPresented: $showAlert) {
+                            Alert(title: Text("계정 삭제"),
+                                  message: Text("정말로 삭제하시겠습니까? 계정은 다시 복구되지 않습니다."),
+                                  primaryButton: .destructive(Text("삭제")) {
+                                eventManager.clearEventManager()
+                                userInformation.userDelete()
+                                userInformation.clearUserInformation()
+                                  },
+                                  secondaryButton: .cancel()
+                                  )
+                        }
                     }
                 }
             }

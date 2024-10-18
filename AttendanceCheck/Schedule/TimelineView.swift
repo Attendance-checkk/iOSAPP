@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimelineView: View {
-    
+    @EnvironmentObject private var eventManager: EventManager
     
     var body: some View {
         Text("타임라인 뷰")

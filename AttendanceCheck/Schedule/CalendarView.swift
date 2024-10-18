@@ -15,12 +15,12 @@ struct CalendarView: View {
     
     var body: some View {
         NavigationStack {
-            Text((lastScale == 1.0 && lastOffset == .zero) ? "🔍 이미지를 줌인해보세요" : "👇 돌아가시려면 이미지를 클릭하세요")
-                .font(.title3)
-                .fontWeight(.bold)
-                .foregroundColor(.primary)
-                .padding(.bottom, 30)
-                .padding(.top, 10)
+//            Text((lastScale == 1.0 && lastOffset == .zero) ? "🔍 이미지를 줌인해보세요" : "👇 돌아가시려면 이미지를 클릭하세요")
+//                .font(.title3)
+//                .fontWeight(.bold)
+//                .foregroundColor(.primary)
+//                .padding(.bottom, 30)
+//                .padding(.top, 10)
             VStack {
                 
                 Image("SWCUAFTIMETABLE")
@@ -33,35 +33,35 @@ struct CalendarView: View {
                             .cornerRadius(20)
                     )
                     .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
-                    .scaleEffect(scale, anchor: .center)
-                    .offset(x: offset.width, y: offset.height)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                offset = CGSize(width: gesture.translation.width + lastOffset.width, height: gesture.translation.height + lastOffset.height)
-                            }
-                            .onEnded { _ in
-                                lastOffset = offset
-                            }
-                    )
-                    .gesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                scale = lastScale * value.magnitude
-                            }
-                            .onEnded { value in
-                                lastScale = scale
-                                if scale < 1.0 {
-                                    scale = 1.0
-                                    resetToCenter()
-                                }
-                            }
-                    )
-                    .onTapGesture {
-                        withAnimation {
-                            resetToCenter()
-                        }
-                    }
+//                    .scaleEffect(scale, anchor: .center)
+//                    .offset(x: offset.width, y: offset.height)
+//                    .gesture(
+//                        DragGesture()
+//                            .onChanged { gesture in
+//                                offset = CGSize(width: gesture.translation.width + lastOffset.width, height: gesture.translation.height + lastOffset.height)
+//                            }
+//                            .onEnded { _ in
+//                                lastOffset = offset
+//                            }
+//                    )
+//                    .gesture(
+//                        MagnificationGesture()
+//                            .onChanged { value in
+//                                scale = lastScale * value.magnitude
+//                            }
+//                            .onEnded { value in
+//                                lastScale = scale
+//                                if scale < 1.0 {
+//                                    scale = 1.0
+//                                    resetToCenter()
+//                                }
+//                            }
+//                    )
+//                    .onTapGesture {
+//                        withAnimation {
+//                            resetToCenter()
+//                        }
+//                    }
             }
             .padding()
             .onAppear {

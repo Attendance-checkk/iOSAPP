@@ -20,20 +20,20 @@ struct ScheduleView: View {
                         TimelineView()
                     }
                 }
-                .navigationTitle(showCalendarView ? "캘린더" : "타임라인")
+                .navigationTitle(showCalendarView ? "일정" : "타임라인")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        HStack {
-                            Button(action: {
-                                showCalendarView.toggle()
-                            }) {
-                                Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
-                            }
-                        }
-                        .padding()
-                    }
-                }
+//                .toolbar {
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        HStack {
+//                            Button(action: {
+//                                showCalendarView.toggle()
+//                            }) {
+//                                Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
+//                            }
+//                        }
+//                        .padding()
+//                    }
+//                }
             }
         }
     }

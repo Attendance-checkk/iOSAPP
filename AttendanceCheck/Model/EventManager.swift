@@ -285,7 +285,6 @@ class EventManager: ObservableObject {
         let isoformatter = ISO8601DateFormatter()
         let outputFormatter = DateFormatter()
         outputFormatter.locale = Locale(identifier: "ko_KR")
-        outputFormatter.dateFormat = "d일(E) HH:mm"
         
         isoformatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         
@@ -294,7 +293,23 @@ class EventManager: ObservableObject {
             return nil
         }
         
+        if is12HourFormat() {
+            outputFormatter.dateFormat = "MM월 d일(E) a h:mm"
+        } else {
+            outputFormatter.dateFormat = "MM월 d일(E) HH:mm"
+        }
+        
         return outputFormatter.string(from: date)
+    }
+    
+    private func is12HourFormat() -> Bool {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        
+        let timeFormat = formatter.dateFormat ?? ""
+        return timeFormat.contains("a")
     }
     
     public func clearEventManager() {

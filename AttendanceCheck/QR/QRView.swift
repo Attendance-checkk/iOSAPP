@@ -58,6 +58,12 @@ struct QRView: View {
                     }
                 } label: {
                     Label("QR코드 인식 시작", systemImage: "qrcode")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 2)
                 }
             }
             .padding(.horizontal, 45)
@@ -96,7 +102,7 @@ struct QRView: View {
                 }
             }
             
-            .navigationTitle("QR코드 인식")
+            .navigationTitle("QR코드")
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear(perform: checkingCameraPermission)
