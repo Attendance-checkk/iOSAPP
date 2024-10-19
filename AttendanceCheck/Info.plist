@@ -7,8 +7,5 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-    
-    <key>UIUserInterfaceStyle</key>
-    <string>Automatic</string>
 </dict>
 </plist>
