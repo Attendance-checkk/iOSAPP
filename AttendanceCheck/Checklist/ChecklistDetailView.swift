@@ -69,7 +69,7 @@ struct ChecklistDetailView: View {
                 }
             }
         }
-        .padding()
+        .padding(25)
         .navigationTitle("상세 정보")
         .navigationBarTitleDisplayMode(.inline)
     }

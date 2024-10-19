@@ -16,24 +16,28 @@ struct ScheduleView: View {
                 VStack {
                     if showCalendarView {
                         CalendarView()
+                            .transition(.scale)
                     } else {
                         TimelineView()
+                            .transition(.scale)
                     }
                 }
                 .navigationTitle(showCalendarView ? "일정" : "타임라인")
                 .navigationBarTitleDisplayMode(.inline)
-//                .toolbar {
-//                    ToolbarItem(placement: .navigationBarTrailing) {
-//                        HStack {
-//                            Button(action: {
-//                                showCalendarView.toggle()
-//                            }) {
-//                                Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
-//                            }
-//                        }
-//                        .padding()
-//                    }
-//                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack {
+                            Button(action: {
+                                withAnimation {
+                                    showCalendarView.toggle()
+                                }
+                            }) {
+                                Image(systemName: showCalendarView ? "calendar" : "calendar.day.timeline.left")
+                            }
+                        }
+                        .padding()
+                    }
+                }
             }
         }
     }

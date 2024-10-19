@@ -232,6 +232,7 @@ class EventManager: ObservableObject {
                 let programs = try JSONDecoder().decode([Events].self, from: data)
                 DispatchQueue.main.async {
                     self.programs = programs
+//                    print(programs)
                     completion(true, 200, "events GET success")
                 }
             } catch {
@@ -302,7 +303,7 @@ class EventManager: ObservableObject {
         return outputFormatter.string(from: date)
     }
     
-    private func is12HourFormat() -> Bool {
+    public func is12HourFormat() -> Bool {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.dateStyle = .none
@@ -321,5 +322,21 @@ class EventManager: ObservableObject {
         progress = 0.0
         
         print("All events cleared")
+    }
+    
+    public func returnProgramsForTimeline() -> [Events] {
+        var timelinePrograms = programs ?? []
+        
+        timelinePrograms.append(Events(
+            event_code: "SCHUSWCU1stAF_ClosingCeremony",
+            event_name: "폐회식 및 시상식",
+            description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다\n1등의 주인공이 되어보세요!",
+            location: "인문과학관 1층 대강당 [6129호]",
+            event_start_time: dateFormatChanger(from: "2024-11-06T06:00:00.000Z"),
+            event_end_time: dateFormatChanger(from: "2024-11-06T07:30:00.000Z"),
+            createdAt: "2024-10-18T04:18:16.000Z"
+        ))
+        
+        return timelinePrograms
     }
 }

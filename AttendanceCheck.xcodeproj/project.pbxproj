@@ -27,7 +27,6 @@
 		FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE772CB28DD00077365C /* ScannerDelegate.swift */; };
 		FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE792CB28E440077365C /* CameraView.swift */; };
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
-		FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7F2CB2C92A0077365C /* TimelineView.swift */; };
 		FD42AADF2CB39AC800B63392 /* Programs.json in Resources */ = {isa = PBXBuildFile; fileRef = FD42AADE2CB39AC800B63392 /* Programs.json */; };
 		FD4B67FC2CB382F80096FBAB /* Programs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4B67FB2CB382F80096FBAB /* Programs.swift */; };
 		FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C652CB4C1ED00771254 /* UserInformation.swift */; };
@@ -43,6 +42,9 @@
 		FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */; };
 		FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D82CC26A4000E7F440 /* CautionView.swift */; };
 		FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */; };
+		FDDEF2DD2CC331E100E7F440 /* LinkURLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */; };
+		FDDEF2DF2CC3407E00E7F440 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */; };
+		FDDEF2E12CC3447500E7F440 /* TimelineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +88,6 @@
 		FD37FE772CB28DD00077365C /* ScannerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerDelegate.swift; sourceTree = "<group>"; };
 		FD37FE792CB28E440077365C /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		FD37FE7F2CB2C92A0077365C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		FD42AADE2CB39AC800B63392 /* Programs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Programs.json; sourceTree = "<group>"; };
 		FD4B67FB2CB382F80096FBAB /* Programs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Programs.swift; sourceTree = "<group>"; };
 		FD6B5C652CB4C1ED00771254 /* UserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
@@ -103,6 +104,9 @@
 		FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		FDDEF2D82CC26A4000E7F440 /* CautionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CautionView.swift; sourceTree = "<group>"; };
 		FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusLocation.swift; sourceTree = "<group>"; };
+		FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkURLS.swift; sourceTree = "<group>"; };
+		FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,7 +257,8 @@
 			children = (
 				FD37FE6D2CB283A80077365C /* ScheduleView.swift */,
 				FD37FE7D2CB2C9260077365C /* CalendarView.swift */,
-				FD37FE7F2CB2C92A0077365C /* TimelineView.swift */,
+				FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */,
+				FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 				FDABB1E92CBA990B006CF22D /* EventManager.swift */,
 				FD4B67FB2CB382F80096FBAB /* Programs.swift */,
 				FD6B5C652CB4C1ED00771254 /* UserInformation.swift */,
+				FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -476,6 +482,7 @@
 				FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */,
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
+				FDDEF2DF2CC3407E00E7F440 /* TimelineView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
 				FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */,
 				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
@@ -490,9 +497,10 @@
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
+				FDDEF2E12CC3447500E7F440 /* TimelineDetailView.swift in Sources */,
 				FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */,
 				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
-				FD37FE802CB2C92A0077365C /* TimelineView.swift in Sources */,
+				FDDEF2DD2CC331E100E7F440 /* LinkURLS.swift in Sources */,
 				FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */,
 				FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,

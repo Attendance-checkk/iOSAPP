@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct TimelinePrograms: Codable, Equatable, Hashable {
+    var events: Events
+    var iconName: String
+    var status: TimelineStatus
+}
+
 struct Events: Codable, Equatable, Hashable {
     var event_code: String
     var event_name: String
@@ -23,4 +29,10 @@ struct Participant: Codable, Equatable, Hashable {
     var createdAt: String
     var user_id: Int
     var event_code: String
+}
+
+enum TimelineStatus: String, Codable {
+    case inProgress
+    case upcoming
+    case ended
 }

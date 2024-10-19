@@ -14,8 +14,8 @@ struct MenuView: View {
     let departmentString: String
     let studentID: String
     let studentName: String
-    let faqURL: String = "https://potent-barnacle-025.notion.site/FAQ-116c07204d29805a8418d9a37bf330a2?pvs=4"
-    let surveyURL: URL = URL(string: "https://www.google.com/")!
+    let faqURL: String = LinkURLS.faqURL.url
+    let surveyURL: URL = URL(string: LinkURLS.surveyURL.url)!
     
     @State private var notificationOn: Bool = true
     @State private var showAlert: Bool = false

@@ -30,7 +30,7 @@ struct ChecklistView: View {
                 
                 Color.clear
                     .onTapGesture {
-                        print("Checklist view Loading...")
+                        print("Checklist view loading...")
                     }
             } else {
                 NavigationView {

@@ -35,8 +35,8 @@ struct LoginView: View {
                 VStack(spacing: 10) {
                     Spacer()
                     
-                    Text("👋 SW융합대학 첫 학술제에 오신 걸 환영해요!")
-                        .font(.title3)
+                    Text("👋 환영합니다!")
+                        .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.center)
