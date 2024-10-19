@@ -19,57 +19,45 @@ struct ChecklistDetailView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            GeometryReader { geometry in
-                VStack {
-                    Image(detailBannerImageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 120)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .background(.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 1)
-                        )
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.primary, lineWidth: 1)
-                            .frame(width: geometry.size.width, height: 60)
-                        
-                        Text("위치\n\(eventLocation)")
-                            .font(.body)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding(.top, 20)
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.primary, lineWidth: 1)
-                            .frame(width: geometry.size.width, height: 60)
-                        
-                        Text("시간\n\(startTime) ~ \(endTime)")
-                            .font(.body)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.center)
-                    }
-                    
-                    HStack {
-                        Text(descriptionParse(description))
-                            .font(.body)
-                            .foregroundColor(.primary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .multilineTextAlignment(.leading)
-                        
-                        Spacer(minLength: 0)
-                    }
-                    .padding(.top, 20)
-                    
+            Image(detailBannerImageName)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .background(.clear)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 1)
+                )
+                .padding(.vertical, 10)
+            
+            List {
+                Section(header: Text("위치")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                ) {
+                    Text(eventLocation)
+                }
+                
+                Section(header: Text("시간")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                ) {
+                    Text("시작: \(startTime)")
+                    Text("종료: \(endTime)")
+                }
+                
+                Section(header: Text("설명")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                ) {
+                    Text(descriptionParse(description))
                 }
             }
         }
-        .padding(25)
         .navigationTitle("상세 정보")
         .navigationBarTitleDisplayMode(.inline)
     }

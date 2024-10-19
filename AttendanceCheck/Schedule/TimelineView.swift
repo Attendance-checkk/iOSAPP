@@ -15,46 +15,48 @@ struct TimelineView: View {
     @State private var timelinePrograms: [TimelinePrograms] = []
     
     var body: some View {
-        List {
-            Section(header: Text("진행 중")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundColor(.green)
-            ) {
-                ForEach(timelinePrograms.filter { $0.status == .inProgress }, id: \.events.event_code) { program in
-                    eventRow(for: program)
+        ZStack {
+            List {
+                Section(header: Text("진행 중")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.green)
+                ) {
+                    ForEach(timelinePrograms.filter { $0.status == .inProgress }, id: \.events.event_code) { program in
+                        eventRow(for: program)
+                    }
+                }
+                
+                Section(header: Text("진행 예정")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
+                ) {
+                    ForEach(timelinePrograms.filter { $0.status == .upcoming }, id: \.events.event_code) { program in
+                        eventRow(for: program)
+                    }
+                }
+                
+                Section(header: Text("종료됨")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
+                ) {
+                    ForEach(timelinePrograms.filter { $0.status == .ended }, id: \.events.event_code) { program in
+                        eventRow(for: program)
+                    }
                 }
             }
-            
-            Section(header: Text("진행 예정")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundColor(.blue)
-            ) {
-                ForEach(timelinePrograms.filter { $0.status == .upcoming }, id: \.events.event_code) { program in
-                    eventRow(for: program)
-                }
+            .padding(.top, 0)
+            .padding(.bottom, 0)
+            .onAppear {
+                initTimelinePrograms()
             }
-            
-            Section(header: Text("종료됨")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundColor(.red)
-            ) {
-                ForEach(timelinePrograms.filter { $0.status == .ended }, id: \.events.event_code) { program in
-                    eventRow(for: program)
-                }
-            }
-        }
-        .padding(.top, 0)
-        .padding(.bottom, 0)
-        .onAppear {
-            initTimelinePrograms()
-        }
-        .refreshable {
-            eventManager.loadProgramsData { success in
-                if success {
-                    initTimelinePrograms()
+            .refreshable {
+                eventManager.loadProgramsData { success in
+                    if success {
+                        initTimelinePrograms()
+                    }
                 }
             }
         }
@@ -79,11 +81,6 @@ struct TimelineView: View {
                 status = .ended
             }
             
-//            print("현재 이벤트 시작 시간: \(checkStartTime)")
-//            print("현재 시간: \(currentDate)")
-//            print("현재 이벤트 종료 시간: \(checkEndTime)")
-//            print("현재 이벤트 상태: \(status)")
-            
             return TimelinePrograms(events: event, iconName: eventIconName(code: event.event_code), status: status)
         }
     }
@@ -94,8 +91,6 @@ struct TimelineView: View {
         
         let currentYear = 2024
         let yearAddedString = "\(currentYear)년 \(formattedString)"
-        
-//        print("연도 더한 시간: \(yearAddedString)")
         
         dateFormatter.dateFormat = "yyyy년 MM월 d일(E) a h:mm"
         if let date = dateFormatter.date(from: yearAddedString) {

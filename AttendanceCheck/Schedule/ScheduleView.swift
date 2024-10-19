@@ -18,10 +18,13 @@ struct ScheduleView: View {
                         CalendarView()
                             .transition(.scale)
                     } else {
-                        TimelineView()
-                            .transition(.scale)
+                        ZStack {
+                            TimelineView()
+                                .transition(.scale)
+                        }
                     }
                 }
+                .animation(.easeInOut, value: showCalendarView)
                 .navigationTitle(showCalendarView ? "일정" : "타임라인")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

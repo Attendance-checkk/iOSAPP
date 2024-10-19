@@ -21,83 +21,84 @@ struct MapView: View {
     let locations = campusLocations
     
     var body: some View {
-        VStack {
-            Text((scale != 1.0 || offset != .zero) ? "👇 돌아가시려면 이미지를 눌러주세요" : "🔍 이미지를 확대해보세요")
-            
-            GeometryReader { geometry in
-                Image("SCHUCampusMap")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 3)
-                    )
-                    .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
-                    .padding()
-                    .scaleEffect(scale, anchor: .center)
-                    .offset(x: offset.width, y: offset.height)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                let newOffset = CGSize(width: gesture.translation.width + lastOffset.width, height: 0)
-                                
-                                if isWithinBounds(offset: newOffset, geometry: geometry.size) {
-                                    offset = newOffset
-                                }
-                            }
-                            .onEnded { _ in
-                                lastOffset = offset
-                            }
-                    )
-                    .gesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                let newScale = lastScale * value.magnitude
-                                
-                                if newScale >= 1.0 && newScale <= 1.7 {
-                                    withAnimation {
-                                        scale = newScale
+        NavigationView {
+            VStack {
+                Text((scale != 1.0 || offset != .zero) ? "👇 돌아가시려면 이미지를 눌러주세요" : "🔍 이미지를 확대해보세요")
+                
+                GeometryReader { geometry in
+                    Image("SCHUCampusMap")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 3)
+                        )
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
+                        .padding()
+                        .scaleEffect(scale, anchor: .center)
+                        .offset(x: offset.width, y: offset.height)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    let newOffset = CGSize(width: gesture.translation.width + lastOffset.width, height: 0)
+                                    
+                                    if isWithinBounds(offset: newOffset, geometry: geometry.size) {
+                                        offset = newOffset
                                     }
                                 }
+                                .onEnded { _ in
+                                    lastOffset = offset
+                                }
+                        )
+                        .gesture(
+                            MagnificationGesture()
+                                .onChanged { value in
+                                    let newScale = lastScale * value.magnitude
+                                    
+                                    if newScale >= 1.0 && newScale <= 1.7 {
+                                        withAnimation {
+                                            scale = newScale
+                                        }
+                                    }
+                                }
+                                .onEnded { _ in
+                                    lastScale = scale
+                                    print(lastScale)
+                                    if scale < 1.0 {
+                                        resetToCenter()
+                                    }
+                                }
+                        )
+                        .onTapGesture(count: 2) {
+                            if scale > 1.0 {
+                                withAnimation {
+                                    resetToCenter()
+                                }
+                            } else {
+                                withAnimation {
+                                    scaleImage()
+                                }
                             }
-                            .onEnded { _ in
-                                lastScale = scale
-                                print(lastScale)
-                                if scale < 1.0 {
+                        }
+                        .onTapGesture {
+                            if scale > 1.0 {
+                                withAnimation {
                                     resetToCenter()
                                 }
                             }
-                    )
-                    .onTapGesture(count: 2) {
-                        if scale > 1.0 {
-                            withAnimation {
-                                resetToCenter()
-                            }
-                        } else {
-                            withAnimation {
-                                scaleImage()
-                            }
                         }
-                    }
-                    .onTapGesture {
-                        if scale > 1.0 {
+                        .onDisappear {
                             withAnimation {
                                 resetToCenter()
                             }
                         }
-                    }
-                    .onDisappear {
-                        withAnimation {
-                            resetToCenter()
-                        }
-                    }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    .clipped()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .clipped()
+                }
+                .navigationTitle("지도")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            
-            .navigationTitle("지도")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

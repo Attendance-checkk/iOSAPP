@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ChecklistView: View {
-//    @State private var progress: Double = 0.0
     @EnvironmentObject private var eventManager: EventManager
     @Environment(\.colorScheme) var colorScheme
     

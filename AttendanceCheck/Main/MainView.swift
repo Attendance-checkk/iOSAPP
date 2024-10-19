@@ -27,7 +27,7 @@ struct MainView: View {
                 }
                 .tag(1)
             
-            ChecklistView()
+            ChecklistTestView()
                 .tabItem {
                     Label("체크리스트", systemImage: "checkmark.seal")
                 }

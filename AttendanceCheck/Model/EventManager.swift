@@ -339,4 +339,10 @@ class EventManager: ObservableObject {
         
         return timelinePrograms
     }
+    
+    public func returnProgramsForChecklist() -> [Events] {
+        let timelinePrograms = programs ?? []
+        
+        return timelinePrograms
+    }
 }
