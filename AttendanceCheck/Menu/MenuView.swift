@@ -16,12 +16,21 @@ struct MenuView: View {
     let studentName: String
     let faqURL: String = LinkURLS.faqURL.url
     let surveyURL: URL = URL(string: LinkURLS.surveyURL.url)!
+    let secureInformationURL: String = LinkURLS.secureInformation.url
     
     @State private var notificationOn: Bool = true
     @State private var showAlert: Bool = false
     @State private var showNotificationAlert: Bool = false
     @State private var isDeleteConfirmed: Bool = false
     @State private var showWebView: Bool = false
+    
+    @State private var showWebEnum: ShowWebEnum = .idle
+    
+    enum ShowWebEnum: String, CaseIterable {
+        case idle
+        case faq
+        case secureInformation
+    }
     
     var body: some View {
         NavigationView {
@@ -50,19 +59,13 @@ struct MenuView: View {
                     }
                 }
                 
-                Section(header: Text("설정")
+                Section(header: Text("링크")
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                 ) {
-                    Toggle(isOn: $notificationOn) {
-                        Text("🔔 알림설정")
-                    }
-                    .onChange(of: notificationOn) { _, newValue in
-                        handleNotificationToggle(isOn: newValue)
-                    }
-                    
                     Button(action : {
+                        showWebEnum = .faq
                         showWebView.toggle()
                     }) {
                         HStack {
@@ -77,13 +80,30 @@ struct MenuView: View {
                                 .foregroundColor(.blue)
                         }
                     }
+                    
+                    Button(action: {
+                        showWebEnum = .secureInformation
+                        showWebView.toggle()
+                    }) {
+                        HStack {
+                            Text("🪪 개인정보 처리방침")
+                                .foregroundColor(.blue)
+                        }
+                    }
                 }
                 
-                Section(header: Text("주의")
+                Section(header: Text("설정")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.red)
+                    .foregroundColor(.primary)
                 ) {
+                    Toggle(isOn: $notificationOn) {
+                        Text("🔔 알림설정")
+                    }
+                    .onChange(of: notificationOn) { _, newValue in
+                        handleNotificationToggle(isOn: newValue)
+                    }
+                    
                     NavigationLink(destination: CautionView()) {
                         HStack {
                             Text("⚠️ 계정 삭제 주의사항")
@@ -115,7 +135,11 @@ struct MenuView: View {
             .navigationTitle("메뉴")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showWebView) {
-                WebView(urlString: faqURL)
+                if showWebEnum == .faq {
+                    WebView(urlString: faqURL)
+                } else if showWebEnum == .secureInformation {
+                    WebView(urlString: secureInformationURL)
+                }
             }
         }
         .alert(isPresented: $showNotificationAlert) {

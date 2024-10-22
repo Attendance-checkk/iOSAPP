@@ -18,6 +18,9 @@ struct LoginView: View {
     @State private var showAlert: AlertType? = nil
     @State private var isLoading: Bool = false
     
+    @State private var studentIDFormatErrorString: String = "학번 입력"
+    @State private var studentIDFormatErrorColor: Color = .primary
+    
     var body: some View {
         NavigationStack {
             if isLoading {
@@ -102,10 +105,10 @@ struct LoginView: View {
                     }
                     
                     HStack {
-                        Text("학번 입력")
+                        Text(studentIDFormatErrorString)
                             .font(.body)
                             .fontWeight(.bold)
-                            .foregroundColor(.primary)
+                            .foregroundColor(studentIDFormatErrorColor)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 15)
                         
@@ -117,6 +120,9 @@ struct LoginView: View {
                         .background(Color.gray.opacity(0.5))
                         .cornerRadius(10)
                         .keyboardType(.numberPad)
+                        .onChange(of: inputStudentID) { _, _ in
+                            studentIDFormatValidation()
+                        }
                     
                     HStack {
                         Text("이름 입력")
@@ -198,6 +204,23 @@ struct LoginView: View {
                 }
                 .padding(30)
             }
+        }
+    }
+    
+    private func studentIDFormatValidation() {
+        // 학번 앞 두 자리가 20이 아니거나, 8자리가 아니거나, 비어 있거나
+        let emptyBool: Bool = !inputStudentID.isEmpty
+        let lengthBool: Bool = inputStudentID.count == 8
+        let prefixBool: Bool = inputStudentID.hasPrefix("20")
+        
+        print("emptyBool: \(emptyBool), lengthBool: \(lengthBool), prefixBool: \(prefixBool)")
+        
+        if emptyBool && lengthBool && prefixBool {
+            studentIDFormatErrorString = "학번이 적절한 형식입니다"
+            studentIDFormatErrorColor = .green
+        } else {
+            studentIDFormatErrorString = "학번 형식이 올바르지 않습니다"
+            studentIDFormatErrorColor = .red
         }
     }
     

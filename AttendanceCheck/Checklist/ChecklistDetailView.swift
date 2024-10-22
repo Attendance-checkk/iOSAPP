@@ -45,8 +45,8 @@ struct ChecklistDetailView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                 ) {
-                    Text("시작: \(startTime)")
-                    Text("종료: \(endTime)")
+                    Text("시작 | \(startTime)")
+                    Text("종료 | \(endTime)")
                 }
                 
                 Section(header: Text("설명")

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD300E032CC732BE008E6725 /* ElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD300E022CC732BE008E6725 /* ElementView.swift */; };
 		FD37FE502CB282D30077365C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD37FE492CB282D30077365C /* Preview Assets.xcassets */; };
 		FD37FE512CB282D30077365C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD37FE4B2CB282D30077365C /* Assets.xcassets */; };
 		FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE4C2CB282D30077365C /* AttendanceCheckApp.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD300E022CC732BE008E6725 /* ElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementView.swift; sourceTree = "<group>"; };
 		FD37FE192CB282BC0077365C /* AttendanceCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AttendanceCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD37FE2B2CB282BD0077365C /* AttendanceCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AttendanceCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD37FE352CB282BD0077365C /* AttendanceCheckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AttendanceCheckUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,6 +273,7 @@
 			children = (
 				FD37FE6F2CB283B30077365C /* MenuView.swift */,
 				FDDEF2D82CC26A4000E7F440 /* CautionView.swift */,
+				FD300E022CC732BE008E6725 /* ElementView.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */,
+				FD300E032CC732BE008E6725 /* ElementView.swift in Sources */,
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
 				FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */,
 				FD37FE7A2CB28E450077365C /* CameraView.swift in Sources */,
