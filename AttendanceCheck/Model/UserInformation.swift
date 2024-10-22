@@ -16,8 +16,8 @@ class UserInformation: ObservableObject {
     @AppStorage("department") var department: String?
     @AppStorage("studentID") var studentID: String?
     @AppStorage("studentName") var studentName: String?
-    @AppStorage("accessToken") var accessToken: String?
-    @AppStorage("refreshToken") var refreshToken: String?
+    @AppStorage("accessToken") var accessToken: String = ""
+    @AppStorage("refreshToken") var refreshToken: String = ""
     
     init() {
         self.loginState = storedLoginState ?? false
@@ -84,7 +84,7 @@ class UserInformation: ObservableObject {
     }
     
     public func accessTokenRefresh() {
-        guard let refreshToken = refreshToken else { return }
+        let refreshToken = refreshToken
         guard let requrestURL = URL(string: "http://54.180.7.191:9999/jwt/refresh") else { return }
         
         var request = URLRequest(url: requrestURL, timeoutInterval: Double.infinity)
@@ -120,7 +120,6 @@ class UserInformation: ObservableObject {
     }
     
     public func userDelete() {
-        guard let accessToken, !accessToken.isEmpty else { return }
         guard let requestURL = URL(string: "http://54.180.7.191:9999/user") else { return }
         
         var request = URLRequest(url: requestURL,timeoutInterval: Double.infinity)
@@ -143,7 +142,7 @@ class UserInformation: ObservableObject {
         department = nil
         studentID = nil
         studentName = nil
-        accessToken = nil
+        accessToken = ""
         
         loginState = false
         storedLoginState = false

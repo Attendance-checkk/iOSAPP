@@ -22,116 +22,105 @@ struct ChecklistView: View {
     
     var body: some View {
         ZStack {
-            if eventManager.isLoading {
-                ProcessingView(messageString: "정보를 가져오는 중입니다..")
-                    .transition(.opacity)
-                    .ignoresSafeArea(.all)
-                
-                Color.clear
-                    .onTapGesture {
-                        print("Checklist view loading...")
-                    }
-            } else {
-                NavigationView {
-                    VStack(spacing: 20) {
-                        TabView(selection: $currentBannerIndex) {
-                            ForEach(banners.indices, id: \.self) { index in
-                                Image(banners[index].bannerImageName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 120)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                                    .onTapGesture {
-                                        selectedBannerURL = banners[index].bannerURL
-                                        showWebView = true
-                                    }
-                                    .tag(index)
-                                    .background(.clear)
-                            }
-                            .background(.clear)
+            NavigationView {
+                VStack(spacing: 20) {
+                    TabView(selection: $currentBannerIndex) {
+                        ForEach(banners.indices, id: \.self) { index in
+                            Image(banners[index].bannerImageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                .onTapGesture {
+                                    selectedBannerURL = banners[index].bannerURL
+                                    showWebView = true
+                                }
+                                .tag(index)
+                                .background(.clear)
                         }
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
-                        )
-                        .tabViewStyle(PageTabViewStyle())
-                        .frame(height: 120)
+                        .background(.clear)
+                    }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
+                    )
+                    .tabViewStyle(PageTabViewStyle())
+                    .frame(height: 120)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 20)
+                    .onAppear {
+                        startBannerAnimation()
+                    }
+                    .onDisappear {
+                        stopBannerAnimation()
+                    }
+                    .onChange(of: currentBannerIndex) { _, _ in
+                        resetBannerAnimation()
+                    }
+                    Text(changeProgressTitle())
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 10)
+                    
+                    ProgressView(value: eventManager.progress)
+                        .progressViewStyle(LinearProgressViewStyle())
                         .padding(.horizontal, 30)
-                        .padding(.top, 20)
-                        .onAppear {
-                            startBannerAnimation()
-                        }
-                        .onDisappear {
-                            stopBannerAnimation()
-                        }
-                        .onChange(of: currentBannerIndex) { _, _ in
-                            resetBannerAnimation()
-                        }
-                        Text(changeProgressTitle())
-                            .font(.title3)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 10)
-                        
-                        ProgressView(value: eventManager.progress)
-                            .progressViewStyle(LinearProgressViewStyle())
-                            .padding(.horizontal, 30)
-                        
-                        if let events = eventManager.programs {
-                            List(events, id: \.event_code) { event in
-                                NavigationLink(destination: detailView(for: event)) {
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            
-                                            Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
-                                                .font(.body)
-                                                .foregroundColor(.primary)
-                                            
-                                            Text(event.event_name)
-                                                .font(.title3)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.primary)
-                                        }
+                    
+                    if let events = eventManager.programs {
+                        List(events, id: \.event_code) { event in
+                            NavigationLink(destination: detailView(for: event)) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 5) {
                                         
-                                        Spacer()
+                                        Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
+                                            .font(.body)
+                                            .foregroundColor(.primary)
                                         
-                                        GeometryReader { geometry in
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .frame(width: geometry.size.height, height: geometry.size.height)
-                                                    .foregroundColor(.white)
-                                                    .overlay {
-                                                        RoundedRectangle(cornerRadius: 10)
-                                                            .stroke(Color.black, lineWidth: 1)
-                                                    }
-                                                
-                                                Image("SCHUCSTAMP")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
-                                                    .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
-                                            }
-                                        }
-                                        .frame(width: 50, height: 50)
+                                        Text(event.event_name)
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.primary)
                                     }
-                                    .padding(.vertical, 10)
+                                    
+                                    Spacer()
+                                    
+                                    GeometryReader { geometry in
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: geometry.size.height, height: geometry.size.height)
+                                                .foregroundColor(.white)
+                                                .overlay {
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.black, lineWidth: 1)
+                                                }
+                                            
+                                            Image("SCHUCSTAMP")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+                                                .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
+                                        }
+                                    }
+                                    .frame(width: 50, height: 50)
                                 }
+                                .padding(.vertical, 10)
                             }
-                            .refreshable {
-                                eventManager.loadProgramsData { success in
-                                    if success {
-                                        print("Refreshable loadProgramsData is completed")
-                                    } else {
-                                        print("Refreshable loadProgrmasData is failed")
-                                    }
+                        }
+                        .refreshable {
+                            eventManager.loadProgramsData { success in
+                                if success {
+                                    print("Refreshable loadProgramsData is completed")
+                                } else {
+                                    print("Refreshable loadProgrmasData is failed")
                                 }
                             }
                         }
                     }
-                    .navigationTitle("체크리스트")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .sheet(isPresented: $showWebView) {
-                        WebView(urlString: selectedBannerURL)
-                    }
+                }
+                .navigationTitle("체크리스트")
+                .navigationBarTitleDisplayMode(.inline)
+                .sheet(isPresented: $showWebView) {
+                    WebView(urlString: selectedBannerURL)
                 }
             }
         }
