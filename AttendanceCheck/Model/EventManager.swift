@@ -26,7 +26,6 @@ class EventManager: ObservableObject {
     @Published var progress: Double = 0.0
     
     @Published var programs: [Events]? = nil
-    @Published var isLoading: Bool = true
     
     private var userInformation: UserInformation
     
@@ -60,11 +59,9 @@ class EventManager: ObservableObject {
     public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
         print("completeEventByQRCode function called: \(qrcode)")
         
-        isLoading = true
         
         eventPost(qrcode) { success, statusCode, message in
             DispatchQueue.main.async {
-                self.isLoading = false
                 
                 guard success else {
                     print("이벤트 처리 실패: \(statusCode ?? -1), \(message ?? "알 수 없는 오류")")
@@ -88,10 +85,7 @@ class EventManager: ObservableObject {
     private func eventPost(_ qrcode: String, completion: @escaping (Bool, Int?, String?) -> Void) {
         print("Event POST: \(qrcode)")
         
-        guard let token = userInformation.accessToken else {
-            completion(false, 800, "No token")
-            return
-        }
+        let token = userInformation.accessToken
         
         let parameters = "{\r\n    \"event_code\" : \"\(qrcode)\"\r\n}"
         let postData = parameters.data(using: .utf8)
@@ -183,11 +177,9 @@ class EventManager: ObservableObject {
     
     // MARK: - API(GET event list) 01(External)
     public func loadProgramsData(completion: @escaping(Bool) -> Void) {
-        self.isLoading = true
         
         loadPrograms { success, statusCode, message in
             DispatchQueue.main.async {
-                self.isLoading = false
                 
                 if success {
                     print("Successfully GET events")
@@ -210,38 +202,26 @@ class EventManager: ObservableObject {
     
     // MARK: - API(GET event list) 02(Internal)
     private func loadPrograms(completion: @escaping(Bool, Int?, String) -> Void) {
-        guard let token = userInformation.accessToken else {
-            print("No token existed")
-            completion(false, 800, "No token existed")
-            return
-        }
-        
-        var request = URLRequest(url: URL(string: "http://54.180.7.191:9999/user/event/list")!,timeoutInterval: Double.infinity)
-        request.addValue(token, forHTTPHeaderField: "Authorization")
-
-        request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print("Network error: \(String(describing: error))")
-                completion(false, 801, "\(String(describing: error))")
-                return
-            }
-            
-            do {
-                let programs = try JSONDecoder().decode([Events].self, from: data)
-                DispatchQueue.main.async {
-                    self.programs = programs
-//                    print(programs)
-                    completion(true, 200, "events GET success")
+        guard let fileURL = Bundle.main.url(forResource: "Programs", withExtension: "json") else {
+                    print("Programs.json 파일을 찾을 수 없습니다.")
+                    return
                 }
-            } catch {
-                print("JSON decoding error: \(error.localizedDescription)")
-                completion(false, 802, "\(error.localizedDescription)")
-            }
-        }
 
-        task.resume()
+                do {
+                    // 파일에서 데이터 읽어오기
+                    let data = try Data(contentsOf: fileURL)
+                    
+                    // JSON 디코딩
+                    let decoder = JSONDecoder()
+                    let loadedPrograms = try decoder.decode([Events].self, from: data)
+                    
+                    // 프로그램 리스트 업데이트
+                    self.programs = loadedPrograms
+                    changeDateFormat()
+                    print("Programs 데이터를 성공적으로 불러왔습니다.")
+                } catch {
+                    print("Programs 데이터를 로드하는 도중 오류 발생: \(error)")
+                }
     }
     
     // MARK: - Initial events success status checking
@@ -346,3 +326,4 @@ class EventManager: ObservableObject {
         return timelinePrograms
     }
 }
+

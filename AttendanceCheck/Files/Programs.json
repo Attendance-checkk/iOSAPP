@@ -1,139 +1,52 @@
-{
-    "events": [
-        {
-          "eventCode": "SCHUSWCU1stAF_OpeningCeremony",
-          "eventName": "개회식",
-          "location": "6129",
-          "descriptionString": "SW융합대학 학술제 개회식",
-          "eventStartTime": "5일(화) 10:30",
-          "eventEndTime": "5일(화) 11:00",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_ProjectPresentationParticipation",
-          "eventName": "프로젝트 발표",
-          "location": "6129",
-          "descriptionString": "AI∙SW분야 프로젝트 작품 전시 및 발표, 시상",
-          "eventStartTime": "5일(화) 11:00",
-          "eventEndTime": "6일(수) 15:30",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_01",
-          "eventName": "졸업생 토크 콘서트\n[장경호]",
-          "location": "6129",
-          "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "eventStartTime": "5일(화) 14:00",
-          "eventEndTime": "5일(화) 14:20",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_02",
-          "eventName": "졸업생 토크 콘서트\n[전시온]",
-          "location": "6129",
-          "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "eventStartTime": "5일(화) 14:25",
-          "eventEndTime": "5일(화) 14:45",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_03",
-          "eventName": "졸업생 토크 콘서트\n[양태식]",
-          "location": "6129",
-          "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "eventStartTime": "5일(화) 14:50",
-          "eventEndTime": "5일(화) 15:10",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_04",
-          "eventName": "졸업생 토크 콘서트\n[전하윤]",
-          "location": "6129",
-          "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "eventStartTime": "5일(화) 15:15",
-          "eventEndTime": "5일(화) 15:35",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_GraduatedTalkConcert_05",
-          "eventName": "졸업생 토크 콘서트\n[김래훈]",
-          "location": "6129",
-          "descriptionString": "학과별 최대 3명 초청 진행\n타 학과 참석 가능",
-          "eventStartTime": "5일(화) 15:40",
-          "eventEndTime": "5일(화) 16:00",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_SWCUGameContest",
-          "eventName": "게임 경진대회",
-          "location": "6129",
-          "descriptionString": "개발 경진대회 수상작으로 경진대회 진행",
-          "eventStartTime": "5일(화) 11:00",
-          "eventEndTime": "6일(수) 12:00",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        },
-        {
-          "eventCode": "SCHUSWCU1stAF_IndustryExpertSpecialLecutre",
-          "eventName": "전문가 특강",
-          "location": "6129",
-          "descriptionString": "시상식 및 참여 학생 추첨 진행 등",
-          "eventStartTime": "6일(수) 10:00",
-          "eventEndTime": "6일(수) 12:00",
-          "createdAt": "2024-10-14",
-          "participants": {
-              "id": 1,
-              "createdAt": "2024-10-14",
-              "userId": 1,
-              "eventCode": "clear"
-          }
-        }
-    ]
-}
+[
+    {
+        "event_code": "SCHUSWCU1stAF_ProjectPresentationParticipation",
+        "event_name": "학술제 본선 관람",
+        "description": "SW융합대학 학술제 본선에 진출한 학생들의 포스터를 관람해보세요!\r\n다양한 분야의 포스터를 보면서 안목을 넓힐 수 있을거에요",
+        "location": "인문과학관 1층",
+        "event_start_time": "2024-11-05T00:00:00.000Z",
+        "event_end_time": "2024-11-06T06:00:00.000Z",
+        "createdAt": "2024-10-18T04:18:16.000Z",
+        "participants": []
+    },
+    {
+        "event_code": "SCHUSWCU1stAF_OpeningCeremony",
+        "event_name": "개회식",
+        "description": "SW융합대학의 첫 학술제, 그 시작을 알리는 개회식을 함께해보세요!",
+        "location": "인문과학관 1층 대강당 [6129호]",
+        "event_start_time": "2024-11-05T01:30:00.000Z",
+        "event_end_time": "2024-11-05T02:00:00.000Z",
+        "createdAt": "2024-10-18T04:18:59.000Z",
+        "participants": []
+    },
+    {
+        "event_code": "SCHUSWCU1stAF_SWCUGameContest",
+        "event_name": "게임플레이 경진대회",
+        "description": "학생들이 직접 만든 게임으로 진행되는 경진대회\r\n총 3번의 기회가 제공되니 도전해보세요!",
+        "location": "인문과학관 1층 [6126호]",
+        "event_start_time": "2024-11-05T02:00:00.000Z",
+        "event_end_time": "2024-11-06T03:00:00.000Z",
+        "createdAt": "2024-10-18T04:17:17.000Z",
+        "participants": []
+    },
+    {
+        "event_code": "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent",
+        "event_name": "졸업생 토크콘서트",
+        "description": "졸업생과 함께하는 토크 콘서트!\r\n각 학과는 아래의 장소에서 콘서트가 진행돼요!\r\n\r\n사물인터넷학과: 미디어랩스 4층 [ML416호]\r\nAI∙빅데이터학과: 미디어랩스 3층 [ML034호]\r\n의료IT공학과: I’Design관 3층 [5301호]\r\n컴퓨터소프트웨어공학과: 멀티미디어관 5층 [M518호][M520호]\r\n정보보호학과: 다음주 월요일 문의",
+        "location": "본문 확인",
+        "event_start_time": "2024-11-05T05:00:00.000Z",
+        "event_end_time": "2024-11-05T07:00:00.000Z",
+        "createdAt": "2024-10-18T04:16:05.000Z",
+        "participants": []
+    },
+    {
+        "event_code": "SCHUSWCU1stAF_IndustryExpertSpecialLecture",
+        "event_name": "사업체 전문가 특강",
+        "description": "사업체 전문가 분을 모시고 진행하는 특강!",
+        "location": "인문과학관 1층 대강당 [6129호]",
+        "event_start_time": "2024-11-06T01:00:00.000Z",
+        "event_end_time": "2024-11-06T03:00:00.000Z",
+        "createdAt": "2024-10-18T04:15:25.000Z",
+        "participants": []
+    }
+]

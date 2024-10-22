@@ -45,16 +45,13 @@ struct MainView: View {
                 }
                 .tag(4)
             }
-        .disabled(eventManager.isLoading)
         .onAppear {
             userInformation.login { success in
                 print("Login success: \(success)")
             }
 
                 
-            guard let jwt = userInformation.accessToken else {
-                return
-            }
+            let jwt = userInformation.accessToken
             print("Java Web Token: \(jwt)")
         }
     }
