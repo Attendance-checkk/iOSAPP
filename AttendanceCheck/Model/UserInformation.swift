@@ -16,8 +16,10 @@ class UserInformation: ObservableObject {
     @AppStorage("department") var department: String?
     @AppStorage("studentID") var studentID: String?
     @AppStorage("studentName") var studentName: String?
+
     @AppStorage("accessToken") var accessToken: String = ""
     @AppStorage("refreshToken") var refreshToken: String = ""
+
     
     init() {
         self.loginState = storedLoginState ?? false
