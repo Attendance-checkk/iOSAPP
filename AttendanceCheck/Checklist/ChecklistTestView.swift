@@ -23,90 +23,79 @@ struct ChecklistTestView: View {
     
     var body: some View {
         ZStack {
-            if eventManager.isLoading {
-                ProcessingView(messageString: "정보를 가져오는 중입니다..")
-                    .transition(.opacity)
-                    .ignoresSafeArea(.all)
-                
-                Color.clear
-                    .onTapGesture {
-                        print("Checklist view loading...")
+            NavigationView {
+                VStack(spacing: 20) {
+                    TabView(selection: $currentBannerIndex) {
+                        ForEach(banners.indices, id: \.self) { index in
+                            Image(banners[index].bannerImageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                .onTapGesture {
+                                    selectedBannerURL = banners[index].bannerURL
+                                    showWebView = true
+                                }
+                                .tag(index)
+                                .background(.clear)
+                        }
+                        .background(.clear)
                     }
-            } else {
-                NavigationView {
-                    VStack(spacing: 20) {
-                        TabView(selection: $currentBannerIndex) {
-                            ForEach(banners.indices, id: \.self) { index in
-                                Image(banners[index].bannerImageName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 120)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                                    .onTapGesture {
-                                        selectedBannerURL = banners[index].bannerURL
-                                        showWebView = true
-                                    }
-                                    .tag(index)
-                                    .background(.clear)
-                            }
-                            .background(.clear)
-                        }
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
-                        )
-                        .tabViewStyle(PageTabViewStyle())
-                        .frame(height: 120)
-                        .padding(.horizontal, 30)
-                        .padding(.vertical, 10)
-                        .onAppear {
-                            startBannerAnimation()
-                        }
-                        .onDisappear {
-                            stopBannerAnimation()
-                        }
-                        .onChange(of: currentBannerIndex) { _, _ in
-                            resetBannerAnimation()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
+                    )
+                    .tabViewStyle(PageTabViewStyle())
+                    .frame(height: 120)
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 10)
+                    .onAppear {
+                        startBannerAnimation()
+                    }
+                    .onDisappear {
+                        stopBannerAnimation()
+                    }
+                    .onChange(of: currentBannerIndex) { _, _ in
+                        resetBannerAnimation()
+                    }
+                    
+                    List {
+                        Section(header: Text(changeProgressTitle())
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        ) {
+                            ProgressView(value: eventManager.progress)
+                                .progressViewStyle(LinearProgressViewStyle())
                         }
                         
-                        List {
-                            Section(header: Text(changeProgressTitle())
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .foregroundColor(.primary)
-                            ) {
-                                ProgressView(value: eventManager.progress)
-                                    .progressViewStyle(LinearProgressViewStyle())
-                            }
-                            
-                            Section(header: Text("스탬프 모으기")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .foregroundColor(.primary)
-                            ) {
-                                ForEach(timelinePrograms, id: \.events.event_code) { event in
-                                    eventRow(for: event)
-                                }
-                            }
-                        }
-                        .navigationTitle("체크리스트")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .sheet(isPresented: $showWebView) {
-                            WebView(urlString: selectedBannerURL)
-                        }
-                    }
-                    .refreshable {
-                        eventManager.loadProgramsData { success in
-                            if success {
-                                print("Refreshable loadProgramsData is completed")
-                            } else {
-                                print("Refreshable loadProgrmasData is failed")
+                        Section(header: Text("스탬프 모으기")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        ) {
+                            ForEach(timelinePrograms, id: \.events.event_code) { event in
+                                eventRow(for: event)
                             }
                         }
                     }
-                    .onAppear {
-                        initTimelinePrograms()
+                    .navigationTitle("체크리스트")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .sheet(isPresented: $showWebView) {
+                        WebView(urlString: selectedBannerURL)
                     }
+                }
+                .refreshable {
+                    eventManager.loadProgramsData { success in
+                        if success {
+                            print("Refreshable loadProgramsData is completed")
+                        } else {
+                            print("Refreshable loadProgrmasData is failed")
+                        }
+                    }
+                }
+                .onAppear {
+                    initTimelinePrograms()
                 }
             }
         }

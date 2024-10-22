@@ -26,7 +26,6 @@ class EventManager: ObservableObject {
     @Published var progress: Double = 0.0
     
     @Published var programs: [Events]? = nil
-    @Published var isLoading: Bool = true
     
     private var userInformation: UserInformation
     
@@ -60,11 +59,8 @@ class EventManager: ObservableObject {
     public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
         print("completeEventByQRCode function called: \(qrcode)")
         
-        isLoading = true
-        
         eventPost(qrcode) { success, statusCode, message in
             DispatchQueue.main.async {
-                self.isLoading = false
                 
                 guard success else {
                     print("이벤트 처리 실패: \(statusCode ?? -1), \(message ?? "알 수 없는 오류")")
@@ -183,28 +179,26 @@ class EventManager: ObservableObject {
     
     // MARK: - API(GET event list) 01(External)
     public func loadProgramsData(completion: @escaping(Bool) -> Void) {
-        self.isLoading = true
-        
-        loadPrograms { success, statusCode, message in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                
-                if success {
-                    print("Successfully GET events")
-                    if let programs = self.programs {
-                        self.checkSuccessStatus(programs)
-                        self.objectWillChange.send()
-                        self.changeDateFormat()
-                        completion(true)
-                    } else {
-                        print("No programs found")
-                        completion(false)
-                    }
-                } else {
-                    print("GET event failed with status code: \(statusCode ?? 0), message: \(message)")
-                    completion(false)
-                }
-            }
+        // 'Programs.json' 파일을 앱 번들에서 찾아서 로드
+        guard let fileURL = Bundle.main.url(forResource: "Programs", withExtension: "json") else {
+            print("Programs.json 파일을 찾을 수 없습니다.")
+            return
+        }
+
+        do {
+            // 파일에서 데이터 읽어오기
+            let data = try Data(contentsOf: fileURL)
+            
+            // JSON 디코딩
+            let decoder = JSONDecoder()
+            let loadedPrograms = try decoder.decode([Events].self, from: data)
+            
+            // 프로그램 리스트 업데이트
+            self.programs = loadedPrograms
+            changeDateFormat()
+            print("Programs 데이터를 성공적으로 불러왔습니다.")
+        } catch {
+            print("Programs 데이터를 로드하는 도중 오류 발생: \(error)")
         }
     }
     
