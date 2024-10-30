@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     @State private var selectedIndex: Int = 2
     
@@ -27,7 +28,7 @@ struct MainView: View {
                 }
                 .tag(1)
             
-            ChecklistTestView()
+            ChecklistView()
                 .tabItem {
                     Label("체크리스트", systemImage: "checkmark.seal")
                 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct MenuView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     let departmentString: String
     let studentID: String
@@ -18,11 +19,12 @@ struct MenuView: View {
     let surveyURL: URL = URL(string: LinkURLS.surveyURL.url)!
     let secureInformationURL: String = LinkURLS.secureInformation.url
     
-    @State private var notificationOn: Bool = true
     @State private var showAlert: Bool = false
-    @State private var showNotificationAlert: Bool = false
+    @State private var showNotificationAlert: NotificationAlertType? = nil
     @State private var isDeleteConfirmed: Bool = false
     @State private var showWebView: Bool = false
+    
+    @AppStorage("notificationOn") private var notificationOn: Bool = true
     
     @State private var showWebEnum: ShowWebEnum = .idle
     
@@ -100,34 +102,17 @@ struct MenuView: View {
                     Toggle(isOn: $notificationOn) {
                         Text("🔔 알림설정")
                     }
-                    .onChange(of: notificationOn) { _, newValue in
-                        handleNotificationToggle(isOn: newValue)
+                    .disabled(notificationManager.notificationPermissionStatus != .authorized)
+                    .onTapGesture {
+                        if notificationManager.notificationPermissionStatus != .authorized {
+                            showNotificationAlert = .permission
+                        }
                     }
                     
                     NavigationLink(destination: CautionView()) {
                         HStack {
-                            Text("⚠️ 계정 삭제 주의사항")
-                                .foregroundColor(.red)
-                        }
-                    }
-                    
-                    HStack {
-                        Button(action: {
-                            showAlert = true
-                        }) {
                             Text("🗑️ 계정 삭제")
                                 .foregroundColor(.red)
-                        }
-                        .alert(isPresented: $showAlert) {
-                            Alert(title: Text("계정 삭제"),
-                                  message: Text("정말로 삭제하시겠습니까? 계정은 다시 복구되지 않습니다."),
-                                  primaryButton: .destructive(Text("삭제")) {
-                                eventManager.clearEventManager()
-                                userInformation.userDelete()
-                                userInformation.clearUserInformation()
-                                  },
-                                  secondaryButton: .cancel()
-                                  )
                         }
                     }
                 }
@@ -142,26 +127,55 @@ struct MenuView: View {
                 }
             }
         }
-        .alert(isPresented: $showNotificationAlert) {
-            Alert(
-                title: Text("알림을 끄시겠습니까?"),
-                message: Text("알림을 비활성화하시면 공지를 놓치실 수 있어요!"),
-                primaryButton: .destructive(Text("확인")) {
-                    NotificationManager.instance.disableAllNotifications()
-                },
-                secondaryButton: .cancel({
-                    notificationOn = true
-                    NotificationManager.instance.setupNotifications()
-                })
-            )
+        .alert(item: $showNotificationAlert) { alert in
+            switch alert {
+            case .turnoff:
+                return Alert(
+                    title: Text("알림을 끄시겠습니까?"),
+                    message: Text("알림을 비활성화하시면 공지를 놓치실 수 있어요!"),
+                    primaryButton: .destructive(Text("확인")) {
+                        notificationOn = false
+                        notificationManager.disableAllNotifications()
+                    },
+                    secondaryButton: .cancel({
+                        notificationOn = true
+                    })
+                )
+            case .permission:
+                return Alert(
+                    title: Text("권한이 없습니다!"),
+                    message: Text("알림을 켜고 싶으시다면 설정에서 알림을 켜주세요!"),
+                    dismissButton: .default(Text("확인")) {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                )
+            }
         }
-    }
-    
-    private func handleNotificationToggle(isOn: Bool) {
-        if !isOn {
-            showNotificationAlert = true
-        } else {
-            NotificationManager.instance.setupNotifications()
+        .onAppear {
+            notificationManager.authorizationStatusCheck()
+            
+            if notificationManager.notificationPermissionStatus == .denied {
+                notificationOn = false
+            } else {
+                notificationOn = notificationOn
+            }
+        }
+        .onChange(of: notificationOn) { oldValue, newValue in
+            notificationManager.authorizationStatusCheck()
+            
+            if notificationManager.notificationPermissionStatus != .authorized {
+                notificationOn = false
+                return
+            }
+            
+            if oldValue == false {
+                notificationOn = true
+                notificationManager.setupNotifications()
+            } else {
+                showNotificationAlert = .turnoff
+            }
         }
     }
 }

@@ -12,7 +12,6 @@ struct QRView: View {
     @State private var session: AVCaptureSession = .init()
     @State private var output: AVCaptureMetadataOutput = .init()
     @State private var errorMessage: String = ""
-    @State private var showError: Bool = false
     @State private var cameraPermission: Permission = .idle
     @State private var scannedCode: String = ""
     @State private var showCode: Bool = false
@@ -56,6 +55,8 @@ struct QRView: View {
                     if !session.isRunning && cameraPermission == .approved {
                         reactiveCamera()
                     }
+                    
+                    checkingCameraPermission()
                 } label: {
                     Label("QR코드 인식 시작", systemImage: "qrcode")
                         .font(.headline)
@@ -69,21 +70,6 @@ struct QRView: View {
             .padding(.horizontal, 45)
             
             // MARK: - Alert
-            .alert(isPresented: $showError) {
-                Alert(
-                    title: Text("오류"),
-                    message: Text(errorMessage),
-                    primaryButton: .default(Text("확인")) {
-                        if cameraPermission == .denied {
-                            let settingString = UIApplication.openSettingsURLString
-                            if let settingsURL = URL(string: settingString) {
-                                openURL(settingsURL)
-                            }
-                        }
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
             .alert(isPresented: $showCode) {
                 if let qrAlertType = qrAlertType {
                     return Alert(
@@ -93,6 +79,11 @@ struct QRView: View {
                             if qrAlertType == .success {
                                 DispatchQueue.main.async {
                                     selectedIndex = 2
+                                }
+                            }
+                            if qrAlertType == .permission {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(url)
                                 }
                             }
                         })
@@ -105,7 +96,9 @@ struct QRView: View {
             .navigationTitle("QR코드")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear(perform: checkingCameraPermission)
+        .onAppear {
+            checkingCameraPermission()
+        }
         .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
             if let code = newValue {
                 scannedCode = code
@@ -193,11 +186,11 @@ struct QRView: View {
                     cameraSetting()
                 } else {
                     cameraPermission = .denied
-                    presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
+                    presentErrorMessage("NO PERMISSION")
                 }
             case .denied, .restricted:
                 cameraPermission = .denied
-                presentErrorMessage("카메라 권한을 허용하지 않으면 QR코드를 인식할 수 없습니다")
+                presentErrorMessage("NO PERMISSION")
             default:
                 break
             }
@@ -205,8 +198,12 @@ struct QRView: View {
     }
     
     private func presentErrorMessage(_ message: String) {
-        errorMessage = message
-        showError = true
+        print("presentErrorMessage")
+        
+        if message == "NO PERMISSION" {
+            qrAlertType = .permission
+            showCode = true
+        }
     }
 }
 

@@ -10,7 +10,6 @@ import SwiftUI
 struct MapView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var isMapFullScreen: Bool = false
     @State private var isMapLandscape: Bool = false
     
     @State private var scale: CGFloat = 1.0
@@ -32,7 +31,7 @@ struct MapView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 3)
+                                .stroke((colorScheme == .light) ? Color.black : Color.clear, lineWidth: 3)
                         )
                         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 10)
                         .padding()

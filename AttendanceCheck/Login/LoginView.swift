@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct LoginView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
+    
+    enum Field: Hashable {
+        case studentID
+        case studentName
+    }
+    
+    @FocusState private var focusedField: Field?
     
     @State private var showDepartmentSelection: Bool = false
     @State private var selectedDepartment: String = "학과를 선택하세요"
@@ -18,8 +27,16 @@ struct LoginView: View {
     @State private var showAlert: AlertType? = nil
     @State private var isLoading: Bool = false
     
+    @State private var departmentFormatErrorString: String = "헉과 선택"
+    @State private var departmentFormatErrorColor: Color = .primary
+    
     @State private var studentIDFormatErrorString: String = "학번 입력"
     @State private var studentIDFormatErrorColor: Color = .primary
+    
+    @State private var studentNameFormatErrorString: String = "이름 입력"
+    @State private var studentNameFormatErrorColor: Color = .primary
+    
+    @State private var studentIDValidationResult: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -35,194 +52,274 @@ struct LoginView: View {
                         eventManager.changeDateFormat()
                     }
             } else {
-                VStack(spacing: 10) {
-                    Spacer()
-                    
-                    Text("👋 환영합니다!")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.center)
-                    
-                    Image("SCHULogo_Rect")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 30)
-                    
-                    HStack {
-                        Text("학과 선택")
-                            .font(.body)
+                ZStack {
+                    if colorScheme == .light {
+                        Color.white
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                focusedField = nil
+                            }
+                    } else {
+                        Color.black
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                focusedField = nil
+                            }
+                    }
+                    VStack(spacing: 10) {
+                        Spacer()
+                        
+                        Text("👋 환영합니다!")
+                            .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.primary)
-                            .multilineTextAlignment(.leading)
+                            .multilineTextAlignment(.center)
                         
-                        Spacer()
-                    }
-                    .padding(.leading, 20)
-                    
-                    Menu {
-                        Button {
-                            selectedDepartment = "사물인터넷학과"
-                        } label: {
-                            Text("사물인터넷학과")
-                        }
-                        Button {
-                            selectedDepartment = "의료IT공학과"
-                        } label: {
-                            Text("의료IT공학과")
-                        }
-                        Button {
-                            selectedDepartment = "AI∙빅데이터학과"
-                        } label: {
-                            Text("AI∙빅데이터학과")
-                        }
-                        Button {
-                            selectedDepartment = "정보보호학과"
-                        } label: {
-                            Text("정보보호학과")
-                        }
-                        Button {
-                            selectedDepartment = "컴퓨터소프트웨어공학과"
-                        } label: {
-                            Text("컴퓨터소프트웨어공학과")
-                        }
-                        Button {
-                            selectedDepartment = "메타버스&게임학과"
-                        } label: {
-                            Text("메타버스&게임학과")
-                        }
-                    } label: {
+                        Image("SCHULogo_Rect")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 30)
+                        
                         HStack {
-                            Text(selectedDepartment)
-                                .foregroundColor(selectedDepartment == "학과를 선택하세요" ? .gray : .primary)
+                            Text(departmentFormatErrorString)
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundColor(departmentFormatErrorColor)
+                                .multilineTextAlignment(.leading)
+                            
                             Spacer()
                         }
-                        .padding(20)
-                        .background(Color.gray.opacity(0.5))
-                        .cornerRadius(10)
-                    }
-                    
-                    HStack {
-                        Text(studentIDFormatErrorString)
-                            .font(.body)
-                            .fontWeight(.bold)
-                            .foregroundColor(studentIDFormatErrorColor)
-                            .multilineTextAlignment(.leading)
-                            .padding(.top, 15)
+                        .padding(.leading, 20)
                         
-                        Spacer()
-                    }
-                    .padding(.leading, 20)
-                    TextField("학번", text: $inputStudentID)
-                        .padding(20)
-                        .background(Color.gray.opacity(0.5))
-                        .cornerRadius(10)
-                        .keyboardType(.numberPad)
-                        .onChange(of: inputStudentID) { _, _ in
-                            studentIDFormatValidation()
-                        }
-                    
-                    HStack {
-                        Text("이름 입력")
-                            .font(.body)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.leading)
-                            .padding(.top, 15)
-                        
-                        Spacer()
-                    }
-                    .padding(.leading, 20)
-                    TextField("이름", text: $inputStudentName)
-                        .padding(20)
-                        .background(Color.gray.opacity(0.5))
-                        .cornerRadius(10)
-                    
-                    Button(action: {
-                        loginButtonClicked()
-                    }) {
-                        Text("로그인")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: UIScreen.main.bounds.width / 3)
-                            .background(Color.blue)
+                        Menu {
+                            Button {
+                                selectedDepartment = "사물인터넷학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("사물인터넷학과")
+                            }
+                            Button {
+                                selectedDepartment = "의료IT공학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("의료IT공학과")
+                            }
+                            Button {
+                                selectedDepartment = "AI∙빅데이터학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("AI∙빅데이터학과")
+                            }
+                            Button {
+                                selectedDepartment = "정보보호학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("정보보호학과")
+                            }
+                            Button {
+                                selectedDepartment = "컴퓨터소프트웨어공학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("컴퓨터소프트웨어공학과")
+                            }
+                            Button {
+                                selectedDepartment = "메타버스&게임학과"
+                                departmentFormatValidation()
+                            } label: {
+                                Text("메타버스&게임학과")
+                            }
+                        } label: {
+                            HStack {
+                                Text(selectedDepartment)
+                                    .foregroundColor(selectedDepartment == "학과를 선택하세요" ? .gray : .primary)
+                                Spacer()
+                            }
+                            .padding(20)
+                            .background(Color.gray.opacity(0.5))
                             .cornerRadius(10)
-                    }
-                    .padding(.top, 50)
-                    .alert(item: $showAlert) { alert in
-                        switch alert {
-                        case .success:
-                            return Alert(
-                                title: Text("로그인 성공"),
-                                message: Text("반갑습니다! \(userInformation.studentName ?? "학생")님!"),
-                                dismissButton: .default(Text("확인"), action: {
-                                    userInformation.loginState = true
-                                    userInformation.storedLoginState = true
-                                })
-                            )
-                            
-                        case .loginFailed:
-                            return Alert(
-                                title: Text("로그인 실패"),
-                                message: Text("로그인 중 문제가 발생하였습니다! 입력 내용을 확인해주세요!"),
-                                dismissButton: .default(Text("확인"))
-                            )
-                            
-                        case .noIDError:
-                            return Alert(
-                                title: Text("학번 없음"),
-                                message: Text("학번을 입력해주세요!"),
-                                dismissButton: .default(Text("확인"))
-                            )
-                            
-                        case .noDepartmentError:
-                            return Alert(
-                                title: Text("학과 없음"),
-                                message: Text("학과를 선택해주세요!"),
-                                dismissButton: .default(Text("확인"))
-                            )
-                            
-                        case .idFormatError:
-                            return Alert(
-                                title: Text("학번 오류"),
-                                message: Text("학번 형식이 올바르지 않습니다"),
-                                dismissButton: .default(Text("확인"))
-                            )
-                            
-                        case .noNameError:
-                            return Alert(
-                                title: Text("이름 없음"),
-                                message: Text("이름을 입력해주세요!"),
-                                dismissButton: .default(Text("확인"))
-                            )
                         }
+                        
+                        HStack {
+                            Text(studentIDFormatErrorString)
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundColor(studentIDFormatErrorColor)
+                                .multilineTextAlignment(.leading)
+                                .padding(.top, 15)
+                            
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        TextField("학번", text: $inputStudentID)
+                            .padding(20)
+                            .background(Color.gray.opacity(0.5))
+                            .cornerRadius(10)
+                            .keyboardType(.numberPad)
+                            .onChange(of: inputStudentID) { _, _ in
+                                studentIDFormatValidation()
+                            }
+                            .onSubmit {
+                                focusedField = .studentName
+                            }
+                        
+                        HStack {
+                            Text(studentNameFormatErrorString)
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundColor(studentNameFormatErrorColor)
+                                .multilineTextAlignment(.leading)
+                                .padding(.top, 15)
+                            
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        TextField("이름", text: $inputStudentName)
+                            .padding(20)
+                            .background(Color.gray.opacity(0.5))
+                            .cornerRadius(10)
+                            .focused($focusedField, equals: .studentName)
+                            .submitLabel(.done)
+                            .onChange(of: inputStudentName, { _, _ in
+                                studentNameFormatValidation()
+                            })
+                            .onSubmit {
+                                loginButtonClicked()
+                            }
+                        
+                        Button(action: {
+                            loginButtonClicked()
+                        }) {
+                            Text("로그인")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(width: UIScreen.main.bounds.width / 3)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        .padding(.top, 50)
+                        .alert(item: $showAlert) { alert in
+                            switch alert {
+                            case .success:
+                                return Alert(
+                                    title: Text("로그인 성공"),
+                                    message: Text("반갑습니다! \(userInformation.studentName ?? "학생")님!"),
+                                    dismissButton: .default(Text("확인"), action: {
+                                        userInformation.loginState = true
+                                        userInformation.storedLoginState = true
+                                    })
+                                )
+                                
+                            case .loginFailed:
+                                return Alert(
+                                    title: Text("로그인 실패"),
+                                    message: Text("로그인 중 문제가 발생하였습니다! 입력 내용을 확인해주세요!"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .noIDError:
+                                return Alert(
+                                    title: Text("학번 없음"),
+                                    message: Text("학번을 입력해주세요!"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .idFormatError:
+                                return Alert(
+                                    title: Text("학번 오류"),
+                                    message: Text("학번 형식이 올바르지 않습니다"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .noDepartmentError:
+                                return Alert(
+                                    title: Text("학과 없음"),
+                                    message: Text("학과를 선택해주세요!"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .departmentFormatError:
+                                return Alert(
+                                    title: Text("학과 오류"),
+                                    message: Text("학과를 선택해주세요!"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .noNameError:
+                                return Alert(
+                                    title: Text("이름 없음"),
+                                    message: Text("이름을 입력해주세요!"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                                
+                            case .nameFormatError:
+                                return Alert(
+                                    title: Text("이름 오류"),
+                                    message: Text("이름 형식이 올바르지 않습니다"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                            }
+                        }
+                        
+                        Spacer()
                     }
-                    
-                    Spacer()
+                    .padding(30)
                 }
-                .padding(30)
             }
         }
     }
     
-    private func studentIDFormatValidation() {
-        // 학번 앞 두 자리가 20이 아니거나, 8자리가 아니거나, 비어 있거나
+    private func departmentFormatValidation() -> Bool {
+        let noSelectBool: Bool = selectedDepartment != "학과를 선택하세요"
+        
+        if noSelectBool {
+            departmentFormatErrorString = "학과 선택"
+            departmentFormatErrorColor = .primary
+            return true
+        } else {
+            departmentFormatErrorString = "학과를 선택해주세요"
+            departmentFormatErrorColor = .red
+            return false
+        }
+    }
+    
+    private func studentIDFormatValidation() -> Bool {
         let emptyBool: Bool = !inputStudentID.isEmpty
         let lengthBool: Bool = inputStudentID.count == 8
         let prefixBool: Bool = inputStudentID.hasPrefix("20")
+        let onlyNumberBool: Bool = inputStudentID.allSatisfy(\.isNumber)
         
-        print("emptyBool: \(emptyBool), lengthBool: \(lengthBool), prefixBool: \(prefixBool)")
+        print("emptyBool: \(emptyBool), lengthBool: \(lengthBool), prefixBool: \(prefixBool), onlyNumberBool: \(onlyNumberBool)")
         
-        if emptyBool && lengthBool && prefixBool {
+        if emptyBool && lengthBool && prefixBool && onlyNumberBool {
             studentIDFormatErrorString = "학번이 적절한 형식입니다"
             studentIDFormatErrorColor = .green
+            return true // 형식이 올바른 경우
         } else {
             studentIDFormatErrorString = "학번 형식이 올바르지 않습니다"
             studentIDFormatErrorColor = .red
+            return false // 형식이 올바르지 않은 경우
         }
     }
+    
+    private func studentNameFormatValidation() -> Bool {
+        let emptyBool: Bool = !inputStudentName.isEmpty
+        let placeholderBool: Bool = inputStudentName != "이름"
+        let containsNumber: Bool = inputStudentName.rangeOfCharacter(from: .decimalDigits) != nil
+        let containsSpecialCharacter: Bool = inputStudentName.rangeOfCharacter(from: CharacterSet.punctuationCharacters) != nil || inputStudentName.rangeOfCharacter(from: CharacterSet.symbols) != nil
+
+        if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter {
+            studentNameFormatErrorString = "이름이 적절한 형식입니다"
+            studentNameFormatErrorColor = .green
+            return true
+        } else {
+            studentNameFormatErrorString = "이름 형식이 올바르지 않습니다"
+            studentNameFormatErrorColor = .red
+            return false
+        }
+    }
+
     
     private func deviceSpecificImageWidth() -> CGFloat {
         print(UIScreen.main.bounds.width)
@@ -286,31 +383,37 @@ struct LoginView: View {
     }
     
     private func loginButtonClicked() {
-        if !studentIDValidation() {
+        if !departmentFormatValidation() {
+            showAlert = .departmentFormatError
+            return
+        }
+        
+        if !studentIDFormatValidation() {
             showAlert = .idFormatError
             return
-        } else {
-            userInformation.department = selectedDepartment
-            userInformation.studentID = inputStudentID
-            userInformation.studentName = inputStudentName
+        }
             
-            userInformation.login { success in
-                if success {
-                    eventManager.loadProgramsData { success in
-                        isLoading = false
-                        showAlert = .success
-                    }
-                } else {
-                    showAlert = .loginFailed
+        if !studentNameFormatValidation() {
+            showAlert = .nameFormatError
+            return
+        }
+        
+        userInformation.department = selectedDepartment
+        userInformation.studentID = inputStudentID
+        userInformation.studentName = inputStudentName
+        
+        userInformation.login { success in
+            if success {
+                eventManager.loadProgramsData { success in
+                    isLoading = false
+                    showAlert = .success
                 }
+            } else {
+                showAlert = .loginFailed
             }
         }
         
         print("Saved User Information: \(String(describing: userInformation.department)), \(String(describing: userInformation.studentID)), \(String(describing: userInformation.studentName))")
-    }
-    
-    private func studentIDValidation() -> Bool {
-        return inputStudentID.count == 8
     }
 }
 

@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
+    @EnvironmentObject var notificationManager: NotificationManager
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -19,12 +20,16 @@ struct ContentView: View {
             MainView()
                 .environmentObject(userInformation)
                 .environmentObject(eventManager)
+                .environmentObject(notificationManager)
                 .onAppear {
                     printUserInformation()
                 }
         } else {
             LoginView()
                 .environmentObject(userInformation)
+                .onAppear {
+                    notificationManager.requestAuthorization()
+                }
         }
     }
     

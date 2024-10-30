@@ -27,7 +27,7 @@ struct ChecklistDetailView: View {
                 .background(.clear)
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
-                        .stroke((colorScheme == .light) ? Color.primary : Color.clear, lineWidth: 1)
+                        .stroke((colorScheme == .light) ? Color.gray : Color.clear, lineWidth: 1)
                 )
                 .padding(.vertical, 10)
             

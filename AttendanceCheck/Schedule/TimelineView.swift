@@ -123,7 +123,7 @@ struct TimelineView: View {
                             .foregroundColor(.white)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke((colorScheme == .light) ? .primary : Color.clear, lineWidth: 1)
+                                    .stroke((colorScheme == .light) ? .gray : Color.clear, lineWidth: 1)
                             }
                         
                         Image(program.iconName)

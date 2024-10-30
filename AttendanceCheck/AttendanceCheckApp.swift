@@ -12,12 +12,12 @@ import SwiftData
 struct AttendanceCheckApp: App {
     @StateObject private var userInformation = UserInformation()
     @StateObject private var eventManager: EventManager
+    @StateObject private var notificationManager = NotificationManager()
     
     init() {
         _eventManager = StateObject(wrappedValue: EventManager(userInformation: UserInformation()))
-        NotificationManager.instance.requestAuthorization()
     }
-     
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -36,6 +36,7 @@ struct AttendanceCheckApp: App {
             ContentView()
                 .environmentObject(userInformation)
                 .environmentObject(eventManager)
+                .environmentObject(notificationManager)
         }
         .modelContainer(sharedModelContainer)
     }

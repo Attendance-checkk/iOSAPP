@@ -2,7 +2,7 @@
 //  ChecklistView.swift
 //  AttendanceCheck
 //
-//  Created by ROLF J. on 10/6/24.
+//  Created by ROLF J. on 10/19/24.
 //
 
 import SwiftUI
@@ -15,6 +15,7 @@ struct ChecklistView: View {
     @State private var bannerTimer: Timer? = nil
     @State private var showWebView: Bool = false
     @State private var selectedBannerURL: String = ""
+    @State private var timelinePrograms: [TimelinePrograms] = []
     
     private let banners = Banners
     private let animationDuration: Double = 0.5
@@ -52,12 +53,12 @@ struct ChecklistView: View {
                         }
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
-                                .stroke(colorScheme == .light ? .black : .clear, lineWidth: 1)
+                                .stroke(colorScheme == .light ? .gray : .clear, lineWidth: 1)
                         )
                         .tabViewStyle(PageTabViewStyle())
                         .frame(height: 120)
                         .padding(.horizontal, 30)
-                        .padding(.top, 20)
+                        .padding(.vertical, 10)
                         .onAppear {
                             startBannerAnimation()
                         }
@@ -67,73 +68,98 @@ struct ChecklistView: View {
                         .onChange(of: currentBannerIndex) { _, _ in
                             resetBannerAnimation()
                         }
-                        Text(changeProgressTitle())
-                            .font(.title3)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 10)
                         
-                        ProgressView(value: eventManager.progress)
-                            .progressViewStyle(LinearProgressViewStyle())
-                            .padding(.horizontal, 30)
-                        
-                        if let events = eventManager.programs {
-                            List(events, id: \.event_code) { event in
-                                NavigationLink(destination: detailView(for: event)) {
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            
-                                            Text("\(String(describing: event.event_start_time ?? "")) ~ \(event.event_end_time ?? "")")
-                                                .font(.body)
-                                                .foregroundColor(.primary)
-                                            
-                                            Text(event.event_name)
-                                                .font(.title3)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.primary)
-                                        }
-                                        
-                                        Spacer()
-                                        
-                                        GeometryReader { geometry in
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .frame(width: geometry.size.height, height: geometry.size.height)
-                                                    .foregroundColor(.white)
-                                                    .overlay {
-                                                        RoundedRectangle(cornerRadius: 10)
-                                                            .stroke(Color.black, lineWidth: 1)
-                                                    }
-                                                
-                                                Image("SCHUCSTAMP")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
-                                                    .opacity(eventManager.isEventCompleted(code: event.event_code) ? 1.0 : 0.0)
-                                            }
-                                        }
-                                        .frame(width: 50, height: 50)
-                                    }
-                                    .padding(.vertical, 10)
-                                }
+                        List {
+                            Section(header: Text(changeProgressTitle())
+                                .font(.headline)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                            ) {
+                                ProgressView(value: eventManager.progress)
+                                    .progressViewStyle(LinearProgressViewStyle())
                             }
-                            .refreshable {
-                                eventManager.loadProgramsData { success in
-                                    if success {
-                                        print("Refreshable loadProgramsData is completed")
-                                    } else {
-                                        print("Refreshable loadProgrmasData is failed")
-                                    }
+                            
+                            Section(header: Text("스탬프 모으기")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                            ) {
+                                ForEach(timelinePrograms, id: \.events.event_code) { event in
+                                    eventRow(for: event)
                                 }
                             }
                         }
+                        .navigationTitle("체크리스트")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .sheet(isPresented: $showWebView) {
+                            WebView(urlString: selectedBannerURL)
+                        }
                     }
-                    .navigationTitle("체크리스트")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .sheet(isPresented: $showWebView) {
-                        WebView(urlString: selectedBannerURL)
+                    .refreshable {
+                        eventManager.loadProgramsData { success in
+                            if success {
+                                print("Refreshable loadProgramsData is completed")
+                            } else {
+                                print("Refreshable loadProgrmasData is failed")
+                            }
+                        }
+                    }
+                    .onAppear {
+                        initTimelinePrograms()
                     }
                 }
             }
+        }
+    }
+    
+    private func initTimelinePrograms() {
+        let programs = eventManager.returnProgramsForChecklist()
+
+        timelinePrograms = programs.map { event in
+            var status: TimelineStatus
+            
+            let checkStartTime: Date = dateStringToDate(from: event.event_start_time ?? "10월 18일(수) 12:00") ?? Date()
+            let checkEndTime: Date = dateStringToDate(from: event.event_end_time ?? "10월 18일(수) 12:00") ?? Date()
+            
+            let currentDate = Date()
+            
+            if currentDate < checkStartTime {
+                status = .upcoming
+            } else if checkStartTime <= currentDate && currentDate <= checkEndTime {
+                status = .inProgress
+            } else {
+                status = .ended
+            }
+            
+            return TimelinePrograms(events: event, iconName: eventIconName(code: event.event_code), status: status)
+        }
+    }
+    
+    private func dateStringToDate(from formattedString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        let currentYear = 2024
+        let yearAddedString = "\(currentYear)년 \(formattedString)"
+        
+        dateFormatter.dateFormat = "yyyy년 MM월 d일(E) a h:mm"
+        if let date = dateFormatter.date(from: yearAddedString) {
+            return date
+        }
+        
+        dateFormatter.dateFormat = "yyyy년 MM월 d일(E) HH:mm"
+        return dateFormatter.date(from: yearAddedString)
+    }
+    
+    private func eventIconName(code: String) -> String {
+        switch code {
+        case "SCHUSWCU1stAF_ProjectPresentationParticipation": return "JournalPoster"
+        case "SCHUSWCU1stAF_OpeningCeremony": return "OpeningCeremony"
+        case "SCHUSWCU1stAF_SWCUGameContest": return "Gamepad"
+        case "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": return "TalkConcert"
+        case "SCHUSWCU1stAF_IndustryExpertSpecialLecture": return "SpecialLecture"
+        case "SCHUSWCU1stAF_ClosingCeremony": return "Award"
+        default: return "marker"
         }
     }
     
@@ -146,6 +172,7 @@ struct ChecklistView: View {
             case "SCHUSWCU1stAF_SWCUGameContest": return "SWCUAF_EVENT_3"
             case "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": return "SWCUAF_EVENT_4"
             case "SCHUSWCU1stAF_IndustryExpertSpecialLecture": return "SWCUAF_EVENT_5"
+            case "SCHUSWCU1stAF_ClosingCeremony": return "SWCUAF_EVENT_6"
             default: return "SWCUAF_Banner_1"
             }
         }
@@ -156,6 +183,61 @@ struct ChecklistView: View {
         let endTime: String = event.event_end_time ?? "EVENTENDTIMEERROR"
         
         return ChecklistDetailView(eventName: title, detailBannerImageName: detailBannerImageName, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
+    }
+    
+    private func eventRow(for event: TimelinePrograms) -> some View {
+        NavigationLink(destination: detailView(for: event.events)) {
+            HStack {
+                GeometryReader { geometry in
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: geometry.size.height, height: geometry.size.height)
+                            .foregroundColor(.white)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(colorScheme == .light ? Color.gray : .clear, lineWidth: 1)
+                            }
+                        
+                        Image(event.iconName)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(10)
+                            .opacity(eventManager.isEventCompleted(code: event.events.event_code) ? 0.4: 1.0)
+                        
+                        Image("SCHUCSTAMP")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+                            .opacity(eventManager.isEventCompleted(code: event.events.event_code) ? 1.0 : 0.0)
+                    }
+                }
+                .frame(width: 80, height: 80)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    if let startTime = event.events.event_start_time {
+                        Text(startTime)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    if let endTime = event.events.event_end_time {
+                        Text(endTime)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Text(event.events.event_name)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                }
+                .padding(.leading)
+                
+                Spacer()
+            }
+            .frame(height: 100)
+        }
     }
     
     private func changeProgressTitle() -> String {

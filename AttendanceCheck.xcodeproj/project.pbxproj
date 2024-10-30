@@ -35,10 +35,9 @@
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
 		FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */; };
-		FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */; };
 		FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03742CBF3D1E00531123 /* NotificationManager.swift */; };
 		FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03772CBF40A200531123 /* NotificationData.swift */; };
-		FDD2B2182CC3722D00498A5C /* ChecklistTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD2B2172CC3722D00498A5C /* ChecklistTestView.swift */; };
+		FDBDE0C72CD25E5500D248AE /* NotificationAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBDE0C62CD25E5500D248AE /* NotificationAlertType.swift */; };
 		FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D02CC222BA00E7F440 /* Banner.swift */; };
 		FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D22CC2287900E7F440 /* WebView.swift */; };
 		FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */; };
@@ -99,10 +98,9 @@
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlretType.swift; sourceTree = "<group>"; };
-		FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFullScreenView.swift; sourceTree = "<group>"; };
 		FDBC03742CBF3D1E00531123 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FDBC03772CBF40A200531123 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
-		FDD2B2172CC3722D00498A5C /* ChecklistTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistTestView.swift; sourceTree = "<group>"; };
+		FDBDE0C62CD25E5500D248AE /* NotificationAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAlertType.swift; sourceTree = "<group>"; };
 		FDDEF2D02CC222BA00E7F440 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		FDDEF2D22CC2287900E7F440 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE692CB2839C0077365C /* MapView.swift */,
-				FDABB1FB2CBE7512006CF22D /* MapFullScreenView.swift */,
 				FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */,
 			);
 			path = Map;
@@ -252,7 +249,6 @@
 				FDDEF2CF2CC222B000E7F440 /* Model */,
 				FD37FE6B2CB283A00077365C /* ChecklistView.swift */,
 				FD37FE732CB2865D0077365C /* ChecklistDetailView.swift */,
-				FDD2B2172CC3722D00498A5C /* ChecklistTestView.swift */,
 			);
 			path = Checklist;
 			sourceTree = "<group>";
@@ -328,6 +324,7 @@
 			children = (
 				FDBC03772CBF40A200531123 /* NotificationData.swift */,
 				FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */,
+				FDBDE0C62CD25E5500D248AE /* NotificationAlertType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -410,7 +407,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					FD37FE182CB282BC0077365C = {
 						CreatedOnToolsVersion = 16.0;
@@ -490,13 +487,12 @@
 				FD37FE6C2CB283A00077365C /* ChecklistView.swift in Sources */,
 				FD37FE6A2CB2839C0077365C /* MapView.swift in Sources */,
 				FDDEF2DF2CC3407E00E7F440 /* TimelineView.swift in Sources */,
-				FDD2B2182CC3722D00498A5C /* ChecklistTestView.swift in Sources */,
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
 				FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */,
 				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
+				FDBDE0C72CD25E5500D248AE /* NotificationAlertType.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
-				FDABB1FC2CBE7512006CF22D /* MapFullScreenView.swift in Sources */,
 				FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
@@ -554,6 +550,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -618,6 +615,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -690,7 +688,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -728,7 +726,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
