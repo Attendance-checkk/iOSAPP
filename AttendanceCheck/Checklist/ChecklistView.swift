@@ -66,7 +66,7 @@ struct ChecklistView: View {
                         .onDisappear {
                             stopBannerAnimation()
                         }
-                        .onChange(of: currentBannerIndex) { _, _ in
+                        .onChange(of: currentBannerIndex) { _ in
                             resetBannerAnimation()
                         }
                         

@@ -8,7 +8,7 @@
 import SwiftUI
 
 class EventManager: ObservableObject {
-    static let instance = EventManager(userInformation: UserInformation.instance)
+    static let instance = EventManager()
     
     private let eventCodeToIndex: [String: Int] = [
         "SCHUSWCU1stAF_OpeningCeremony": 0,
@@ -28,10 +28,7 @@ class EventManager: ObservableObject {
     @Published var programs: [Events]? = nil
     @Published var isLoading: Bool = true
     
-    private var userInformation: UserInformation
-    
-    init(userInformation: UserInformation) {
-        self.userInformation = userInformation
+    init() {
         loadProgramsData { success, statusCode, message in
             if success {
                 print("loadProgramsData_init success")
@@ -39,8 +36,8 @@ class EventManager: ObservableObject {
                 if statusCode == 409 {
                     print("No user error from init of EventManager")
                     self.clearEventManager()
-                    userInformation.userDelete()
-                    userInformation.clearUserInformation()
+                    UserInformation.instance.userDelete()
+                    UserInformation.instance.clearUserInformation()
                 }
             }
         }
@@ -93,7 +90,7 @@ class EventManager: ObservableObject {
     private func eventPost(_ qrcode: String, completion: @escaping (Bool, Int?, String?) -> Void) {
         print("Event POST: \(qrcode)")
         
-        guard let token = userInformation.accessToken else {
+        guard let token = UserInformation.instance.accessToken else {
             completion(false, 800, "No token")
             return
         }
@@ -223,7 +220,7 @@ class EventManager: ObservableObject {
     
     // MARK: - API(GET event list) 02(Internal)
     private func loadPrograms(completion: @escaping(Bool, Int?, String) -> Void) {
-        guard let token = userInformation.accessToken else {
+        guard let token = UserInformation.instance.accessToken else {
             print("No token existed")
             completion(false, 800, "No token existed")
             return

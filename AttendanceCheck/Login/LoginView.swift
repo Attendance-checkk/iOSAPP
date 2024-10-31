@@ -159,7 +159,7 @@ struct LoginView: View {
                             .background(Color.gray.opacity(0.5))
                             .cornerRadius(10)
                             .keyboardType(.numberPad)
-                            .onChange(of: inputStudentID) { _, _ in
+                            .onChange(of: inputStudentID) { _ in
                                 studentIDFormatValidation()
                             }
                             .onSubmit {
@@ -183,7 +183,7 @@ struct LoginView: View {
                             .cornerRadius(10)
                             .focused($focusedField, equals: .studentName)
                             .submitLabel(.done)
-                            .onChange(of: inputStudentName, { _, _ in
+                            .onChange(of: inputStudentName, perform: { _ in
                                 studentNameFormatValidation()
                             })
                             .onSubmit {

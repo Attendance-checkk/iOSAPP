@@ -6,30 +6,28 @@
 //
 
 import SwiftUI
-import SwiftData
+import CoreData
 
 @main
 struct AttendanceCheckApp: App {
     @StateObject private var userInformation = UserInformation()
-    @StateObject private var eventManager: EventManager
+    @StateObject private var eventManager = EventManager()
     @StateObject private var notificationManager = NotificationManager()
     
-    init() {
-        _eventManager = StateObject(wrappedValue: EventManager(userInformation: UserInformation()))
-    }
-
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+    // Core Data Stack
+    let persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "AttendanceCheck") // Core Data 모델 이름
+        container.loadPersistentStores { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
         }
+        return container
     }()
+    
+    init() {
+        
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -37,7 +35,7 @@ struct AttendanceCheckApp: App {
                 .environmentObject(userInformation)
                 .environmentObject(eventManager)
                 .environmentObject(notificationManager)
+                .environment(\.managedObjectContext, persistentContainer.viewContext) // Core Data Context 제공
         }
-        .modelContainer(sharedModelContainer)
     }
 }

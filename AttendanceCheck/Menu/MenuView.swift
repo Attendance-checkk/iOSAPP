@@ -162,7 +162,7 @@ struct MenuView: View {
                 notificationOn = notificationOn
             }
         }
-        .onChange(of: notificationOn) { oldValue, newValue in
+        .onChange(of: notificationOn) { oldValue in
             notificationManager.authorizationStatusCheck()
             
             if notificationManager.notificationPermissionStatus != .authorized {
@@ -170,7 +170,7 @@ struct MenuView: View {
                 return
             }
             
-            if oldValue == false {
+            if oldValue == true {
                 notificationOn = true
                 notificationManager.setupNotifications()
             } else {
