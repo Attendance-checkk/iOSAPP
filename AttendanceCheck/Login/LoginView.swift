@@ -58,12 +58,14 @@ struct LoginView: View {
                             .ignoresSafeArea()
                             .onTapGesture {
                                 focusedField = nil
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
                     } else {
                         Color.black
                             .ignoresSafeArea()
                             .onTapGesture {
                                 focusedField = nil
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
                     }
                     VStack(spacing: 10) {
@@ -91,7 +93,7 @@ struct LoginView: View {
                             
                             Spacer()
                         }
-                        .padding(.leading, 20)
+                        .padding(.leading, 10)
                         
                         Menu {
                             Button {
@@ -151,7 +153,7 @@ struct LoginView: View {
                             
                             Spacer()
                         }
-                        .padding(.leading, 20)
+                        .padding(.leading, 10)
                         TextField("학번", text: $inputStudentID)
                             .padding(20)
                             .background(Color.gray.opacity(0.5))
@@ -174,7 +176,7 @@ struct LoginView: View {
                             
                             Spacer()
                         }
-                        .padding(.leading, 20)
+                        .padding(.leading, 10)
                         TextField("이름", text: $inputStudentName)
                             .padding(20)
                             .background(Color.gray.opacity(0.5))
@@ -259,23 +261,48 @@ struct LoginView: View {
                                     message: Text("이름 형식이 올바르지 않습니다"),
                                     dismissButton: .default(Text("확인"))
                                 )
+                            
+                            case .recheck:
+                                return Alert(
+                                    title: Text("입력 정보 확인"),
+                                    message: Text("입력한 정보가 맞으신가요?\n입력 정보가 다르다면 경품지급이 어려울 수 있습니다!"),
+                                    primaryButton: .default(Text("로그인"), action: {
+                                        isLoading = true
+                                        
+                                        userInformation.department = selectedDepartment
+                                        userInformation.studentID = inputStudentID
+                                        userInformation.studentName = inputStudentName
+                                        
+                                        userInformation.login { success in
+                                            self.isLoading = false
+                                            if success {
+                                                eventManager.loadProgramsData { success, statusCode, message in
+                                                    showAlert = .success
+                                                }
+                                            } else {
+                                                showAlert = .loginFailed
+                                            }
+                                        }
+                                    }),
+                                    secondaryButton: .cancel()
+                                )
                             }
                         }
                         
                         Spacer()
                     }
-                    .padding(30)
                 }
             }
         }
+        .padding(30)
     }
     
     private func departmentFormatValidation() -> Bool {
         let noSelectBool: Bool = selectedDepartment != "학과를 선택하세요"
         
         if noSelectBool {
-            departmentFormatErrorString = "학과 선택"
-            departmentFormatErrorColor = .primary
+            departmentFormatErrorString = "학과가 선택되었습니다"
+            departmentFormatErrorColor = .green
             return true
         } else {
             departmentFormatErrorString = "학과를 선택해주세요"
@@ -305,11 +332,14 @@ struct LoginView: View {
     
     private func studentNameFormatValidation() -> Bool {
         let emptyBool: Bool = !inputStudentName.isEmpty
+        let atLeast2Bool: Bool = inputStudentName.count >= 2
         let placeholderBool: Bool = inputStudentName != "이름"
         let containsNumber: Bool = inputStudentName.rangeOfCharacter(from: .decimalDigits) != nil
         let containsSpecialCharacter: Bool = inputStudentName.rangeOfCharacter(from: CharacterSet.punctuationCharacters) != nil || inputStudentName.rangeOfCharacter(from: CharacterSet.symbols) != nil
+        
+        print("emptyBool: \(emptyBool), atLeast2Bool: \(atLeast2Bool), placeholderBool: \(placeholderBool), containsNumber: \(containsNumber), containsSpecialCharacter: \(containsSpecialCharacter)")
 
-        if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter {
+        if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter && atLeast2Bool {
             studentNameFormatErrorString = "이름이 적절한 형식입니다"
             studentNameFormatErrorColor = .green
             return true
@@ -398,20 +428,7 @@ struct LoginView: View {
             return
         }
         
-        userInformation.department = selectedDepartment
-        userInformation.studentID = inputStudentID
-        userInformation.studentName = inputStudentName
-        
-        userInformation.login { success in
-            if success {
-                eventManager.loadProgramsData { success in
-                    isLoading = false
-                    showAlert = .success
-                }
-            } else {
-                showAlert = .loginFailed
-            }
-        }
+        showAlert = .recheck
         
         print("Saved User Information: \(String(describing: userInformation.department)), \(String(describing: userInformation.studentID)), \(String(describing: userInformation.studentName))")
     }

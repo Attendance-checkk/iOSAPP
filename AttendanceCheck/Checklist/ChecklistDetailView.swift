@@ -10,6 +10,8 @@ import SwiftUI
 struct ChecklistDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     
+    @EnvironmentObject private var eventManager: EventManager
+    
     let eventName: String
     let detailBannerImageName: String
     let eventLocation: String
@@ -17,8 +19,7 @@ struct ChecklistDetailView: View {
     let startTime: String
     let endTime: String
     
-    var body: some View {
-        VStack(spacing: 20) {
+    var body: some View {VStack(spacing: 20) {
             Image(detailBannerImageName)
                 .resizable()
                 .scaledToFit()

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChecklistView: View {
     @EnvironmentObject private var eventManager: EventManager
+    @EnvironmentObject private var userInformation: UserInformation
     @Environment(\.colorScheme) var colorScheme
     
     @State private var currentBannerIndex: Int = 0
@@ -47,7 +48,7 @@ struct ChecklistView: View {
                                         showWebView = true
                                     }
                                     .tag(index)
-                                    .background(.clear)
+                                    .background((colorScheme == .light) ? Color.white : Color.black)
                             }
                             .background(.clear)
                         }
@@ -96,11 +97,16 @@ struct ChecklistView: View {
                         }
                     }
                     .refreshable {
-                        eventManager.loadProgramsData { success in
+                        eventManager.loadProgramsData { success, statusCode, message in
                             if success {
                                 print("Refreshable loadProgramsData is completed")
                             } else {
-                                print("Refreshable loadProgrmasData is failed")
+                                if statusCode == 409 {
+                                    print("No user error from loadProgramsData")
+                                    eventManager.clearEventManager()
+                                    userInformation.userDelete()
+                                    userInformation.clearUserInformation()
+                                }
                             }
                         }
                     }
@@ -130,7 +136,7 @@ struct ChecklistView: View {
             } else {
                 status = .ended
             }
-            
+                
             return TimelinePrograms(events: event, iconName: eventIconName(code: event.event_code), status: status)
         }
     }
@@ -192,10 +198,10 @@ struct ChecklistView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: geometry.size.height, height: geometry.size.height)
-                            .foregroundColor(.white)
+                            .foregroundColor(eventManager.isEventCompleted(code: event.events.event_code) ? Color(hex: "26539c") : .white)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(colorScheme == .light ? Color.gray : .clear, lineWidth: 1)
+                                    .stroke(((eventManager.isEventCompleted(code: event.events.event_code) ? Color(hex: "26539c") : (colorScheme == .light ? Color.gray : Color.clear)) ?? Color.clear), lineWidth: eventManager.isEventCompleted(code: event.events.event_code) ? 3 : (colorScheme == .light ? 1 : 0))
                             }
                         
                         Image(event.iconName)
@@ -203,9 +209,9 @@ struct ChecklistView: View {
                             .scaledToFit()
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(10)
-                            .opacity(eventManager.isEventCompleted(code: event.events.event_code) ? 0.4: 1.0)
+                            .opacity(eventManager.isEventCompleted(code: event.events.event_code) ? 0.0 : 1.0)
                         
-                        Image("SCHUCSTAMP")
+                        Image("SCHUSTAMP_WHITE")
                             .resizable()
                             .scaledToFit()
                             .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
@@ -260,6 +266,25 @@ struct ChecklistView: View {
     private func resetBannerAnimation() {
         stopBannerAnimation()
         startBannerAnimation()
+    }
+}
+
+extension Color {
+    init?(hex: String) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+        let scanner = Scanner(string: hexSanitized)
+        
+        // scanHexInt64를 사용하여 UInt64로 변환
+        guard scanner.scanHexInt64(&rgb) else { return nil }
+
+        let red = Double((rgb >> 16) & 0xFF) / 255.0
+        let green = Double((rgb >> 8) & 0xFF) / 255.0
+        let blue = Double(rgb & 0xFF) / 255.0
+
+        self.init(red: red, green: green, blue: blue)
     }
 }
 

@@ -23,12 +23,14 @@ struct ContentView: View {
                 .environmentObject(notificationManager)
                 .onAppear {
                     printUserInformation()
+                    notificationManager.authorizationStatusCheck()
                 }
         } else {
             LoginView()
                 .environmentObject(userInformation)
                 .onAppear {
                     notificationManager.requestAuthorization()
+                    notificationManager.authorizationStatusCheck()
                 }
         }
     }

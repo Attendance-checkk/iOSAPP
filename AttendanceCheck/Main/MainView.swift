@@ -50,6 +50,7 @@ struct MainView: View {
         .onAppear {
             userInformation.login { success in
                 print("Login success: \(success)")
+                print("userInformation.loginState: \(userInformation.loginState)")
             }
 
                 

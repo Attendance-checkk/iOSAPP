@@ -133,22 +133,26 @@ class UserInformation: ObservableObject {
             print(String(describing: error))
             return
           }
-          print(String(data: data, encoding: .utf8)!)
+            
+            self.clearUserInformation()
+            print(String(data: data, encoding: .utf8)!)
         }
 
         task.resume()
     }
     
     public func clearUserInformation() {
-        department = nil
-        studentID = nil
-        studentName = nil
-        accessToken = nil
-        
-        loginState = false
-        storedLoginState = false
-        
         DispatchQueue.main.async {
+            self.storedLoginState = false
+            self.department = nil
+            self.studentID = nil
+            self.studentName = nil
+            self.accessToken = nil
+            self.refreshToken = nil
+            
+            self.loginState = false
+            self.storedLoginState = false
+            
             self.objectWillChange.send()
         }
     }

@@ -77,6 +77,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
                     self.notificationPermissionStatus = .authorized
                 } else {
                     self.notificationPermissionStatus = .denied
+                    self.disableAllNotifications()
                 }
             }
         }

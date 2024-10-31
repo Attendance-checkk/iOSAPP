@@ -16,6 +16,7 @@ enum AlertType: Identifiable {
     case idFormatError
     case noNameError
     case nameFormatError
+    case recheck
     
     var id: String {
         switch self {
@@ -27,6 +28,7 @@ enum AlertType: Identifiable {
         case .idFormatError: return "idFormatError"
         case .noNameError: return "noNameError"
         case .nameFormatError: return "nameFormatError"
+        case .recheck: return "recheck"
         }
     }
 }

@@ -11,6 +11,7 @@ struct TimelineView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject private var eventManager: EventManager
+    @EnvironmentObject private var userInformation: UserInformation
     
     @State private var timelinePrograms: [TimelinePrograms] = []
     
@@ -53,9 +54,16 @@ struct TimelineView: View {
                 initTimelinePrograms()
             }
             .refreshable {
-                eventManager.loadProgramsData { success in
+                eventManager.loadProgramsData { success, statusCode, message in
                     if success {
                         initTimelinePrograms()
+                    } else {
+                        if statusCode == 409 {
+                            print("No user error from timeline")
+                            eventManager.clearEventManager()
+                            userInformation.userDelete()
+                            userInformation.clearUserInformation()
+                        }
                     }
                 }
             }

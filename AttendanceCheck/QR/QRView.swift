@@ -9,6 +9,10 @@ import SwiftUI
 import AVKit
 
 struct QRView: View {
+    @EnvironmentObject private var userInformation: UserInformation
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var session: AVCaptureSession = .init()
     @State private var output: AVCaptureMetadataOutput = .init()
     @State private var errorMessage: String = ""
@@ -33,8 +37,12 @@ struct QRView: View {
                     let size = $0.size
                     
                     ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill((colorScheme == .light) ? Color.white : Color.black)
+                        
                         CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
                             .scaleEffect(0.97)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         
                         ForEach(0...4, id: \.self) { index in
                             let rotation = Double(index) * 90
@@ -55,7 +63,6 @@ struct QRView: View {
                     if !session.isRunning && cameraPermission == .approved {
                         reactiveCamera()
                     }
-                    
                     checkingCameraPermission()
                 } label: {
                     Label("QR코드 인식 시작", systemImage: "qrcode")
@@ -85,6 +92,11 @@ struct QRView: View {
                                 if let url = URL(string: UIApplication.openSettingsURLString) {
                                     UIApplication.shared.open(url)
                                 }
+                            }
+                            if qrAlertType == .noUser {
+                                eventManager.clearEventManager()
+                                userInformation.userDelete()
+                                userInformation.clearUserInformation()
                             }
                         })
                     )
@@ -126,6 +138,9 @@ struct QRView: View {
                 case 402:
                     qrAlertType = .unknownCode
                     print("Unknown code")
+                case 409:
+                    qrAlertType = .noUser
+                    print("No user error")
                 default:
                     qrAlertType = .unknownError
                     print("Unknown error")

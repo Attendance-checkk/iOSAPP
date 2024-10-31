@@ -32,11 +32,16 @@ class EventManager: ObservableObject {
     
     init(userInformation: UserInformation) {
         self.userInformation = userInformation
-        loadProgramsData { success in
+        loadProgramsData { success, statusCode, message in
             if success {
                 print("loadProgramsData_init success")
             } else {
-                print("loadProgramsData_init failed")
+                if statusCode == 409 {
+                    print("No user error from init of EventManager")
+                    self.clearEventManager()
+                    userInformation.userDelete()
+                    userInformation.clearUserInformation()
+                }
             }
         }
     }
@@ -137,6 +142,10 @@ class EventManager: ObservableObject {
                 print("eventPostError: \(httpResponse.statusCode), 존재하지 않는 코드입니다.")
                 completion(false, 402, "존재하지 않는 코드입니다.")
                 
+            case 409:
+                print("eventPostError: \(httpResponse.statusCode)", "사용자가 삭제되었습니다.")
+                completion(false, 409, "사용자가 삭제되었습니다.")
+                
             default:
                 print("eventPostError: 응답 코드 \(httpResponse.statusCode), 알 수 없는 오류 발생")
                 completion(false, httpResponse.statusCode, "응답 오류 발생")
@@ -182,7 +191,7 @@ class EventManager: ObservableObject {
     }
     
     // MARK: - API(GET event list) 01(External)
-    public func loadProgramsData(completion: @escaping(Bool) -> Void) {
+    public func loadProgramsData(completion: @escaping(Bool, Int?, String) -> Void) {
         self.isLoading = true
         
         loadPrograms { success, statusCode, message in
@@ -195,14 +204,18 @@ class EventManager: ObservableObject {
                         self.checkSuccessStatus(programs)
                         self.objectWillChange.send()
                         self.changeDateFormat()
-                        completion(true)
+                        completion(true, statusCode, message)
                     } else {
                         print("No programs found")
-                        completion(false)
+                        completion(false, 801, message)
                     }
                 } else {
                     print("GET event failed with status code: \(statusCode ?? 0), message: \(message)")
-                    completion(false)
+                    completion(false, statusCode, message)
+                    
+                    if statusCode == 409 {
+                        completion(false, 409, message)
+                    }
                 }
             }
         }
@@ -226,6 +239,12 @@ class EventManager: ObservableObject {
                 print("Network error: \(String(describing: error))")
                 completion(false, 801, "\(String(describing: error))")
                 return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode == 409 {
+                    completion(false, 409, "No user")
+                }
             }
             
             do {

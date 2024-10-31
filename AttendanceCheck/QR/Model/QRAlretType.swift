@@ -13,6 +13,7 @@ enum QRAlretType {
     case unknownCode
     case unknownError
     case permission
+    case noUser
     
     var title: String {
         switch self {
@@ -21,6 +22,7 @@ enum QRAlretType {
         case .unknownCode: return "코드 형식이 맞지 않습니다"
         case .unknownError: return "알 수 없는 오류가 발생했습니다"
         case .permission: return "카메라 권한 오류"
+        case .noUser: return "사용자 정보가 없습니다"
         }
     }
     
@@ -31,6 +33,7 @@ enum QRAlretType {
         case .unknownCode: return "코드가 이상한 것 같아요 🤔"
         case .unknownError: return "관리자에게 문의해주세요..!"
         case .permission: return "카메라 권한이 없으면 QR코드를 인식할 수 없습니다!"
+        case .noUser: return "삭제된 사용자입니다!"
         }
     }
 }

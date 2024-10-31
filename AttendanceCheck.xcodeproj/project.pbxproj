@@ -45,7 +45,6 @@
 		FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */; };
 		FDDEF2DD2CC331E100E7F440 /* LinkURLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */; };
 		FDDEF2DF2CC3407E00E7F440 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */; };
-		FDDEF2E12CC3447500E7F440 /* TimelineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,7 +107,6 @@
 		FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusLocation.swift; sourceTree = "<group>"; };
 		FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkURLS.swift; sourceTree = "<group>"; };
 		FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
-		FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,7 +257,6 @@
 				FD37FE6D2CB283A80077365C /* ScheduleView.swift */,
 				FD37FE7D2CB2C9260077365C /* CalendarView.swift */,
 				FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */,
-				FDDEF2E02CC3447500E7F440 /* TimelineDetailView.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -501,7 +498,6 @@
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
-				FDDEF2E12CC3447500E7F440 /* TimelineDetailView.swift in Sources */,
 				FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */,
 				FD37FE722CB285880077365C /* LoginView.swift in Sources */,
 				FDDEF2DD2CC331E100E7F440 /* LinkURLS.swift in Sources */,
