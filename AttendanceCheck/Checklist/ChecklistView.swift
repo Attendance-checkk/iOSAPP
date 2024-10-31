@@ -198,10 +198,10 @@ struct ChecklistView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: geometry.size.height, height: geometry.size.height)
-                            .foregroundColor(eventManager.isEventCompleted(code: event.events.event_code) ? Color(hex: "26539c") : .white)
+                            .foregroundColor(.white)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(((eventManager.isEventCompleted(code: event.events.event_code) ? Color(hex: "26539c") : (colorScheme == .light ? Color.gray : Color.clear)) ?? Color.clear), lineWidth: eventManager.isEventCompleted(code: event.events.event_code) ? 3 : (colorScheme == .light ? 1 : 0))
+                                    .stroke(colorScheme == .light ? Color.gray : Color.clear, lineWidth: colorScheme == .light ? 1 : 0)
                             }
                         
                         Image(event.iconName)
@@ -211,7 +211,7 @@ struct ChecklistView: View {
                             .padding(10)
                             .opacity(eventManager.isEventCompleted(code: event.events.event_code) ? 0.0 : 1.0)
                         
-                        Image("SCHUSTAMP_WHITE")
+                        Image("SCHUSTAMP")
                             .resizable()
                             .scaledToFit()
                             .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
