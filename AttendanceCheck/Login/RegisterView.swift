@@ -1,15 +1,13 @@
 //
-//  LoginView.swift
+//  RegisterView.swift
 //  AttendanceCheck
 //
-//  Created by ROLF J. on 10/6/24.
+//  Created by ROLF J. on 11/2/24.
 //
 
-import Foundation
 import SwiftUI
-import Security
 
-struct LoginView: View {
+struct RegisterView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject private var userInformation: UserInformation
@@ -44,8 +42,8 @@ struct LoginView: View {
     
     @State private var passwordCheckString: String = "비밀번호"
     @State private var passwordCheckColor: Color = .primary
-    @State private var showPasswordButton: Bool = false
     
+    // MARK: - 비밀번호 잘못 입력하면 '비밀번호 재확인' 라벨 변경
     @State private var passwordDifferentString: String = "비밀번호 재확인"
     @State private var passwordDifferentColor: Color = .primary
     
@@ -108,7 +106,6 @@ struct LoginView: View {
                                 Spacer()
                             }
                             .padding(.leading, 10)
-                            .padding(.bottom, -5)
                             
                             Menu {
                                 Button {
@@ -164,7 +161,7 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(studentIDFormatErrorColor)
                                     .multilineTextAlignment(.leading)
-                                    .padding(.bottom, -5)
+                                    .padding(.top, 7.5)
                                 
                                 Spacer()
                             }
@@ -187,7 +184,7 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(studentNameFormatErrorColor)
                                     .multilineTextAlignment(.leading)
-                                    .padding(.bottom, -5)
+                                    .padding(.top, 7.5)
                                 
                                 Spacer()
                             }
@@ -202,11 +199,7 @@ struct LoginView: View {
                                     studentNameFormatValidation()
                                 })
                                 .onSubmit {
-                                    if validatePasswordFields() {
-                                        loginButtonClicked()
-                                    } else {
-                                        focusedField = .password // 비밀번호 필드로 이동
-                                    }
+                                    focusedField = .password
                                 }
                             
                             // MARK: - 비밀번호 입력 파트
@@ -216,72 +209,30 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(passwordCheckColor)
                                     .multilineTextAlignment(.leading)
-                                    .padding(.bottom, -5)
+                                    .padding(.top, 7.5)
                                 
                                 Spacer()
                             }
                             .padding(.leading, 10)
                             
-                            ZStack {
-                                if showPasswordButton {
-                                    TextField("비밀번호를 입력해주세요", text: $inputPassword)
-                                        .padding(20)
-                                        .background(Color.gray.opacity(0.5))
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .focused($focusedField, equals: .password)
-                                        .keyboardType(.asciiCapable)
-                                        .autocorrectionDisabled(true)
-                                        .onAppear {
-                                            if let password = getPassword(service: "KyeonghoJang.AttendanceCheck", account: inputStudentID) {
-                                                inputPassword = password
-                                            }
-                                        }
-                                        .onChange(of: inputPassword) { _ in
-                                            passwordFormatIsWrong()
-                                        }
-                                        .onSubmit {
-                                            if validatePasswordFields() {
-                                                loginButtonClicked()
-                                            } else {
-                                                focusedField = .passwordCheck
-                                            }
-                                        }
-                                } else {
-                                    SecureField("비밀번호를 입력해주세요", text: $inputPassword)
-                                        .padding(20)
-                                        .background(Color.gray.opacity(0.5))
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .focused($focusedField, equals: .password)
-                                        .keyboardType(.asciiCapable)
-                                        .autocorrectionDisabled(true)
-                                        .onAppear {
-                                            if let password = getPassword(service: "KyeonghoJang.AttendanceCheck", account: inputStudentID) {
-                                                inputPassword = password
-                                            }
-                                        }
-                                        .onChange(of: inputPassword) { _ in
-                                            passwordFormatIsWrong()
-                                        }
-                                        .onSubmit {
-                                            if validatePasswordFields() {
-                                                loginButtonClicked()
-                                            } else {
-                                                focusedField = .passwordCheck
-                                            }
-                                        }
-                                }
-
-                                HStack {
-                                    Spacer()
-                                    Button(action: {
-                                        showPasswordButton.toggle()
-                                    }) {
-                                        Image(systemName: showPasswordButton ? "eye.slash" : "eye")
-                                            .foregroundColor(.blue)
-                                            .padding(.trailing, 20)
+                            SecureField("비밀번호를 입력해주세요", text: $inputPassword)
+                                .padding(20)
+                                .background(Color.gray.opacity(0.5))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .focused($focusedField, equals: .password)
+                                .keyboardType(.asciiCapable)
+                                .autocorrectionDisabled(true)
+                                .onAppear {
+                                    if let password = getPassword(service: "KyeonghoJang.AttendanceCheck", account: inputStudentID) {
+                                        inputPassword = password
                                     }
                                 }
-                            }
+                                .onChange(of: inputPassword) { _ in
+                                    passwordFormatIsWrong()
+                                }
+                                .onSubmit {
+                                    focusedField = .passwordCheck
+                                }
                             
                             // MARK: - 비밀번호 확인용
                             HStack {
@@ -290,14 +241,14 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(passwordDifferentColor)
                                     .multilineTextAlignment(.leading)
-                                    .padding(.bottom, -5)
+                                    .padding(.top, 7.5)
                                 
                                 Spacer()
                             }
                             .padding(.leading, 10)
                             
                             SecureField("비밀번호를 재입력해주세요", text: $inputPasswordAgain)
-                                .padding(20)
+                                .padding()
                                 .background(Color.gray.opacity(0.5))
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .focused($focusedField, equals: .passwordCheck)
@@ -371,6 +322,10 @@ struct LoginView: View {
                                         primaryButton: .default(Text("로그인"), action: {
                                             isLoading = true
                                             
+                                            // MARK: - 사용자 아이폰 고유번호
+                                            if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                                                print("Identifier for Vendor: \(uuid)")
+                                            }
                                             userInformation.department = selectedDepartment
                                             userInformation.studentID = inputStudentID
                                             userInformation.studentName = inputStudentName
@@ -413,7 +368,7 @@ struct LoginView: View {
                                 }
                             }
                         }
-                        .padding(40)
+                        .padding(30)
                     }
                     .scrollIndicators(.hidden)
                 }
@@ -659,21 +614,8 @@ struct LoginView: View {
             return nil
         }
     }
-    
-    private func validatePasswordFields() -> Bool {
-        let passwordValid = !isPasswordFormatError()
-        let passwordMatchValid = !isPasswordDifferentError()
-        
-        if !passwordValid {
-            focusedField = .password
-        } else {
-            focusedField = .passwordCheck
-        }
-        
-        return passwordValid && passwordMatchValid
-    }
 }
 
 #Preview {
-    LoginView()
+    RegisterView()
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Security
 
 struct MenuView: View {
     @EnvironmentObject private var userInformation: UserInformation
@@ -176,6 +177,21 @@ struct MenuView: View {
             } else {
                 showNotificationAlert = .turnoff
             }
+        }
+    }
+    
+    func deletePassword(service: String, account: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        if status == errSecSuccess {
+            print("Password deleted successfully")
+        } else {
+            print("Error deleting password: \(status)")
         }
     }
 }

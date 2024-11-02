@@ -111,12 +111,12 @@ struct TimelineView: View {
     
     private func eventIconName(code: String) -> String {
         switch code {
-        case "SCHUSWCU1stAF_ProjectPresentationParticipation": return "JournalPoster"
-        case "SCHUSWCU1stAF_OpeningCeremony": return "OpeningCeremony"
-        case "SCHUSWCU1stAF_SWCUGameContest": return "Gamepad"
-        case "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": return "TalkConcert"
-        case "SCHUSWCU1stAF_IndustryExpertSpecialLecture": return "SpecialLecture"
-        case "SCHUSWCU1stAF_ClosingCeremony": return "Award"
+        case getSecurityCode("PPP"): return "JournalPoster"
+        case getSecurityCode("OPEN"): return "OpeningCeremony"
+        case getSecurityCode("GAME"): return "Gamepad"
+        case getSecurityCode("TALK"): return "TalkConcert"
+        case getSecurityCode("IESL"): return "SpecialLecture"
+        case getSecurityCode("CLOSE"): return "Award"
         default: return "marker"
         }
     }
@@ -173,12 +173,12 @@ struct TimelineView: View {
         let title: String = event.event_name
         var detailBannerImageName: String {
             switch event.event_code {
-            case "SCHUSWCU1stAF_OpeningCeremony": return "SWCUAF_EVENT_1"
-            case "SCHUSWCU1stAF_ProjectPresentationParticipation": return "SWCUAF_EVENT_2"
-            case "SCHUSWCU1stAF_SWCUGameContest": return "SWCUAF_EVENT_3"
-            case "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": return "SWCUAF_EVENT_4"
-            case "SCHUSWCU1stAF_IndustryExpertSpecialLecture": return "SWCUAF_EVENT_5"
-            case "SCHUSWCU1stAF_ClosingCeremony": return "SWCUAF_EVENT_6"
+            case getSecurityCode("OPEN"): return "SWCUAF_EVENT_1"
+            case getSecurityCode("PPP"): return "SWCUAF_EVENT_2"
+            case getSecurityCode("GAME"): return "SWCUAF_EVENT_3"
+            case getSecurityCode("TALK"): return "SWCUAF_EVENT_4"
+            case getSecurityCode("IESL"): return "SWCUAF_EVENT_5"
+            case getSecurityCode("CLOSE"): return "SWCUAF_EVENT_6"
             default: return "SWCUAF_Banner_1"
             }
         }
@@ -189,6 +189,14 @@ struct TimelineView: View {
         let endTime: String = event.event_end_time ?? "EVENTENDTIMEERROR"
         
         return ChecklistDetailView(eventName: title, detailBannerImageName: detailBannerImageName, eventLocation: location, description: description, startTime: startTime, endTime: endTime)
+    }
+    
+    private func getSecurityCode(_ request: String) -> String {
+        if let code = Bundle.main.object(forInfoDictionaryKey: request) as? String {
+            return code
+        } else {
+            return ""
+        }
     }
 }
 

@@ -23,60 +23,113 @@ class UserInformation: ObservableObject {
         self.loginState = storedLoginState ?? false
     }
     
-    public func login(completion: @escaping (Bool) -> Void) {
+    public func login(completion: @escaping (Bool, Int?, String) -> Void) {
         guard let studentID = studentID, !studentID.isEmpty,
               let studentName = studentName, !studentName.isEmpty,
               let department = department, !department.isEmpty
         else {
-            completion(false)
+            print("Error: Missing studentID, studentName, or department.")
+            completion(false, 800, "Missing studentID, studentName, or department.")
             return
         }
         
-        let parameters = "{\r\n    \"student_code\" : \"\(studentID)\",\r\n    \"name\" : \"\(studentName)\",\r\n    \"major\" : \"\(department)\"\r\n}"
+        guard let password = getPassword(service: "KyeonghoJang.AttendanceCheck", account: studentID) else {
+            return completion(false, 80, "Invalid password")
+        }
+        
+        let parameters = "{\r\n    \"student_code\" : \"\(studentID)\",\r\n    \"name\" : \"\(studentName)\",\r\n    \"major\" : \"\(department)\",\r\n    \"password\" : \"\(password)\"\r\n}"
         let postData = parameters.data(using: .utf8)
         
-        guard let requestURL = URL(string: "http://54.180.7.191:9999/user/login") else {
+        guard let requestURL = URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("LOGIN_URL"))") else {
             print("Error: Invalid URL")
-            completion(false)
+            completion(false, 801, "Invalid URL")
             return
         }
-        var request = URLRequest(url: requestURL,timeoutInterval: Double.infinity)
+        
+        var request = URLRequest(url: requestURL, timeoutInterval: Double.infinity)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
         request.httpMethod = "POST"
         request.httpBody = postData
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
+            
+            if let error = error {
+                print("Error during login request: \(error.localizedDescription)")
                 DispatchQueue.main.async {
-                    completion(false)
+                    completion(false, 802, error.localizedDescription)
                 }
                 return
             }
             
-            do {
-                if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                    let code = responseJSON["code"] as? Int, code == 200,
-                    let tokenInfo = responseJSON["token"] as? [String: Any],
-                    let accessToken = tokenInfo["access_token"] as? String,
-                    let refreshToken = tokenInfo["refresh_token"] as? String {
+            guard let data = data else {
+                print("Error: No data received.")
+                DispatchQueue.main.async {
+                    completion(false, 803, "No data received.")
+                }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 200:
+                    do {
+                        if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            print("Response JSON: \(responseJSON)")
+                            if let tokenInfo = responseJSON["token"] as? [String: Any],
+                               let accessToken = tokenInfo["access_token"] as? String,
+                               let refreshToken = tokenInfo["refresh_token"] as? String {
+                                print("Login successful. Access Token: \(accessToken), Refresh Token: \(refreshToken)")
+                                DispatchQueue.main.async {
+                                    self.accessToken = accessToken
+                                    self.refreshToken = refreshToken
+                                    completion(true, 200, "Login successful.")
+                                }
+                                return
+                            } else {
+                                print("Error: Missing token information in response.")
+                            }
+                        }
+                    } catch {
+                        print("Login JSON parsing error: \(error)")
+                    }
+                    
+                case 408:
+                    print("Error: Request Timeout. Already registered user.")
                     DispatchQueue.main.async {
-                        self.accessToken = accessToken
-                        self.refreshToken = refreshToken
-                        completion(true)
+                        completion(false, 408, "Already registered user.")
                     }
                     return
-                } else {
+                
+                case 500:
+                    print("Error: Network Error.")
                     DispatchQueue.main.async {
-                        completion(false)
+                        completion(false, 500, "Network Error.")
                     }
+                    return
+                
+                case 405:
+                    print("Error: Password does not match.")
+                    DispatchQueue.main.async {
+                        completion(false, 405, "Password does not match.")
+                    }
+                    return
+                
+                case 406:
+                    print("Error: Does not match stored user information.")
+                    DispatchQueue.main.async {
+                        completion(false, 406, "Does not match stored user information.")
+                    }
+                    return
+                
+                default:
+                    print("Login failed with code: \(httpResponse.statusCode)")
                 }
-            } catch {
-                print("Login JSON parsing error: \(error)")
-                DispatchQueue.main.async {
-                    completion(false)
-                }
+            } else {
+                print("Error: Invalid response format.")
+            }
+            
+            DispatchQueue.main.async {
+                completion(false, 804, "Login failed.")
             }
         }
 
@@ -85,7 +138,7 @@ class UserInformation: ObservableObject {
     
     public func accessTokenRefresh() {
         guard let refreshToken = refreshToken else { return }
-        guard let requrestURL = URL(string: "http://54.180.7.191:9999/jwt/refresh") else { return }
+        guard let requrestURL = URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("REFRESH"))") else { return }
         
         var request = URLRequest(url: requrestURL, timeoutInterval: Double.infinity)
         request.addValue(refreshToken, forHTTPHeaderField: "Authorization")
@@ -121,7 +174,7 @@ class UserInformation: ObservableObject {
     
     public func userDelete() {
         guard let accessToken, !accessToken.isEmpty else { return }
-        guard let requestURL = URL(string: "http://54.180.7.191:9999/user") else { return }
+        guard let requestURL = URL(string: "https://\(getSecurityCode("API_URI"))\(getSecurityCode("DELETE_URL"))") else { return }
         
         var request = URLRequest(url: requestURL,timeoutInterval: Double.infinity)
                 request.addValue(accessToken, forHTTPHeaderField: "Authorization")
@@ -154,6 +207,38 @@ class UserInformation: ObservableObject {
             self.storedLoginState = false
             
             self.objectWillChange.send()
+        }
+    }
+    
+    private func getSecurityCode(_ request: String) -> String {
+        if let code = Bundle.main.object(forInfoDictionaryKey: request) as? String {
+            return code
+        } else {
+            return ""
+        }
+    }
+    
+    func getPassword(service: String, account: String) -> String? {
+        print("Get password")
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+            kSecReturnData as String: kCFBooleanTrue!,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        
+        if status == errSecSuccess {
+            print("Successfully retrieved password")
+            guard let data = item as? Data else { return nil }
+            return String(decoding: data, as: UTF8.self)
+        } else {
+            print("Error retrieving password: \(status)")
+            return nil
         }
     }
 }

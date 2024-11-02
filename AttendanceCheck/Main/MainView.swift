@@ -16,27 +16,28 @@ struct MainView: View {
     
     var body: some View {
         TabView(selection: $selectedIndex) {
+            
             QRView(selectedIndex: $selectedIndex)
                 .tabItem {
                     Label("QR", systemImage: "qrcode")
                 }
                 .tag(0)
             
-            MapView()
+            ScheduleView()
                 .tabItem {
-                    Label("지도", systemImage: "map.fill")
+                    Label("일정", systemImage: "calendar")
                 }
                 .tag(1)
             
             ChecklistView()
                 .tabItem {
-                    Label("체크리스트", systemImage: "checkmark.seal")
+                    Label("홈", systemImage: "house.fill")
                 }
                 .tag(2)
             
-            ScheduleView()
+            MapView()
                 .tabItem {
-                    Label("일정", systemImage: "calendar")
+                    Label("지도", systemImage: "map.fill")
                 }
                 .tag(3)
             
@@ -48,8 +49,8 @@ struct MainView: View {
             }
         .disabled(eventManager.isLoading)
         .onAppear {
-            userInformation.login { success in
-                print("Login success: \(success)")
+            userInformation.login { success, statusCode, message in
+                print("Login success: \(String(describing: statusCode))")
                 print("userInformation.loginState: \(userInformation.loginState)")
             }
 

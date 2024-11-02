@@ -10,12 +10,12 @@ import SwiftUI
 class EventManager: ObservableObject {
     static let instance = EventManager()
     
-    private let eventCodeToIndex: [String: Int] = [
-        "SCHUSWCU1stAF_OpeningCeremony": 0,
-        "SCHUSWCU1stAF_ProjectPresentationParticipation": 1,
-        "SCHUSWCU1stAF_TalkConcertwithGraduatedStudent": 2,
-        "SCHUSWCU1stAF_SWCUGameContest": 3,
-        "SCHUSWCU1stAF_IndustryExpertSpecialLecture": 4
+    lazy private var eventCodeToIndex: [String: Int] = [
+        getSecurityCode("OPEN"): 0,
+        getSecurityCode("PPP"): 1,
+        getSecurityCode("TALK"): 2,
+        getSecurityCode("GAME"): 3,
+        getSecurityCode("IESL"): 4
     ]
     
     @Published var event1: Bool = false
@@ -98,7 +98,7 @@ class EventManager: ObservableObject {
         let parameters = "{\r\n    \"event_code\" : \"\(qrcode)\"\r\n}"
         let postData = parameters.data(using: .utf8)
 
-        var request = URLRequest(url: URL(string: "http://54.180.7.191:9999/user/attendance")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("ATTENDANCE"))")!,timeoutInterval: Double.infinity)
         request.addValue(token, forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -226,7 +226,7 @@ class EventManager: ObservableObject {
             return
         }
         
-        var request = URLRequest(url: URL(string: "http://54.180.7.191:9999/user/event/list")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("LIST"))")!,timeoutInterval: Double.infinity)
         request.addValue(token, forHTTPHeaderField: "Authorization")
 
         request.httpMethod = "GET"
@@ -344,7 +344,7 @@ class EventManager: ObservableObject {
         var timelinePrograms = programs ?? []
         
         timelinePrograms.append(Events(
-            event_code: "SCHUSWCU1stAF_ClosingCeremony",
+            event_code: getSecurityCode("CLOSE"),
             event_name: "폐회식 및 시상식",
             description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다\n1등의 주인공이 되어보세요!",
             location: "인문과학관 1층 대강당 [6129호]",
@@ -360,5 +360,13 @@ class EventManager: ObservableObject {
         let timelinePrograms = programs ?? []
         
         return timelinePrograms
+    }
+    
+    private func getSecurityCode(_ request: String) -> String {
+        if let code = Bundle.main.object(forInfoDictionaryKey: request) as? String {
+            return code
+        } else {
+            return ""
+        }
     }
 }
