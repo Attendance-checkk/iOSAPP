@@ -2,6 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLOSE</key>
+	<string>$(CLOSE)</string>
+	<key>IESL</key>
+	<string>$(IESL)</string>
+	<key>TALK</key>
+	<string>$(TALK)</string>
+	<key>GAME</key>
+	<string>$(GAME)</string>
+	<key>OPEN</key>
+	<string>$(OPEN)</string>
+	<key>PPP</key>
+	<string>$(PPP)</string>
+	<key>LIST</key>
+	<string>$(LIST)</string>
+	<key>ATTENDACNE</key>
+	<string>$(ATTENDACNE)</string>
+	<key>REFRESH</key>
+	<string>$(REFRESH)</string>
+	<key>USER_URL</key>
+	<string>$(USER_URL)</string>
+	<key>PORT</key>
+	<string>$(PORT)</string>
+	<key>DELETE_URL</key>
+	<string>$(DELETE_URL)</string>
+	<key>LOGIN_URL</key>
+	<string>$(LOGIN_URL)</string>
+	<key>API_URL</key>
+	<string>$(API_URL)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

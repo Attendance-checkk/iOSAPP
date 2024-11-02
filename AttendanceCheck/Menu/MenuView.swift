@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Security
 
 struct MenuView: View {
     @EnvironmentObject private var userInformation: UserInformation
@@ -162,7 +163,7 @@ struct MenuView: View {
                 notificationOn = notificationOn
             }
         }
-        .onChange(of: notificationOn) { oldValue, newValue in
+        .onChange(of: notificationOn) { oldValue in
             notificationManager.authorizationStatusCheck()
             
             if notificationManager.notificationPermissionStatus != .authorized {
@@ -170,12 +171,27 @@ struct MenuView: View {
                 return
             }
             
-            if oldValue == false {
+            if oldValue == true {
                 notificationOn = true
                 notificationManager.setupNotifications()
             } else {
                 showNotificationAlert = .turnoff
             }
+        }
+    }
+    
+    func deletePassword(service: String, account: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        if status == errSecSuccess {
+            print("Password deleted successfully")
+        } else {
+            print("Error deleting password: \(status)")
         }
     }
 }

@@ -111,7 +111,7 @@ struct QRView: View {
         .onAppear {
             checkingCameraPermission()
         }
-        .onChange(of: outputDelegate.scannedCode) { oldValue, newValue in
+        .onChange(of: outputDelegate.scannedCode) { newValue in
             if let code = newValue {
                 scannedCode = code
                 session.stopRunning()
@@ -220,9 +220,4 @@ struct QRView: View {
             showCode = true
         }
     }
-}
-
-#Preview {
-    @Previewable @State var selectedIndex: Int = 2
-    QRView(selectedIndex: $selectedIndex)
 }

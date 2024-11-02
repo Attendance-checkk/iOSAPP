@@ -16,7 +16,14 @@ enum AlertType: Identifiable {
     case idFormatError
     case noNameError
     case nameFormatError
+    case noPasswordError
+    case passwordFormatError
+    case passwordDifferentError
     case recheck
+    case alreadyRegistered
+    case savedPasswordDifferentError
+    case userInformationDifferentError
+    case networkError
     
     var id: String {
         switch self {
@@ -28,7 +35,14 @@ enum AlertType: Identifiable {
         case .idFormatError: return "idFormatError"
         case .noNameError: return "noNameError"
         case .nameFormatError: return "nameFormatError"
+        case .noPasswordError: return "noPasswordError"
+        case .passwordFormatError: return "passwordFormatError"
+        case .passwordDifferentError: return "passwordDifferentError"
         case .recheck: return "recheck"
+        case .alreadyRegistered: return "alreadyRegistered"
+        case .savedPasswordDifferentError: return "savedPasswordDifferentError"
+        case .userInformationDifferentError: return "userInformationDifferentError"
+        case .networkError: return "networkError"
         }
     }
 }

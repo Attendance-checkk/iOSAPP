@@ -21,7 +21,7 @@ enum QRAlretType {
         case .alreadyScanned: return "이미 인식한 코드입니다"
         case .unknownCode: return "코드 형식이 맞지 않습니다"
         case .unknownError: return "알 수 없는 오류가 발생했습니다"
-        case .permission: return "카메라 권한 오류"
+        case .permission: return "권한이 없습니다!"
         case .noUser: return "사용자 정보가 없습니다"
         }
     }
