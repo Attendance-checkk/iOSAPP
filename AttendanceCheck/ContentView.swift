@@ -22,7 +22,6 @@ struct ContentView: View {
                 .environmentObject(eventManager)
                 .environmentObject(notificationManager)
                 .onAppear {
-                    printUserInformation()
                     notificationManager.authorizationStatusCheck()
                 }
         } else {
@@ -33,12 +32,5 @@ struct ContentView: View {
                     notificationManager.authorizationStatusCheck()
                 }
         }
-    }
-    
-    private func printUserInformation() {
-        print(userInformation.department ?? "No Department")
-        print(userInformation.studentID ?? "No Student ID")
-        print(userInformation.studentName ?? "No Student Name")
-        print("Current color mode: \(colorScheme)")
     }
 }

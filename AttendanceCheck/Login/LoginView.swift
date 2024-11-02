@@ -83,14 +83,6 @@ struct LoginView: View {
                     }
                     ScrollView {
                         VStack(spacing: 20) {
-                            Spacer()
-                            
-                            Text("👋 환영합니다!")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.primary)
-                                .multilineTextAlignment(.center)
-                            
                             Image("SCHULogo_Rect")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -202,11 +194,7 @@ struct LoginView: View {
                                     studentNameFormatValidation()
                                 })
                                 .onSubmit {
-                                    if validatePasswordFields() {
-                                        loginButtonClicked()
-                                    } else {
-                                        focusedField = .password // 비밀번호 필드로 이동
-                                    }
+                                    focusedField = .password
                                 }
                             
                             // MARK: - 비밀번호 입력 파트
@@ -240,7 +228,7 @@ struct LoginView: View {
                                             passwordFormatIsWrong()
                                         }
                                         .onSubmit {
-                                            if validatePasswordFields() {
+                                            if isPasswordDifferentError() {
                                                 loginButtonClicked()
                                             } else {
                                                 focusedField = .passwordCheck
@@ -263,7 +251,7 @@ struct LoginView: View {
                                             passwordFormatIsWrong()
                                         }
                                         .onSubmit {
-                                            if validatePasswordFields() {
+                                            if isPasswordDifferentError() {
                                                 loginButtonClicked()
                                             } else {
                                                 focusedField = .passwordCheck
@@ -416,6 +404,9 @@ struct LoginView: View {
                         .padding(40)
                     }
                     .scrollIndicators(.hidden)
+                    
+                    .navigationTitle("👋 환영합니다!")
+                    .navigationBarTitleDisplayMode(.inline)
                 }
             }
         }
@@ -451,8 +442,6 @@ struct LoginView: View {
         let prefixBool: Bool = validPrefixes.contains { inputStudentID.hasPrefix($0) }
         let onlyNumberBool: Bool = inputStudentID.allSatisfy(\.isNumber)
         
-        print("emptyBool: \(emptyBool), lengthBool: \(lengthBool), prefixBool: \(prefixBool), onlyNumberBool: \(onlyNumberBool)")
-        
         if emptyBool && lengthBool && prefixBool && onlyNumberBool {
             studentIDFormatErrorString = "학번이 적절한 형식입니다"
             studentIDFormatErrorColor = .green
@@ -485,7 +474,6 @@ struct LoginView: View {
     
     // Password different
     private func isPasswordDifferentError() -> Bool {
-        print("isPasswordDifferentError: \(inputPassword == inputPasswordAgain)")
         return inputPassword == inputPasswordAgain
     }
     
@@ -506,8 +494,6 @@ struct LoginView: View {
         let placeholderBool: Bool = inputStudentName != "이름"
         let containsNumber: Bool = inputStudentName.rangeOfCharacter(from: .decimalDigits) != nil
         let containsSpecialCharacter: Bool = inputStudentName.rangeOfCharacter(from: CharacterSet.punctuationCharacters) != nil || inputStudentName.rangeOfCharacter(from: CharacterSet.symbols) != nil
-        
-        print("emptyBool: \(emptyBool), atLeast2Bool: \(atLeast2Bool), placeholderBool: \(placeholderBool), containsNumber: \(containsNumber), containsSpecialCharacter: \(containsSpecialCharacter)")
 
         if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter && atLeast2Bool {
             studentNameFormatErrorString = "이름이 적절한 형식입니다"
@@ -517,67 +503,6 @@ struct LoginView: View {
             studentNameFormatErrorString = "이름 형식이 올바르지 않습니다"
             studentNameFormatErrorColor = .red
             return false
-        }
-    }
-    
-    private func deviceSpecificImageWidth() -> CGFloat {
-        print(UIScreen.main.bounds.width)
-        
-        let model = UIDevice.current.modelName
-        
-        switch model {
-        case "iPhone12,1": // iPhone 11
-            return 250
-        case "iPhone12,3": // iPhone 11 Pro
-            return 300
-        case "iPhone12,5": // iPhone 11 Pro Max
-            return 350
-        case "iPhone12,8": // iPhone SE 2nd Gen
-            return 200
-        case "iPhone13,1": // iPhone 12 Mini
-            return 250
-        case "iPhone13,2": // iPhone 12
-            return 300
-        case "iPhone13,3": // iPhone 12 Pro
-            return 300
-        case "iPhone13,4": // iPhone 12 Pro Max
-            return 350
-        case "iPhone14,2": // iPhone 13 Pro
-            return 300
-        case "iPhone14,3": // iPhone 13 Pro Max
-            return 350
-        case "iPhone14,4": // iPhone 13 Mini
-            return 250
-        case "iPhone14,5": // iPhone 13
-            return 300
-        case "iPhone14,6": // iPhone SE 3rd Gen
-            return 200
-        case "iPhone14,7": // iPhone 14
-            return 300
-        case "iPhone14,8": // iPhone 14 Plus
-            return 350
-        case "iPhone15,2": // iPhone 14 Pro
-            return 350
-        case "iPhone15,3": // iPhone 14 Pro Max
-            return 400
-        case "iPhone15,4": // iPhone 15
-            return 350
-        case "iPhone15,5": // iPhone 15 Plus
-            return 400
-        case "iPhone16,1": // iPhone 15 Pro
-            return 380
-        case "iPhone16,2": // iPhone 15 Pro Max
-            return 400
-        case "iPhone17,1": // iPhone 16 Pro
-            return 380
-        case "iPhone17,2": // iPhone 16 Pro Max
-            return 400
-        case "iPhone17,3": // iPhone 16
-            return 350
-        case "iPhone17,4": // iPhone 16 Plus
-            return 400
-        default:
-            return 300 // 기본값
         }
     }
     
@@ -610,8 +535,6 @@ struct LoginView: View {
         savePassword(studentID: inputStudentID, password: inputPassword)
         
         showAlert = .recheck
-        
-        print("Saved User Information: \(String(describing: userInformation.department)), \(String(describing: userInformation.studentID)), \(String(describing: userInformation.studentName))")
     }
     
     func savePassword(studentID: String, password: String) {
@@ -658,19 +581,6 @@ struct LoginView: View {
             print("Error retrieving password: \(status)")
             return nil
         }
-    }
-    
-    private func validatePasswordFields() -> Bool {
-        let passwordValid = !isPasswordFormatError()
-        let passwordMatchValid = !isPasswordDifferentError()
-        
-        if !passwordValid {
-            focusedField = .password
-        } else {
-            focusedField = .passwordCheck
-        }
-        
-        return passwordValid && passwordMatchValid
     }
 }
 

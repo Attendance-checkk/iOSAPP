@@ -19,7 +19,7 @@ struct CautionView: View {
     let cautionString: String = """
 계정은 한 번 삭제하면 복구할 수 없습니다.
 계정 삭제 옵션은 개인정보(학과, 학번, 이름)를 잘못 입력하신 경우에만 사용해 주시기 바랍니다.
-로그아웃 기능은 개인정보 보호를 위해, 그리고 악용될 소지가 있어 제공하지 않습니다.
+로그아웃 기능은 악용될 소지가 있어 제공하지 않습니다.
 
 관리자와 상의 없이 계정을 삭제하신 경우, 참가가 가능한 시간이 지난 이벤트의 스탬프는 다시 찍어 드릴 수 없습니다.
 따라서 학생 여러분께서는 계정에 문제가 있으실 경우, 계정을 삭제하시기 전에 반드시 관리자에게 문의하시기 바랍니다.
@@ -56,7 +56,6 @@ struct CautionView: View {
                           primaryButton: .destructive(Text("삭제")) {
                         eventManager.clearEventManager()
                         userInformation.userDelete()
-                        userInformation.clearUserInformation()
                     },
                           secondaryButton: .cancel()
                     )

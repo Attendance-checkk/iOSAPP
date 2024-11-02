@@ -37,7 +37,6 @@ class EventManager: ObservableObject {
                     print("No user error from init of EventManager")
                     self.clearEventManager()
                     UserInformation.instance.userDelete()
-                    UserInformation.instance.clearUserInformation()
                 }
             }
         }
@@ -60,8 +59,6 @@ class EventManager: ObservableObject {
     
     // MARK: - API(POST event code to server) 01(External)
     public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
-        print("completeEventByQRCode function called: \(qrcode)")
-        
         isLoading = true
         
         eventPost(qrcode) { success, statusCode, message in
@@ -88,8 +85,6 @@ class EventManager: ObservableObject {
     
     // MARK: - API(POST event code to server) 02(Internal)
     private func eventPost(_ qrcode: String, completion: @escaping (Bool, Int?, String?) -> Void) {
-        print("Event POST: \(qrcode)")
-        
         guard let token = UserInformation.instance.accessToken else {
             completion(false, 800, "No token")
             return
@@ -330,14 +325,16 @@ class EventManager: ObservableObject {
     }
     
     public func clearEventManager() {
-        event1 = false
-        event2 = false
-        event3 = false
-        event4 = false
-        event5 = false
-        progress = 0.0
-        
-        print("All events cleared")
+        DispatchQueue.main.async {
+            self.event1 = false
+            self.event2 = false
+            self.event3 = false
+            self.event4 = false
+            self.event5 = false
+            self.progress = 0.0
+            
+            print("All events cleared")
+        }
     }
     
     public func returnProgramsForTimeline() -> [Events] {
