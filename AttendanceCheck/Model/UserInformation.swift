@@ -74,11 +74,9 @@ class UserInformation: ObservableObject {
                 case 200:
                     do {
                         if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            print("Response JSON: \(responseJSON)")
                             if let tokenInfo = responseJSON["token"] as? [String: Any],
                                let accessToken = tokenInfo["access_token"] as? String,
                                let refreshToken = tokenInfo["refresh_token"] as? String {
-                                print("Login successful. Access Token: \(accessToken), Refresh Token: \(refreshToken)")
                                 DispatchQueue.main.async {
                                     self.accessToken = accessToken
                                     self.refreshToken = refreshToken

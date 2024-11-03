@@ -35,7 +35,6 @@
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
 		FDABB1F52CBE48E9006CF22D /* QRAlretType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */; };
-		FDB4B3482CD5D88F008BD69F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B3472CD5D88F008BD69F /* RegisterView.swift */; };
 		FDBC03752CBF3D1E00531123 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03742CBF3D1E00531123 /* NotificationManager.swift */; };
 		FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBC03772CBF40A200531123 /* NotificationData.swift */; };
 		FDBDE0C72CD25E5500D248AE /* NotificationAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBDE0C62CD25E5500D248AE /* NotificationAlertType.swift */; };
@@ -43,7 +42,6 @@
 		FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D22CC2287900E7F440 /* WebView.swift */; };
 		FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */; };
 		FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2D82CC26A4000E7F440 /* CautionView.swift */; };
-		FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */; };
 		FDDEF2DD2CC331E100E7F440 /* LinkURLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */; };
 		FDDEF2DF2CC3407E00E7F440 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */; };
 /* End PBXBuildFile section */
@@ -98,7 +96,6 @@
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		FDABB1F42CBE48E9006CF22D /* QRAlretType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlretType.swift; sourceTree = "<group>"; };
-		FDB4B3472CD5D88F008BD69F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		FDBC03742CBF3D1E00531123 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FDBC03772CBF40A200531123 /* NotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationData.swift; sourceTree = "<group>"; };
 		FDBDE0C62CD25E5500D248AE /* NotificationAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAlertType.swift; sourceTree = "<group>"; };
@@ -106,7 +103,6 @@
 		FDDEF2D22CC2287900E7F440 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		FDDEF2D62CC2572900E7F440 /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		FDDEF2D82CC26A4000E7F440 /* CautionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CautionView.swift; sourceTree = "<group>"; };
-		FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusLocation.swift; sourceTree = "<group>"; };
 		FDDEF2DC2CC331E100E7F440 /* LinkURLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkURLS.swift; sourceTree = "<group>"; };
 		FDDEF2DE2CC3407E00E7F440 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -219,7 +215,6 @@
 			children = (
 				FDABB1F32CBE0F12006CF22D /* Model */,
 				FD37FE712CB285880077365C /* LoginView.swift */,
-				FDB4B3472CD5D88F008BD69F /* RegisterView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -239,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				FD37FE692CB2839C0077365C /* MapView.swift */,
-				FDDEF2DA2CC2724600E7F440 /* CampusLocation.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -476,7 +470,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDB4B3482CD5D88F008BD69F /* RegisterView.swift in Sources */,
 				FDDEF2D92CC26A4000E7F440 /* CautionView.swift in Sources */,
 				FD300E032CC732BE008E6725 /* ElementView.swift in Sources */,
 				FD37FE522CB282D30077365C /* AttendanceCheckApp.swift in Sources */,
@@ -494,7 +487,6 @@
 				FDBDE0C72CD25E5500D248AE /* NotificationAlertType.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,
-				FDDEF2DB2CC2724600E7F440 /* CampusLocation.swift in Sources */,
 				FD37FE532CB282D30077365C /* ContentView.swift in Sources */,
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
 				FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */,
@@ -684,6 +676,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "출석췤!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드 스캔을 위해 카메라 권한을 설정해주세요!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -723,6 +716,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AttendanceCheck/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "출석췤!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드 스캔을 위해 카메라 권한을 설정해주세요!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

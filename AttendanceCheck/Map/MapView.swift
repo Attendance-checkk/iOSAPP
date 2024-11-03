@@ -17,8 +17,6 @@ struct MapView: View {
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     
-    let locations = campusLocations
-    
     var body: some View {
         NavigationView {
             VStack {

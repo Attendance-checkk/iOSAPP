@@ -10,8 +10,10 @@ import AVKit
 
 struct QRView: View {
     @EnvironmentObject private var userInformation: UserInformation
+    @EnvironmentObject private var eventManager: EventManager
     
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.openURL) private var openURL
     
     @State private var session: AVCaptureSession = .init()
     @State private var output: AVCaptureMetadataOutput = .init()
@@ -24,11 +26,13 @@ struct QRView: View {
     
     @Binding var selectedIndex: Int
     
-    @Environment(\.openURL) private var openURL
-    
-    @EnvironmentObject private var eventManager: EventManager
-    
     @StateObject private var outputDelegate = ScannerDelegate()
+    
+    enum EventState {
+        case inProgress
+        case upComing
+        case ended
+    }
     
     var body: some View {
         NavigationView {
@@ -96,7 +100,6 @@ struct QRView: View {
                             if qrAlertType == .noUser {
                                 eventManager.clearEventManager()
                                 userInformation.userDelete()
-                                userInformation.clearUserInformation()
                             }
                         })
                     )
@@ -122,31 +125,95 @@ struct QRView: View {
         }
     }
     
-    // MARK: - Check if scanned QR code is not stamped.
     private func checkIfScanned(code: String) {
-            
         DispatchQueue.main.async {
             showProcessingView = false
-            eventManager.completeEventByQRCode(code) { success, statusCode, message in
-                switch statusCode {
-                case 200:
-                    print("New code scanned, stmaping successed")
-                    qrAlertType = .success
-                case 401:
-                    print("Already scanned")
-                    qrAlertType = .alreadyScanned
-                case 402:
-                    qrAlertType = .unknownCode
-                    print("Unknown code")
-                case 409:
-                    qrAlertType = .noUser
-                    print("No user error")
-                default:
-                    qrAlertType = .unknownError
-                    print("Unknown error")
+            
+            let eventState = returnEventState(code)
+            
+            switch eventState {
+            case .inProgress:
+                
+                eventManager.completeEventByQRCode(code) { success, statusCode, message in
+                    switch statusCode {
+                    case 200:
+                        print("New code scanned, stmaping successed")
+                        qrAlertType = .success
+                    case 401:
+                        print("Already scanned")
+                        qrAlertType = .alreadyScanned
+                    case 402:
+                        qrAlertType = .unknownCode
+                        print("Unknown code")
+                    case 409:
+                        qrAlertType = .noUser
+                        print("No user error")
+                    default:
+                        qrAlertType = .unknownError
+                        print("Unknown error")
+                    }
+                    showCode = true
                 }
+            case .upComing:
+                qrAlertType = .notYet
+                showCode = true
+            case .ended:
+                qrAlertType = .closedEvent
                 showCode = true
             }
+        }
+        showCode = true
+    }
+    
+    private func returnEventState(_ code: String) -> EventState {
+        let programs = eventManager.returnProgramsForChecklist()
+        
+        guard let event = programs.first(where: { ($0.event_code) == code }) else {
+            return .ended
+        }
+        
+        guard let startTimeString = event.event_start_time,
+              let endTimeString = event.event_end_time,
+              let startTime = dateStringToDate(from: startTimeString),
+              let endTime = dateStringToDate(from: endTimeString) else {
+            return .ended
+        }
+        
+        let currentDate = Date()
+        
+        if currentDate < startTime {
+            print("upComing")
+            return .upComing
+        } else if currentDate > endTime {
+            print("ended")
+            return .ended
+        } else {
+            print("inProgress")
+            return .inProgress
+        }
+    }
+    
+    private func dateStringToDate(from formattedString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        let currentYear = 2024
+        let yearAddedString = "\(currentYear)년 \(formattedString)"
+        
+        dateFormatter.dateFormat = "yyyy년 MM월 d일(E) a h:mm"
+        if let date = dateFormatter.date(from: yearAddedString) {
+            return date
+        }
+        
+        dateFormatter.dateFormat = "yyyy년 MM월 d일(E) HH:mm"
+        return dateFormatter.date(from: yearAddedString)
+    }
+    
+    private func getSecurityCode(_ request: String) -> String {
+        if let code = Bundle.main.object(forInfoDictionaryKey: request) as? String {
+            return code
+        } else {
+            return ""
         }
     }
     

@@ -12,6 +12,7 @@ struct TimelineView: View {
     
     @EnvironmentObject private var eventManager: EventManager
     @EnvironmentObject private var userInformation: UserInformation
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     @State private var timelinePrograms: [TimelinePrograms] = []
     
@@ -62,7 +63,6 @@ struct TimelineView: View {
                             print("No user error from timeline")
                             eventManager.clearEventManager()
                             userInformation.userDelete()
-                            userInformation.clearUserInformation()
                         }
                     }
                 }

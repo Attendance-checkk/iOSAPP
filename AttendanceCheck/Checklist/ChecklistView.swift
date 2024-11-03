@@ -105,7 +105,6 @@ struct ChecklistView: View {
                                     print("No user error from loadProgramsData")
                                     eventManager.clearEventManager()
                                     userInformation.userDelete()
-                                    userInformation.clearUserInformation()
                                 }
                             }
                         }

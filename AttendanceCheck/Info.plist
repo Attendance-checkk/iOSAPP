@@ -16,8 +16,8 @@
 	<string>$(PPP)</string>
 	<key>LIST</key>
 	<string>$(LIST)</string>
-	<key>ATTENDACNE</key>
-	<string>$(ATTENDACNE)</string>
+	<key>ATTENDANCE</key>
+	<string>$(ATTENDANCE)</string>
 	<key>REFRESH</key>
 	<string>$(REFRESH)</string>
 	<key>USER_URL</key>
