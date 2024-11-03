@@ -31,7 +31,7 @@ struct LoginView: View {
     @State private var inputPassword: String = ""
     @State private var inputPasswordAgain: String = ""
     @State private var showAlert: AlertType? = nil
-    @State private var isLoading: Bool = false
+    @State private var isLoginLoading: Bool = false
     
     @State private var departmentFormatErrorString: String = "학과 선택"
     @State private var departmentFormatErrorColor: Color = .primary
@@ -53,7 +53,7 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            if isLoading {
+            if isLoginLoading {
                 ProcessingView(messageString: "로그인 중입니다..")
                     .transition(.opacity)
             } else if userInformation.loginState {
@@ -271,6 +271,17 @@ struct LoginView: View {
                                 }
                             }
                             
+                            HStack {
+                                Text("대∙소∙특수문자/숫자 포함 8자리 이상 작성해주세요!")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.secondary)
+                                    .multilineTextAlignment(.leading)
+                                
+                                Spacer()
+                            }
+                            .padding(.top, -15)
+                            .padding(.leading, 10)
+                            
                             // MARK: - 비밀번호 확인용
                             HStack {
                                 Text(passwordDifferentString)
@@ -309,7 +320,7 @@ struct LoginView: View {
                                     .background(Color.blue)
                                     .cornerRadius(10)
                             }
-                            .padding(.top, 50)
+                            .padding(.top, 30)
                             .alert(item: $showAlert) { alert in
                                 switch alert {
                                 case .success:
@@ -357,7 +368,7 @@ struct LoginView: View {
                                         title: Text("입력 정보 확인"),
                                         message: Text("입력한 정보가 맞으신가요?\n입력 정보가 다르다면 경품지급이 어려울 수 있습니다!"),
                                         primaryButton: .default(Text("로그인"), action: {
-                                            isLoading = true
+                                            isLoginLoading = true
                                             
                                             userInformation.department = selectedDepartment
                                             userInformation.studentID = inputStudentID
@@ -366,7 +377,7 @@ struct LoginView: View {
                                             // MARK: - 비밀번호 저장
                                             
                                             userInformation.login { success, statusCode, message in
-                                                self.isLoading = false
+                                                self.isLoginLoading = false
                                                 if statusCode == 200 {
                                                     eventManager.loadProgramsData { success, statusCode, message in
                                                         showAlert = .success
@@ -379,7 +390,11 @@ struct LoginView: View {
                                                     showAlert = .userInformationDifferentError
                                                 } else if statusCode == 500 {
                                                     showAlert = .networkError
-                                                } else {
+                                                } else if statusCode == 429 {
+                                                    showAlert = .tooManyLoginRequests
+                                                } else if statusCode == 430 {
+                                                    showAlert = .tooManyAPIRequests
+                                                } else  {
                                                     showAlert = .loginFailed
                                                 }
                                             }
@@ -398,6 +413,12 @@ struct LoginView: View {
                                     
                                 case .networkError:
                                     return returnAlert("네트워크 오류", "서버와 연결할 수 없습니다 ")
+                                    
+                                case .tooManyLoginRequests:
+                                    return returnAlert("로그인 요청 과다", "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한되었습니다.")
+                                    
+                                case .tooManyAPIRequests:
+                                    return returnAlert("API요청 과다", "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다.")
                                 }
                             }
                         }

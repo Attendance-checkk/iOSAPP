@@ -29,7 +29,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
         super.init()
         UNUserNotificationCenter.current().delegate = self
     }
-
     
     func requestAuthorization() {
             let options: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -46,6 +45,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
         }
     
     func authorizationStatusCheck() {
+        print("authorizationStatusCheck()")
+        
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 if settings.authorizationStatus == .authorized {
@@ -67,13 +68,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
         print("모든 알림 비활성화")
     }
     
-    func setupNotifications() {
+    func setupNotifications(_ timelinePrograms: [Events]) {
         print("Notification setup")
         
         disableAllNotifications()
         
         if notificationPermissionStatus == .authorized {
-            for notification in makeNotificationList() {
+            let notifications = makeNotificationList(timelinePrograms)
+            for notification in notifications {
                 scheduleNotificationByDate(titleString: notification.titleString, bodyString: notification.bodyString, date: notification.date)
             }
         } else {
@@ -133,11 +135,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
         completionHandler([.banner, .sound, .badge])
     }
     
-    func makeNotificationList() -> [NotificationDataByDate] {
-        let timelinePrograms = eventManager.returnProgramsForTimeline()
+    func makeNotificationList(_ timelinePrograms: [Events]) -> [NotificationDataByDate] {
+        
         var notificationList: [NotificationDataByDate] = []
         
         for program in timelinePrograms {
+            
             if let startTimeString = program.event_start_time,
                let startTime = dateStringToDate(from: startTimeString) {
                 

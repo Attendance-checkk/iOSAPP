@@ -173,7 +173,7 @@ struct MenuView: View {
             
             if oldValue == true {
                 notificationOn = true
-                notificationManager.setupNotifications()
+                notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
             } else {
                 showNotificationAlert = .turnoff
             }

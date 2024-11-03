@@ -24,6 +24,8 @@ enum AlertType: Identifiable {
     case savedPasswordDifferentError
     case userInformationDifferentError
     case networkError
+    case tooManyLoginRequests
+    case tooManyAPIRequests
     
     var id: String {
         switch self {
@@ -43,6 +45,8 @@ enum AlertType: Identifiable {
         case .savedPasswordDifferentError: return "savedPasswordDifferentError"
         case .userInformationDifferentError: return "userInformationDifferentError"
         case .networkError: return "networkError"
+        case .tooManyLoginRequests: return "tooManyLoginRequests"
+        case .tooManyAPIRequests: return "tooManyAPIRequests"
         }
     }
 }

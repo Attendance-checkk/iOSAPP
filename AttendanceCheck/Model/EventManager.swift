@@ -25,22 +25,8 @@ class EventManager: ObservableObject {
     @Published var event5: Bool = false
     @Published var progress: Double = 0.0
     
-    @Published var programs: [Events]? = nil
+    @Published var programs: [AttendanceCheck.Events]? = nil
     @Published var isLoading: Bool = true
-    
-    init() {
-        loadProgramsData { success, statusCode, message in
-            if success {
-                print("loadProgramsData_init success")
-            } else {
-                if statusCode == 409 {
-                    print("No user error from init of EventManager")
-                    self.clearEventManager()
-                    UserInformation.instance.userDelete()
-                }
-            }
-        }
-    }
     
     public func isEventCompleted(code: String) -> Bool {
         guard let index = eventCodeToIndex[code] else {
@@ -57,9 +43,12 @@ class EventManager: ObservableObject {
         }
     }
     
-    // MARK: - API(POST event code to server) 01(External)
     public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
-        isLoading = true
+        guard eventCodeToIndex[qrcode] != nil else {
+            return
+        }
+        
+        self.isLoading = true
         
         eventPost(qrcode) { success, statusCode, message in
             DispatchQueue.main.async {
@@ -93,7 +82,7 @@ class EventManager: ObservableObject {
         let parameters = "{\r\n    \"event_code\" : \"\(qrcode)\"\r\n}"
         let postData = parameters.data(using: .utf8)
 
-        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("ATTENDANCE"))")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("ATTENDANCE"))")!, timeoutInterval: Double.infinity)
         request.addValue(token, forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -102,7 +91,7 @@ class EventManager: ObservableObject {
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("everntPostError: \(error)")
+                print("eventPostError: \(error)")
                 completion(false, 801, "네트워크 오류: \(error.localizedDescription)")
                 return
             }
@@ -135,8 +124,24 @@ class EventManager: ObservableObject {
                 completion(false, 402, "존재하지 않는 코드입니다.")
                 
             case 409:
-                print("eventPostError: \(httpResponse.statusCode)", "사용자가 삭제되었습니다.")
-                completion(false, 409, "사용자가 삭제되었습니다.")
+                print("eventPostError: \(httpResponse.statusCode), 사용자 없음.")
+                completion(false, 409, "사용자가 존재하지 않습니다.")
+                
+            case 412:
+                print("eventPostError: \(httpResponse.statusCode), 새로운 기기로 로그인.")
+                completion(false, 412, "새로운 기기로 로그인했습니다. 다시 로그인해주세요.")
+                
+            case 429:
+                print("Error: Too many user login requests sended in 1 minute")
+                DispatchQueue.main.async {
+                    completion(false, 429, "Too many user login requests sended in 1 minute.")
+                }
+                
+            case 430:
+                print("Error: Too many API request in 1 minute")
+                DispatchQueue.main.async {
+                    completion(false, 430, "Too many API request in 1 minute.")
+                }
                 
             default:
                 print("eventPostError: 응답 코드 \(httpResponse.statusCode), 알 수 없는 오류 발생")
@@ -184,13 +189,17 @@ class EventManager: ObservableObject {
     
     // MARK: - API(GET event list) 01(External)
     public func loadProgramsData(completion: @escaping(Bool, Int?, String) -> Void) {
+        print("loadProgramsData")
+        
         self.isLoading = true
         
         loadPrograms { success, statusCode, message in
+            print("loadProgramsData completion: \(success), \(statusCode ?? 0), \(message)")
+            
             DispatchQueue.main.async {
                 self.isLoading = false
                 
-                if success {
+                if statusCode == 200 {
                     print("Successfully GET events")
                     if let programs = self.programs {
                         self.checkSuccessStatus(programs)
@@ -208,20 +217,30 @@ class EventManager: ObservableObject {
                     if statusCode == 409 {
                         completion(false, 409, message)
                     }
+                    
+                    if statusCode == 412 {
+                        completion(false, 412, message)
+                    }
+                    
+                    if statusCode == 429 {
+                        completion(false, 429, message)
+                    }
+                    
+                    if statusCode == 430 {
+                        completion(false, 430, message)
+                    }
                 }
             }
         }
     }
     
-    // MARK: - API(GET event list) 02(Internal)
     private func loadPrograms(completion: @escaping(Bool, Int?, String) -> Void) {
         guard let token = UserInformation.instance.accessToken else {
-            print("No token existed")
-            completion(false, 800, "No token existed")
+            completion(false, 800, "No token")
             return
         }
         
-        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("LIST"))")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("LIST"))")!, timeoutInterval: Double.infinity)
         request.addValue(token, forHTTPHeaderField: "Authorization")
 
         request.httpMethod = "GET"
@@ -234,21 +253,35 @@ class EventManager: ObservableObject {
             }
             
             if let response = response as? HTTPURLResponse {
-                if response.statusCode == 409 {
-                    completion(false, 409, "No user")
+                switch response.statusCode {
+                case 200:
+                    do {
+                        let programs = try JSONDecoder().decode([Events].self, from: data)
+                        DispatchQueue.main.async {
+                            self.programs = programs
+                            completion(true, 200, "events GET success")
+                        }
+                    } catch {
+                        print("JSON decoding error: \(error.localizedDescription)")
+                        completion(false, 802, "\(error.localizedDescription)")
+                    }
+                case 409:
+                    completion(false, 409, "사용자가 존재하지 않습니다.")
+                case 412:
+                    completion(false, 412, "새로운 기기로 로그인했습니다. 다시 로그인해주세요.")
+                case 429:
+                    print("Error: Too many user login requests sended in 1 minute")
+                    DispatchQueue.main.async {
+                        completion(false, 429, "Too many user login requests sended in 1 minute.")
+                    }
+                case 430:
+                    print("Error: Too many API request in 1 minute")
+                    DispatchQueue.main.async {
+                        completion(false, 430, "Too many API request in 1 minute.")
+                    }
+                default:
+                    break
                 }
-            }
-            
-            do {
-                let programs = try JSONDecoder().decode([Events].self, from: data)
-                DispatchQueue.main.async {
-                    self.programs = programs
-//                    print(programs)
-                    completion(true, 200, "events GET success")
-                }
-            } catch {
-                print("JSON decoding error: \(error.localizedDescription)")
-                completion(false, 802, "\(error.localizedDescription)")
             }
         }
 
@@ -325,38 +358,37 @@ class EventManager: ObservableObject {
     }
     
     public func clearEventManager() {
-        DispatchQueue.main.async {
-            self.event1 = false
-            self.event2 = false
-            self.event3 = false
-            self.event4 = false
-            self.event5 = false
-            self.progress = 0.0
-            
-            print("All events cleared")
-        }
+        self.event1 = false
+        self.event2 = false
+        self.event3 = false
+        self.event4 = false
+        self.event5 = false
+        self.progress = 0.0
+        
+        print("All events cleared")
     }
     
-    public func returnProgramsForTimeline() -> [Events] {
-        var timelinePrograms = programs ?? []
+    public func returnProgramsForTimeline() -> [AttendanceCheck.Events] {
+        print("returnProgramsForTimeline")
         
-        timelinePrograms.append(Events(
+        let timelinePrograms: [AttendanceCheck.Events] = self.programs?.map { $0 } ?? []
+        
+        var combinedPrograms = timelinePrograms
+        combinedPrograms.append(Events(
             event_code: getSecurityCode("CLOSE"),
             event_name: "폐회식 및 시상식",
-            description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다\n1등의 주인공이 되어보세요!",
+            description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다.\n1등의 주인공이 되어보세요!",
             location: "인문과학관 1층 대강당 [6129호]",
             event_start_time: dateFormatChanger(from: "2024-11-06T06:00:00.000Z"),
             event_end_time: dateFormatChanger(from: "2024-11-06T07:30:00.000Z"),
             createdAt: "2024-10-18T04:18:16.000Z"
         ))
         
-        return timelinePrograms
+        return combinedPrograms
     }
     
-    public func returnProgramsForChecklist() -> [Events] {
-        let timelinePrograms = programs ?? []
-        
-        return timelinePrograms
+    public func returnProgramsForChecklist() -> [AttendanceCheck.Events] {
+        return self.programs?.map { $0 } ?? []
     }
     
     private func getSecurityCode(_ request: String) -> String {

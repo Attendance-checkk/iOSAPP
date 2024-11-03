@@ -54,8 +54,10 @@ struct CautionView: View {
                     Alert(title: Text("계정 삭제"),
                           message: Text("정말로 삭제하시겠습니까? 계정은 다시 복구되지 않습니다."),
                           primaryButton: .destructive(Text("삭제")) {
-                        eventManager.clearEventManager()
-                        userInformation.userDelete()
+                        DispatchQueue.main.async {
+                            userInformation.loginState = false
+                            userInformation.storedLoginState = false
+                        }
                     },
                           secondaryButton: .cancel()
                     )
@@ -89,7 +91,23 @@ struct CautionView: View {
         }
     }
     
-    
+    private func deleteAccount() {
+        
+        DispatchQueue.main.async {
+            userInformation.loginState = false
+            userInformation.storedLoginState = false
+        }
+        
+        userInformation.userDelete() { success, statusCode in
+            DispatchQueue.main.async {
+                if statusCode == 200 {
+                    print("Successfully deleted: \(String(describing: statusCode))")
+                } else {
+                    print("Cannot delete account: \(String(describing: statusCode))")
+                }
+            }
+        }
+    }
 }
 
 #Preview {

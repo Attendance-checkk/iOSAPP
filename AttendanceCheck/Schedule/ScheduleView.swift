@@ -25,7 +25,7 @@ struct ScheduleView: View {
                     }
                 }
                 .animation(.easeInOut, value: showCalendarView)
-                .navigationTitle(showCalendarView ? "일정" : "타임라인")
+                .navigationTitle(showCalendarView ? "캘린더" : "타임라인")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {

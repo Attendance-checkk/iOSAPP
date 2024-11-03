@@ -15,13 +15,17 @@ struct QRView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) private var openURL
     
+    @State private var showAccountAlert: Bool = false
+    @State private var accountAlertStatusCode: Int = 0
+    @State private var accountAlertMessage: String = ""
+    
     @State private var session: AVCaptureSession = .init()
     @State private var output: AVCaptureMetadataOutput = .init()
     @State private var errorMessage: String = ""
     @State private var cameraPermission: Permission = .idle
     @State private var scannedCode: String = ""
     @State private var showCode: Bool = false
-    @State private var qrAlertType: QRAlretType? = nil
+    @State private var qrAlertType: QRAlertType? = nil
     @State private var showProcessingView: Bool = false
     
     @Binding var selectedIndex: Int
@@ -81,31 +85,28 @@ struct QRView: View {
             .padding(.horizontal, 45)
             
             // MARK: - Alert
-            .alert(isPresented: $showCode) {
+            .alert(isPresented: Binding<Bool>(
+                get: { qrAlertType != nil },  // Alert가 나타날 조건
+                set: { if !$0 { qrAlertType = nil } } // Alert가 닫힐 때 qrAlertType을 nil로 설정
+            )) {
                 if let qrAlertType = qrAlertType {
                     return Alert(
                         title: Text(qrAlertType.title),
                         message: Text(qrAlertType.message),
                         dismissButton: .default(Text("확인"), action: {
-                            if qrAlertType == .success {
-                                DispatchQueue.main.async {
-                                    selectedIndex = 2
-                                }
-                            }
-                            if qrAlertType == .permission {
-                                if let url = URL(string: UIApplication.openSettingsURLString) {
-                                    UIApplication.shared.open(url)
-                                }
-                            }
-                            if qrAlertType == .noUser {
-                                eventManager.clearEventManager()
-                                userInformation.userDelete()
-                            }
+                            handleAlertDismiss(qrAlertType) // Alert 닫힐 때 처리
                         })
                     )
                 } else {
                     return Alert(title: Text("AlertError"), message: Text("Please notice to developer"), dismissButton: .default(Text("OK")))
                 }
+            }
+            .fullScreenCover(isPresented: $showAccountAlert) {
+                AccountAlertView(
+                    statusCode: accountAlertStatusCode,
+                    message: accountAlertMessage
+                )
+                .environmentObject(userInformation)
             }
             
             .navigationTitle("QR코드")
@@ -133,7 +134,6 @@ struct QRView: View {
             
             switch eventState {
             case .inProgress:
-                
                 eventManager.completeEventByQRCode(code) { success, statusCode, message in
                     switch statusCode {
                     case 200:
@@ -146,14 +146,24 @@ struct QRView: View {
                         qrAlertType = .unknownCode
                         print("Unknown code")
                     case 409:
-                        qrAlertType = .noUser
-                        print("No user error")
+                        accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+                        accountAlertStatusCode = 409
+                        DispatchQueue.main.async {
+                            showAccountAlert = true
+                        }
+                    case 412:
+                        accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+                        accountAlertStatusCode = 412
+                        DispatchQueue.main.async {
+                            showAccountAlert = true
+                        }
                     default:
                         qrAlertType = .unknownError
                         print("Unknown error")
                     }
                     showCode = true
                 }
+                
             case .upComing:
                 qrAlertType = .notYet
                 showCode = true
@@ -179,16 +189,16 @@ struct QRView: View {
             return .ended
         }
         
+        // MARK: - 보통 QR코드는 이벤트 이후에 찍는데, 그 때 사람이 몰리거나, 문제가 발생하는 것을 고려
+        let extendedEndTime = endTime.addingTimeInterval(20 * 60)
+        
         let currentDate = Date()
         
         if currentDate < startTime {
-            print("upComing")
             return .upComing
-        } else if currentDate > endTime {
-            print("ended")
+        } else if currentDate > extendedEndTime {
             return .ended
         } else {
-            print("inProgress")
             return .inProgress
         }
     }
@@ -285,6 +295,27 @@ struct QRView: View {
         if message == "NO PERMISSION" {
             qrAlertType = .permission
             showCode = true
+        }
+    }
+    
+    private func handleAlertDismiss(_ qrAlertType: QRAlertType) {
+        switch qrAlertType {
+        case .success:
+            DispatchQueue.main.async {
+                selectedIndex = 2
+            }
+            
+        case .permission:
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+            
+        case .noUser, .newDevice:
+            userInformation.loginState = false
+            userInformation.storedLoginState = false
+            print("userInformation.loginState = \(userInformation.loginState)")
+        default:
+            break
         }
     }
 }

@@ -10,9 +10,16 @@ import SwiftUI
 struct TimelineView: View {
     @Environment(\.colorScheme) var colorScheme
     
+    @State private var showAccountAlert: Bool = false
+    @State private var accountAlertStatusCode: Int = 0
+    @State private var accountAlertMessage: String = ""
+    
     @EnvironmentObject private var eventManager: EventManager
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var notificationManager: NotificationManager
+    
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String?
     
     @State private var timelinePrograms: [TimelinePrograms] = []
     
@@ -57,15 +64,55 @@ struct TimelineView: View {
             .refreshable {
                 eventManager.loadProgramsData { success, statusCode, message in
                     if success {
+                        print("Refreshable loadProgramsData is completed")
+                        
+                        if notificationManager.notificationPermissionStatus == .authorized {
+                            notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
+                        } else {
+                            notificationManager.disableAllNotifications()
+                        }
+                        
                         initTimelinePrograms()
                     } else {
-                        if statusCode == 409 {
-                            print("No user error from timeline")
-                            eventManager.clearEventManager()
-                            userInformation.userDelete()
+                        switch statusCode {
+                        case 409:
+                            accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+                            accountAlertStatusCode = 409
+                            DispatchQueue.main.async {
+                                showAccountAlert = true
+                            }
+                        case 412:
+                            accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+                            accountAlertStatusCode = 412
+                            DispatchQueue.main.async {
+                                showAccountAlert = true
+                            }
+                        case 429:
+                            alertMessage = "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한됩니다."
+                            showAlert = true
+                        case 430:
+                            alertMessage = "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다."
+                            showAlert = true
+                        default:
+                            break
                         }
                     }
                 }
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("알림"), message: Text(alertMessage ?? "ALERT"), dismissButton: .default(Text("확인")) {
+                    
+                    userInformation.loginState = false
+                    userInformation.storedLoginState = false
+                    print("userInformation.loginState = \(userInformation.loginState)")
+                })
+            }
+            .fullScreenCover(isPresented: $showAccountAlert) {
+                AccountAlertView(
+                    statusCode: accountAlertStatusCode,
+                    message: accountAlertMessage
+                )
+                .environmentObject(userInformation)
             }
         }
     }

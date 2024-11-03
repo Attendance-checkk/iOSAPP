@@ -97,6 +97,20 @@ class UserInformation: ObservableObject {
                         completion(false, 408, "Already registered user.")
                     }
                     return
+                    
+                case 409:
+                    print("Error: Conflict. User might already exist.")
+                    DispatchQueue.main.async {
+                        completion(false, 409, "Conflict. User might already exist.")
+                    }
+                    return
+                
+                case 412:
+                    print("Error: Precondition Failed. Please check your input.")
+                    DispatchQueue.main.async {
+                        completion(false, 412, "Precondition Failed. Please check your input.")
+                    }
+                    return
                 
                 case 500:
                     print("Error: Network Error.")
@@ -118,6 +132,18 @@ class UserInformation: ObservableObject {
                         completion(false, 406, "Does not match stored user information.")
                     }
                     return
+                    
+                case 429:
+                    print("Error: Too many user login requests sended in 1 minute")
+                    DispatchQueue.main.async {
+                        completion(false, 429, "Too many user login requests sended in 1 minute.")
+                    }
+                    
+                case 430:
+                    print("Error: Too many API request in 1 minute")
+                    DispatchQueue.main.async {
+                        completion(false, 430, "Too many API request in 1 minute.")
+                    }
                 
                 default:
                     print("Login failed with code: \(httpResponse.statusCode)")
@@ -149,20 +175,38 @@ class UserInformation: ObservableObject {
                 return
             }
             
-            do {
-                if let reponseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let code = reponseJSON["code"] as? Int, code == 200,
-                   let tokenInfo = reponseJSON["token"] as? [String: Any],
-                   let accessToken = tokenInfo["accessToken"] as? String,
-                   let refreshToken = tokenInfo["refreshToken"] as? String {
-                    DispatchQueue.main.async {
-                        self.accessToken = accessToken
-                        self.refreshToken = refreshToken
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 200:
+                    do {
+                        if let reponseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let code = reponseJSON["code"] as? Int, code == 200,
+                           let tokenInfo = reponseJSON["token"] as? [String: Any],
+                           let accessToken = tokenInfo["accessToken"] as? String,
+                           let refreshToken = tokenInfo["refreshToken"] as? String {
+                            DispatchQueue.main.async {
+                                self.accessToken = accessToken
+                                self.refreshToken = refreshToken
+                            }
+                            return
+                        }
+                    } catch {
+                        print("Access Token refresh error: \(error)")
                     }
+                
+                case 409:
+                    print("eventPostError: \(httpResponse.statusCode), 새로운 기기로 로그인.")
+                    return
+                    
+                case 412:
+                    print("eventPostError: \(httpResponse.statusCode), 새로운 기기로 로그인.")
+                    return
+                    
+                default:
+                    print("eventPostError: 응답 코드 \(httpResponse.statusCode), 알 수 없는 오류 발생")
                     return
                 }
-            } catch {
-                print("Access Token refresh error: \(error)")
+                
             }
         }
 
@@ -170,29 +214,129 @@ class UserInformation: ObservableObject {
 
     }
     
-    public func userDelete() {
-        guard let accessToken, !accessToken.isEmpty else { return }
-        guard let requestURL = URL(string: "https://\(getSecurityCode("API_URI"))\(getSecurityCode("DELETE_URL"))") else { return }
+    public func userDelete(completion: @escaping (Bool, Int?) -> Void) {
+        guard let accessToken, !accessToken.isEmpty else {
+            print("No access token")
+            completion(false, nil)
+            return
+        }
         
-        var request = URLRequest(url: requestURL,timeoutInterval: Double.infinity)
-                request.addValue(accessToken, forHTTPHeaderField: "Authorization")
-
+        guard let requestURL = URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("DELETE_URL"))") else {
+            completion(false, nil)
+            return
+        }
+        
+        print(requestURL)
+        
+        var request = URLRequest(url: requestURL, timeoutInterval: Double.infinity)
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
         request.httpMethod = "DELETE"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("네트워크 오류: \(error.localizedDescription)")
+                completion(false, nil)
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("응답이 HTTP가 아닙니다.")
+                completion(false, nil)
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                self.clearUserInformation()
+                print("계정 삭제 성공: \(String(data: data ?? Data(), encoding: .utf8)!)")
+                completion(true, httpResponse.statusCode)
+            case 400...499:
+                print("클라이언트 오류 발생: \(httpResponse.statusCode)")
+                completion(false, httpResponse.statusCode)
+            case 500...599:
+                print("서버 오류 발생: \(httpResponse.statusCode)")
+                completion(false, httpResponse.statusCode)
+            default:
+                print("예상하지 못한 오류 발생: \(httpResponse.statusCode)")
+                completion(false, httpResponse.statusCode)
+            }
+        }
+
+        task.resume()
+    }
+    
+    func fetchUserSettingInfo(completion: @escaping (Bool, Int, String, String, String) -> Void) {
+        guard let token = UserInformation.instance.accessToken else {
+            completion(false, 0, "", "", "")
+            return
+        }
+        
+        var request = URLRequest(url: URL(string: "https://\(getSecurityCode("API_URL")):\(getSecurityCode("PORT"))\(getSecurityCode("USER_URL"))")!, timeoutInterval: Double.infinity)
+        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-          guard let data = data else {
-            print(String(describing: error))
-            return
-          }
+            // 오류가 발생한 경우 처리
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(false, 0, "", "", "")
+                return
+            }
             
-            self.clearUserInformation()
-            print(String(data: data, encoding: .utf8)!)
+            // 응답 처리
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Error: Invalid response format.")
+                completion(false, 0, "", "", "")
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                // 성공적인 응답 처리
+                if let data = data {
+                    do {
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let major = jsonResponse["major"] as? String,
+                           let code = jsonResponse["code"] as? String,
+                           let name = jsonResponse["name"] as? String {
+                            completion(true, httpResponse.statusCode, major, code, name)
+                        } else {
+                            print("Error: Missing expected keys in JSON response.")
+                            completion(false, httpResponse.statusCode, "", "", "")
+                        }
+                    } catch {
+                        print("Error parsing JSON: \(error.localizedDescription)")
+                        completion(false, httpResponse.statusCode, "", "", "")
+                    }
+                }
+            case 409:
+                print("Conflict: The request could not be completed due to a conflict with the current state of the target resource.")
+                completion(false, 409, "", "", "")
+            case 412:
+                print("Precondition Failed: The server does not meet one of the preconditions that the requester put on the request.")
+                completion(false, 412, "", "", "")
+            case 429:
+                print("Error: Too many user login requests sended in 1 minute")
+                DispatchQueue.main.async {
+                    completion(false, 429, "", "", "")
+                }
+            case 430:
+                print("Error: Too many API request in 1 minute")
+                DispatchQueue.main.async {
+                    completion(false, 430, "", "", "")
+                }
+            default:
+                print("Error: Received HTTP status code \(httpResponse.statusCode)")
+                completion(false, httpResponse.statusCode, "", "", "")
+            }
         }
 
         task.resume()
     }
     
     public func clearUserInformation() {
+        print("clearUserInformation")
+        
         DispatchQueue.main.async {
             self.storedLoginState = false
             self.department = nil
@@ -203,6 +347,16 @@ class UserInformation: ObservableObject {
             
             self.loginState = false
             self.storedLoginState = false
+            
+            print("department: \(String(describing: self.department))")
+            print("studentID: \(String(describing: self.studentID))")
+            print("studentName: \(String(describing: self.studentName))")
+            print("accessToken: \(String(describing: self.accessToken))")
+            print("refreshToken: \(String(describing: self.refreshToken))")
+            print("loginState: \(self.loginState)")
+            print("storeLoginState: \(String(describing: self.storedLoginState))")
+            
+            
             
             self.objectWillChange.send()
         }
