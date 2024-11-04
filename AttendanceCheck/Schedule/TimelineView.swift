@@ -23,98 +23,124 @@ struct TimelineView: View {
     
     @State private var timelinePrograms: [TimelinePrograms] = []
     
+    @Binding var isLoading: Bool
+    
     var body: some View {
-        ZStack {
-            List {
-                Section(header: Text("진행 중")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.green)
-                ) {
-                    ForEach(timelinePrograms.filter { $0.status == .inProgress }, id: \.events.event_code) { program in
-                        eventRow(for: program)
-                    }
-                }
-                
-                Section(header: Text("진행 예정")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.blue)
-                ) {
-                    ForEach(timelinePrograms.filter { $0.status == .upcoming }, id: \.events.event_code) { program in
-                        eventRow(for: program)
-                    }
-                }
-                
-                Section(header: Text("종료됨")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-                ) {
-                    ForEach(timelinePrograms.filter { $0.status == .ended }, id: \.events.event_code) { program in
-                        eventRow(for: program)
-                    }
-                }
-            }
-            .padding(.top, 0)
-            .padding(.bottom, 0)
-            .onAppear {
-                initTimelinePrograms()
-            }
-            .refreshable {
-                eventManager.loadProgramsData { success, statusCode, message in
-                    if success {
-                        print("Refreshable loadProgramsData is completed")
-                        
-                        if notificationManager.notificationPermissionStatus == .authorized {
-                            notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
-                        } else {
-                            notificationManager.disableAllNotifications()
-                        }
-                        
-                        initTimelinePrograms()
-                    } else {
-                        switch statusCode {
-                        case 409:
-                            accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
-                            accountAlertStatusCode = 409
-                            DispatchQueue.main.async {
-                                showAccountAlert = true
-                            }
-                        case 412:
-                            accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
-                            accountAlertStatusCode = 412
-                            DispatchQueue.main.async {
-                                showAccountAlert = true
-                            }
-                        case 429:
-                            alertMessage = "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한됩니다."
-                            showAlert = true
-                        case 430:
-                            alertMessage = "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다."
-                            showAlert = true
-                        default:
-                            break
+        if isLoading {
+            ProcessingView(messageString: "정보를 가져오는 중입니다...")
+        } else {
+            ZStack {
+                List {
+                    Section(header: Text("진행 중")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.green)
+                    ) {
+                        ForEach(timelinePrograms.filter { $0.status == .inProgress }, id: \.events.event_code) { program in
+                            eventRow(for: program)
                         }
                     }
-                }
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("알림"), message: Text(alertMessage ?? "ALERT"), dismissButton: .default(Text("확인")) {
                     
-                    userInformation.loginState = false
-                    userInformation.storedLoginState = false
-                    print("userInformation.loginState = \(userInformation.loginState)")
-                })
-            }
-            .fullScreenCover(isPresented: $showAccountAlert) {
-                AccountAlertView(
-                    statusCode: accountAlertStatusCode,
-                    message: accountAlertMessage
-                )
-                .environmentObject(userInformation)
+                    Section(header: Text("진행 예정")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                    ) {
+                        ForEach(timelinePrograms.filter { $0.status == .upcoming }, id: \.events.event_code) { program in
+                            eventRow(for: program)
+                        }
+                    }
+                    
+                    Section(header: Text("종료됨")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                    ) {
+                        ForEach(timelinePrograms.filter { $0.status == .ended }, id: \.events.event_code) { program in
+                            eventRow(for: program)
+                        }
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .padding(.top, 0)
+                .padding(.bottom, 0)
+                .onAppear {
+                    initTimelinePrograms()
+                }
+                .refreshable {
+                    eventManager.loadProgramsData { success, statusCode, message in
+                        if success {
+                            print("Refreshable loadProgramsData is completed")
+                            
+                            if notificationManager.notificationPermissionStatus == .authorized {
+                                notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
+                            } else {
+                                notificationManager.disableAllNotifications()
+                            }
+                            
+                            initTimelinePrograms()
+                        } else {
+                            switch statusCode {
+                            case 401:
+                                print("Token is not valid")
+                                accountAlertStatusCode = 401
+                                DispatchQueue.main.async {
+                                    showAccountAlert = true
+                                }
+                            case 409:
+                                accountAlertStatusCode = 409
+                                DispatchQueue.main.async {
+                                    showAccountAlert = true
+                                }
+                            case 412:
+                                accountAlertStatusCode = 412
+                                DispatchQueue.main.async {
+                                    showAccountAlert = true
+                                }
+                            case 430:
+                                showAlert = true
+                            default:
+                                break
+                            }
+                        }
+                    }
+                }
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("⚠️ 서버 요청 횟수 초과"), message: Text("서버 요청 횟수가 초괴되었습니다. 잠시 후 다시 사용 가능합니다."), dismissButton: .default(Text("확인")))
+                }
+                .fullScreenCover(isPresented: $showAccountAlert) {
+                    let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)
+                    
+                    AccountAlertView(
+                        statusCode: accountAlertStatusCode,
+                        title: warningString.title,
+                        message: warningString.message
+                    )
+                    .environmentObject(userInformation)
+                }
             }
         }
+    }
+    
+    private func returnWarningTitleAndMessage(statusCode: Int) -> (title: String, message: String) {
+        var warningTitle = ""
+        var warningMessage = ""
+        
+        switch accountAlertStatusCode {
+        case 401:
+            warningTitle = "⚠️ 토큰 오류"
+            warningMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 409:
+            warningTitle = "⚠️ 계정 오류"
+            warningMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 412:
+            warningTitle = "⚠️ 중복 로그인"
+            warningMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+        default:
+            print("Warning")
+        }
+        
+        return (warningTitle, warningMessage)
     }
     
     private func initTimelinePrograms() {
@@ -245,8 +271,4 @@ struct TimelineView: View {
             return ""
         }
     }
-}
-
-#Preview {
-    TimelineView()
 }

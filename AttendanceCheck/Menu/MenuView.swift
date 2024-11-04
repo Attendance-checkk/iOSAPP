@@ -18,7 +18,7 @@ struct MenuView: View {
     let studentName: String
     let faqURL: String = LinkURLS.faqURL.url
     let surveyURL: URL = URL(string: LinkURLS.surveyURL.url)!
-    let secureInformationURL: String = LinkURLS.secureInformation.url
+    let privacyPolicyURL: String = LinkURLS.privacyPolicy.url
     
     @State private var showAlert: Bool = false
     @State private var showNotificationAlert: NotificationAlertType? = nil
@@ -124,7 +124,7 @@ struct MenuView: View {
                 if showWebEnum == .faq {
                     WebView(urlString: faqURL)
                 } else if showWebEnum == .secureInformation {
-                    WebView(urlString: secureInformationURL)
+                    WebView(urlString: privacyPolicyURL)
                 }
             }
         }

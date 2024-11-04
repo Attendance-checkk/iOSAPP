@@ -19,6 +19,8 @@ struct QRView: View {
     @State private var accountAlertStatusCode: Int = 0
     @State private var accountAlertMessage: String = ""
     
+    @State private var showAlert: Bool = false
+    
     @State private var session: AVCaptureSession = .init()
     @State private var output: AVCaptureMetadataOutput = .init()
     @State private var errorMessage: String = ""
@@ -36,6 +38,7 @@ struct QRView: View {
         case inProgress
         case upComing
         case ended
+        case notFound
     }
     
     var body: some View {
@@ -102,9 +105,12 @@ struct QRView: View {
                 }
             }
             .fullScreenCover(isPresented: $showAccountAlert) {
+                let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)
+                
                 AccountAlertView(
                     statusCode: accountAlertStatusCode,
-                    message: accountAlertMessage
+                    title: warningString.title,
+                    message: warningString.message
                 )
                 .environmentObject(userInformation)
             }
@@ -119,32 +125,74 @@ struct QRView: View {
             if let code = newValue {
                 scannedCode = code
                 session.stopRunning()
-                showProcessingView = true
-                checkIfScanned(code: code)
+                DispatchQueue.global(qos: .background).async {
+                    showProcessingView = true
+                    checkIfScanned(code: code)
+                }
                 outputDelegate.scannedCode = nil
             }
         }
     }
     
+    private func returnWarningTitleAndMessage(statusCode: Int) -> (title: String, message: String) {
+        var warningTitle = ""
+        var warningMessage = ""
+        
+        switch accountAlertStatusCode {
+        case 401:
+            warningTitle = "⚠️ 토큰 오류"
+            warningMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 409:
+            warningTitle = "⚠️ 계정 오류"
+            warningMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 412:
+            warningTitle = "⚠️ 중복 로그인"
+            warningMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+        default:
+            print("Warning")
+        }
+        
+        return (warningTitle, warningMessage)
+    }
+    
     private func checkIfScanned(code: String) {
+        print("checkIfScanned")
+        
         DispatchQueue.main.async {
             showProcessingView = false
             
             let eventState = returnEventState(code)
             
             switch eventState {
-            case .inProgress:
+            case .inProgress, .notFound:
+                print("inProgress or notFound")
                 eventManager.completeEventByQRCode(code) { success, statusCode, message in
+                    print("\(success) \(String(describing: statusCode)) \(String(describing: message))")
+                    
                     switch statusCode {
                     case 200:
                         print("New code scanned, stmaping successed")
                         qrAlertType = .success
-                    case 401:
+                    case 451:
+                        print("Unknown code")
+                        qrAlertType = .unknownCode
+                    case 452:
                         print("Already scanned")
                         qrAlertType = .alreadyScanned
-                    case 402:
-                        qrAlertType = .unknownCode
-                        print("Unknown code")
+                    case 401:
+                        print("Token is not valid")
+                        accountAlertMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+                        accountAlertStatusCode = 401
+                        DispatchQueue.main.async {
+                            showAccountAlert = true
+                        }
+                    case 419:
+                        print("Token is expired")
+                        accountAlertMessage = "토큰이 만료되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+                        accountAlertStatusCode = 419
+                        DispatchQueue.main.async {
+                            showAccountAlert = true
+                        }
                     case 409:
                         accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                         accountAlertStatusCode = 409
@@ -157,6 +205,8 @@ struct QRView: View {
                         DispatchQueue.main.async {
                             showAccountAlert = true
                         }
+                    case 430:
+                        qrAlertType = .tooManyAPIRequests
                     default:
                         qrAlertType = .unknownError
                         print("Unknown error")
@@ -176,18 +226,28 @@ struct QRView: View {
     }
     
     private func returnEventState(_ code: String) -> EventState {
+        print("returnEventState")
+        
         let programs = eventManager.returnProgramsForChecklist()
         
         guard let event = programs.first(where: { ($0.event_code) == code }) else {
-            return .ended
+            print("notFound")
+            
+            return .notFound
         }
+        
+        print(event)
         
         guard let startTimeString = event.event_start_time,
               let endTimeString = event.event_end_time,
               let startTime = dateStringToDate(from: startTimeString),
               let endTime = dateStringToDate(from: endTimeString) else {
-            return .ended
+            print("notFound")
+            
+            return .notFound
         }
+        
+        print("\(startTime) ~ \(endTime)")
         
         // MARK: - 보통 QR코드는 이벤트 이후에 찍는데, 그 때 사람이 몰리거나, 문제가 발생하는 것을 고려
         let extendedEndTime = endTime.addingTimeInterval(20 * 60)
@@ -195,10 +255,16 @@ struct QRView: View {
         let currentDate = Date()
         
         if currentDate < startTime {
+            print("upComing")
+            
             return .upComing
         } else if currentDate > extendedEndTime {
+            print("ended")
+            
             return .ended
         } else {
+            print("inProgress")
+            
             return .inProgress
         }
     }

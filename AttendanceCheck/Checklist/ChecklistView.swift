@@ -23,6 +23,7 @@ struct ChecklistView: View {
     @State private var selectedBannerURL: String = ""
     @State private var timelinePrograms: [TimelinePrograms] = []
     
+    @State private var checklistAlertType: ChecklistAlertType? = nil
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     
@@ -72,6 +73,9 @@ struct ChecklistView: View {
                         .padding(.vertical, 10)
                         .onAppear {
                             startBannerAnimation()
+                            eventManager.changeDateFormat() {
+                                
+                            }
                         }
                         .onDisappear {
                             stopBannerAnimation()
@@ -100,6 +104,7 @@ struct ChecklistView: View {
                                 }
                             }
                         }
+                        .scrollIndicators(.hidden)
                         .navigationTitle("체크리스트")
                         .navigationBarTitleDisplayMode(.inline)
                         .sheet(isPresented: $showWebView) {
@@ -120,23 +125,24 @@ struct ChecklistView: View {
                                 }
                             } else {
                                 switch statusCode {
+                                case 401:
+                                    print("Token is not valid")
+                                    accountAlertStatusCode = 401
+                                    DispatchQueue.main.async {
+                                        showAccountAlert = true
+                                    }
                                 case 409:
-                                    accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                                     accountAlertStatusCode = 409
                                     DispatchQueue.main.async {
                                         showAccountAlert = true
                                     }
                                 case 412:
-                                    accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
                                     accountAlertStatusCode = 412
                                     DispatchQueue.main.async {
                                         showAccountAlert = true
                                     }
-                                case 429:
-                                    alertMessage = "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한됩니다."
-                                    showAlert = true
                                 case 430:
-                                    alertMessage = "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다."
+                                    checklistAlertType = .tooManyAPIRequests
                                     showAlert = true
                                 default: break
                                 }
@@ -144,20 +150,21 @@ struct ChecklistView: View {
                         }
                     }
                     .fullScreenCover(isPresented: $showAccountAlert) {
+                        let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)
+                        
                         AccountAlertView(
                             statusCode: accountAlertStatusCode,
-                            message: accountAlertMessage
+                            title: warningString.title,
+                            message: warningString.message
                         )
                         .environmentObject(userInformation)
                     }
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("알림"), message: Text(alertMessage), dismissButton: .default(Text("확인")) {
-                            
-                            
-                            userInformation.loginState = false
-                            userInformation.storedLoginState = false
-                            print("userInformation.loginState = \(userInformation.loginState)")
-                        })
+                        if checklistAlertType == .tooManyAPIRequests {
+                            return Alert(title: Text("⚠️ 서버 요청 횟수 초과"), message: Text("서버 요청 횟수가 초과되었습니다."), dismissButton: .default(Text("확인")))
+                        } else {
+                            return Alert(title: Text("알 수 없는 오류"), message: Text("알 수 없는 오류가 발생했습니다..! 관리자에게 문의해주세요!"), dismissButton: .default(Text("확인")))
+                        }
                     }
                     .onAppear {
                         initTimelinePrograms()
@@ -165,6 +172,27 @@ struct ChecklistView: View {
                 }
             }
         }
+    }
+    
+    private func returnWarningTitleAndMessage(statusCode: Int) -> (title: String, message: String) {
+        var warningTitle = ""
+        var warningMessage = ""
+        
+        switch accountAlertStatusCode {
+        case 401:
+            warningTitle = "⚠️ 토큰 오류"
+            warningMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 409:
+            warningTitle = "⚠️ 계정 오류"
+            warningMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 412:
+            warningTitle = "⚠️ 중복 로그인"
+            warningMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+        default:
+            print("Warning")
+        }
+        
+        return (warningTitle, warningMessage)
     }
     
     private func initTimelinePrograms() {

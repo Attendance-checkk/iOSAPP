@@ -29,7 +29,7 @@ struct MainView: View {
                 }
                 .tag(0)
             
-            ScheduleView()
+            ScheduleView(isLoading: $eventManager.isLoading)
                 .tabItem {
                     Label("일정", systemImage: "calendar")
                 }
@@ -53,8 +53,22 @@ struct MainView: View {
                 }
                 .tag(4)
         }
+        .fullScreenCover(isPresented: $showAccountAlert) {
+            let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)
+            
+            AccountAlertView(
+                statusCode: accountAlertStatusCode,
+                title: warningString.title,
+                message: warningString.message
+            )
+            .environmentObject(userInformation)
+        }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("알림"), message: Text(alertMessage), dismissButton: .default(Text("확인")))
+            Alert(
+                title: Text("⚠️ 서버 요청 횟수 초과"),
+                message: Text("서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."),
+                dismissButton: .default(Text("확인"))
+            )
         }
         .onAppear {
             eventManager.loadProgramsData { success, statusCode, message in
@@ -62,6 +76,9 @@ struct MainView: View {
                 
                 if success {
                     print("Refreshable loadProgramsData is completed")
+                    eventManager.changeDateFormat() {
+                        
+                    }
                     
                     if notificationManager.notificationPermissionStatus == .authorized {
                         notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
@@ -70,6 +87,13 @@ struct MainView: View {
                     }
                 } else {
                     switch statusCode {
+                    case 401:
+                        print("Token is not valid")
+                        accountAlertMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+                        accountAlertStatusCode = 401
+                        DispatchQueue.main.async {
+                            showAccountAlert = true
+                        }
                     case 409:
                         accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                         accountAlertStatusCode = 409
@@ -82,9 +106,6 @@ struct MainView: View {
                         DispatchQueue.main.async {
                             showAccountAlert = true
                         }
-                    case 429:
-                        alertMessage = "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한됩니다."
-                        showAlert = true
                     case 430:
                         alertMessage = "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다."
                         showAlert = true
@@ -93,5 +114,26 @@ struct MainView: View {
                 }
             }
         }
+    }
+    
+    private func returnWarningTitleAndMessage(statusCode: Int) -> (title: String, message: String) {
+        var warningTitle = ""
+        var warningMessage = ""
+        
+        switch accountAlertStatusCode {
+        case 401:
+            warningTitle = "⚠️ 토큰 오류"
+            warningMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 409:
+            warningTitle = "⚠️ 계정 오류"
+            warningMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 412:
+            warningTitle = "⚠️ 중복 로그인"
+            warningMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+        default:
+            print("Warning")
+        }
+        
+        return (warningTitle, warningMessage)
     }
 }

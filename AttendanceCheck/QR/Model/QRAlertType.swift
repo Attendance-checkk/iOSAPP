@@ -17,6 +17,7 @@ enum QRAlertType {
     case newDevice
     case notYet
     case closedEvent
+    case tooManyAPIRequests
     
     var title: String {
         switch self {
@@ -29,6 +30,7 @@ enum QRAlertType {
         case .newDevice: return "새 디바이스 등록"
         case .notYet: return "이벤트 시작 전"
         case .closedEvent: return "이벤트 종료됨"
+        case .tooManyAPIRequests: return "⚠️ 서버 요청 횟수 초과"
         }
     }
     
@@ -43,6 +45,7 @@ enum QRAlertType {
         case .newDevice: return "새로운 기기가 등록되었습니다! 해당 기기에서는 자동으로 로그아웃됩니다"
         case .notYet: return "이벤트가 시작하기 전입니다!"
         case .closedEvent: return "이미 종료된 이벤트입니다!"
+        case .tooManyAPIRequests: return "서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."
         }
     }
 }

@@ -18,11 +18,12 @@ struct AccountAlertView: View {
     let faqURL: String = LinkURLS.faqURL.url
     
     var statusCode: Int
+    var title: String
     var message: String
     
     var body: some View {
         VStack {
-            Text("⚠️ 계정 오류")
+            Text(title)
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.primary)

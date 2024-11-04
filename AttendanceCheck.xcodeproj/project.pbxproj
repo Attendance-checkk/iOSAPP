@@ -30,6 +30,7 @@
 		FD37FE7E2CB2C9260077365C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD37FE7D2CB2C9260077365C /* CalendarView.swift */; };
 		FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C652CB4C1ED00771254 /* UserInformation.swift */; };
 		FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C672CB4EF4200771254 /* AlertType.swift */; };
+		FD7CD9432CD8CAE500EFDDFB /* ChecklistAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7CD9422CD8CAE500EFDDFB /* ChecklistAlertType.swift */; };
 		FDA3FBA02CD54CFC001D5927 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FDA3FB9F2CD54CFC001D5927 /* Config.xcconfig */; };
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
@@ -95,6 +96,7 @@
 		FD37FE7D2CB2C9260077365C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		FD6B5C652CB4C1ED00771254 /* UserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
 		FD6B5C672CB4EF4200771254 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		FD7CD9422CD8CAE500EFDDFB /* ChecklistAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistAlertType.swift; sourceTree = "<group>"; };
 		FDA3FB9F2CD54CFC001D5927 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FDABB1E92CBA990B006CF22D /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				FDDEF2D02CC222BA00E7F440 /* Banner.swift */,
+				FD7CD9422CD8CAE500EFDDFB /* ChecklistAlertType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				FD37FE782CB28DD00077365C /* ScannerDelegate.swift in Sources */,
 				FDDEF2D72CC2572900E7F440 /* DeviceModel.swift in Sources */,
 				FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */,
+				FD7CD9432CD8CAE500EFDDFB /* ChecklistAlertType.swift in Sources */,
 				FDBDE0C72CD25E5500D248AE /* NotificationAlertType.swift in Sources */,
 				FD37FE662CB283690077365C /* MainView.swift in Sources */,
 				FD37FE702CB283B30077365C /* MenuView.swift in Sources */,

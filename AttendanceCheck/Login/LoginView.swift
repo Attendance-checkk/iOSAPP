@@ -15,6 +15,10 @@ struct LoginView: View {
     @EnvironmentObject private var userInformation: UserInformation
     @EnvironmentObject private var eventManager: EventManager
     
+    @State private var showAccountAlert: Bool = false
+    @State private var accountAlertStatusCode: Int = 0
+    @State private var accountAlertMessage: String = ""
+    
     enum Field: Hashable {
         case studentID
         case studentName
@@ -51,6 +55,9 @@ struct LoginView: View {
     
     @State private var studentIDValidationResult: Bool = false
     
+    @State private var showWebView: Bool = false
+    let faqURL = LinkURLS.faqURL.url
+    
     var body: some View {
         NavigationStack {
             if isLoginLoading {
@@ -62,7 +69,9 @@ struct LoginView: View {
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 1), value: userInformation.loginState)
                     .onAppear {
-                        eventManager.changeDateFormat()
+                        eventManager.changeDateFormat() {
+                            
+                        }
                     }
             } else {
                 ZStack {
@@ -249,6 +258,7 @@ struct LoginView: View {
                                         }
                                         .onChange(of: inputPassword) { _ in
                                             passwordFormatIsWrong()
+                                            passwordCheckIsDifferent()
                                         }
                                         .onSubmit {
                                             if isPasswordDifferentError() {
@@ -304,6 +314,7 @@ struct LoginView: View {
                                 .autocorrectionDisabled(true)
                                 .textInputAutocapitalization(.never)
                                 .onChange(of: inputPasswordAgain) { _ in
+                                    passwordFormatIsWrong()
                                     passwordCheckIsDifferent()
                                 }
                                 .onSubmit {
@@ -366,7 +377,7 @@ struct LoginView: View {
                                 case .recheck:
                                     return Alert(
                                         title: Text("입력 정보 확인"),
-                                        message: Text("입력한 정보가 맞으신가요?\n입력 정보가 다르다면 경품지급이 어려울 수 있습니다!"),
+                                        message: Text("입력한 정보가 맞으신가요?\n입력 정보가 다를 시 불이익이 있을 수 있습니다!"),
                                         primaryButton: .default(Text("로그인"), action: {
                                             isLoginLoading = true
                                             
@@ -382,7 +393,8 @@ struct LoginView: View {
                                                     eventManager.loadProgramsData { success, statusCode, message in
                                                         showAlert = .success
                                                     }
-                                                } else if statusCode == 408 {
+                                                }
+                                                else if statusCode == 408 {
                                                     showAlert = .alreadyRegistered
                                                 } else if statusCode == 405 {
                                                     showAlert = .savedPasswordDifferentError
@@ -394,7 +406,7 @@ struct LoginView: View {
                                                     showAlert = .tooManyLoginRequests
                                                 } else if statusCode == 430 {
                                                     showAlert = .tooManyAPIRequests
-                                                } else  {
+                                                } else {
                                                     showAlert = .loginFailed
                                                 }
                                             }
@@ -418,13 +430,27 @@ struct LoginView: View {
                                     return returnAlert("로그인 요청 과다", "너무 많은 로그인 요청을 단시간에 전송하여 일정 시간 접근이 제한되었습니다.")
                                     
                                 case .tooManyAPIRequests:
-                                    return returnAlert("API요청 과다", "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다.")
+                                    return returnAlert("⚠️ 서버 요청 횟수 과다", "서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다.")
                                 }
                             }
+                            
+                            Button(action: {
+                                showWebView = true
+                            }) {
+                                Text("도움이 필요하신가요?")
+                            }
+                            .buttonStyle(.plain)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 5)
+                            .foregroundStyle(Color.blue)
                         }
-                        .padding(40)
+                        .padding(30)
                     }
                     .scrollIndicators(.hidden)
+                    
+                    .sheet(isPresented: $showWebView) {
+                        WebView(urlString: faqURL)
+                    }
                     
                     .navigationTitle("👋 환영합니다!")
                     .navigationBarTitleDisplayMode(.inline)
@@ -459,7 +485,7 @@ struct LoginView: View {
     private func studentIDFormatValidation() -> Bool {
         let emptyBool: Bool = !inputStudentID.isEmpty
         let lengthBool: Bool = inputStudentID.count == 8
-        let validPrefixes = ["201", "2020", "2022", "2023", "2024"]
+        let validPrefixes = ["201", "2020", "2021", "2022", "2023", "2024"]
         let prefixBool: Bool = validPrefixes.contains { inputStudentID.hasPrefix($0) }
         let onlyNumberBool: Bool = inputStudentID.allSatisfy(\.isNumber)
         
@@ -514,9 +540,10 @@ struct LoginView: View {
         let atLeast2Bool: Bool = inputStudentName.count >= 2
         let placeholderBool: Bool = inputStudentName != "이름"
         let containsNumber: Bool = inputStudentName.rangeOfCharacter(from: .decimalDigits) != nil
-        let containsSpecialCharacter: Bool = inputStudentName.rangeOfCharacter(from: CharacterSet.punctuationCharacters) != nil || inputStudentName.rangeOfCharacter(from: CharacterSet.symbols) != nil
-
-        if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter && atLeast2Bool {
+        let catchCharacterSet = CharacterSet(charactersIn: "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~")
+        let containsSpecialCharacter: Bool = inputStudentName.rangeOfCharacter(from: catchCharacterSet) != nil
+        let limitLength: Bool = inputStudentName.count <= 10
+        if emptyBool && placeholderBool && !containsNumber && !containsSpecialCharacter && atLeast2Bool && limitLength {
             studentNameFormatErrorString = "이름이 적절한 형식입니다"
             studentNameFormatErrorColor = .green
             return true
@@ -602,6 +629,30 @@ struct LoginView: View {
             print("Error retrieving password: \(status)")
             return nil
         }
+    }
+    
+    private func returnWarningTitleAndMessage(statusCode: Int) -> (title: String, message: String) {
+        var warningTitle = ""
+        var warningMessage = ""
+        
+        switch accountAlertStatusCode {
+        case 401:
+            warningTitle = "⚠️ 토큰 오류"
+            warningMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 409:
+            warningTitle = "⚠️ 계정 오류"
+            warningMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        case 412:
+            warningTitle = "⚠️ 중복 로그인"
+            warningMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
+        case 429:
+            warningTitle = "⚠️ 로그인 횟수 초과"
+            warningMessage = "로그인 횟수가 초과 되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
+        default:
+            print("Warning")
+        }
+        
+        return (warningTitle, warningMessage)
     }
 }
 

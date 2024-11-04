@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ScheduleView: View {
-    @State private var showCalendarView: Bool = true
+    @AppStorage("showCalendarView") var showCalendarView: Bool = true
+    
+    @Binding var isLoading: Bool
     
     var body: some View {
         NavigationView {
@@ -19,7 +21,7 @@ struct ScheduleView: View {
                             .transition(.scale)
                     } else {
                         ZStack {
-                            TimelineView()
+                            TimelineView(isLoading: $isLoading)
                                 .transition(.scale)
                         }
                     }
@@ -44,8 +46,4 @@ struct ScheduleView: View {
             }
         }
     }
-}
-
-#Preview {
-    ScheduleView()
 }

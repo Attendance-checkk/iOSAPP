@@ -48,25 +48,6 @@ struct MapView: View {
                                     lastOffset = offset
                                 }
                         )
-                        .gesture(
-                            MagnificationGesture()
-                                .onChanged { value in
-                                    let newScale = lastScale * value.magnitude
-                                    
-                                    if newScale >= 1.0 && newScale <= 1.7 {
-                                        withAnimation {
-                                            scale = newScale
-                                        }
-                                    }
-                                }
-                                .onEnded { _ in
-                                    lastScale = scale
-                                    print(lastScale)
-                                    if scale < 1.0 {
-                                        resetToCenter()
-                                    }
-                                }
-                        )
                         .onTapGesture(count: 2) {
                             if scale > 1.0 {
                                 withAnimation {

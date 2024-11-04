@@ -44,18 +44,13 @@ class EventManager: ObservableObject {
     }
     
     public func completeEventByQRCode(_ qrcode: String, completion: @escaping(Bool, Int?, String?) -> Void) {
-        guard eventCodeToIndex[qrcode] != nil else {
-            return
-        }
-        
         self.isLoading = true
         
         eventPost(qrcode) { success, statusCode, message in
             DispatchQueue.main.async {
-                self.isLoading = false
-                
                 guard success else {
                     print("이벤트 처리 실패: \(statusCode ?? -1), \(message ?? "알 수 없는 오류")")
+                    self.isLoading = false
                     completion(false, statusCode, message)
                     return
                 }
@@ -64,6 +59,7 @@ class EventManager: ObservableObject {
                     if event.event_code == qrcode {
                         self.markEventAsCompleted(code: event.event_code)
                         self.calculateProgress()
+                        self.isLoading = false
                         completion(true, statusCode, nil)
                         break
                     }
@@ -116,16 +112,21 @@ class EventManager: ObservableObject {
                     completion(false, 803, "JSON 파싱 오류")
                 }
             case 401:
+                print("accessToken is not valid")
+                completion(false, 401, "토큰이 유효하지 않습니다.")
+                
+            case 419:
+                print("Token is expired")
+                completion(false, 419, "토큰이 만료되었습니다.")
+                
+            case 452:
                 print("eventPostError: \(httpResponse.statusCode), 이미 등록된 코드입니다.")
-                completion(false, 401, "이미 등록된 코드입니다.")
+                completion(false, 452, "이미 등록된 코드입니다.")
                 
-            case 402:
-                print("eventPostError: \(httpResponse.statusCode), 존재하지 않는 코드입니다.")
-                completion(false, 402, "존재하지 않는 코드입니다.")
-                
-            case 409:
+            case 451:
                 print("eventPostError: \(httpResponse.statusCode), 사용자 없음.")
-                completion(false, 409, "사용자가 존재하지 않습니다.")
+                completion(false, 451, "사용자가 존재하지 않습니다.")
+
                 
             case 412:
                 print("eventPostError: \(httpResponse.statusCode), 새로운 기기로 로그인.")
@@ -196,37 +197,46 @@ class EventManager: ObservableObject {
         loadPrograms { success, statusCode, message in
             print("loadProgramsData completion: \(success), \(statusCode ?? 0), \(message)")
             
-            DispatchQueue.main.async {
-                self.isLoading = false
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if statusCode == 200 {
                     print("Successfully GET events")
                     if let programs = self.programs {
                         self.checkSuccessStatus(programs)
                         self.objectWillChange.send()
-                        self.changeDateFormat()
-                        completion(true, statusCode, message)
+                        self.changeDateFormat() {
+                            self.isLoading = false
+                            completion(true, statusCode, message)
+                        }
                     } else {
                         print("No programs found")
+                        self.isLoading = false
                         completion(false, 801, message)
                     }
                 } else {
                     print("GET event failed with status code: \(statusCode ?? 0), message: \(message)")
+                    self.isLoading = false
                     completion(false, statusCode, message)
                     
-                    if statusCode == 409 {
+                    if statusCode == 401 {
+                        self.isLoading = false
+                        completion(false, 401, message)
+                    } else if statusCode == 409 {
+                        self.isLoading = false
                         completion(false, 409, message)
                     }
                     
                     if statusCode == 412 {
+                        self.isLoading = false
                         completion(false, 412, message)
                     }
                     
                     if statusCode == 429 {
+                        self.isLoading = false
                         completion(false, 429, message)
                     }
                     
                     if statusCode == 430 {
+                        self.isLoading = false
                         completion(false, 430, message)
                     }
                 }
@@ -265,20 +275,17 @@ class EventManager: ObservableObject {
                         print("JSON decoding error: \(error.localizedDescription)")
                         completion(false, 802, "\(error.localizedDescription)")
                     }
+                case 401:
+                    completion(false, 401, "토큰이 유효하지 않습니다.")
                 case 409:
                     completion(false, 409, "사용자가 존재하지 않습니다.")
                 case 412:
                     completion(false, 412, "새로운 기기로 로그인했습니다. 다시 로그인해주세요.")
-                case 429:
-                    print("Error: Too many user login requests sended in 1 minute")
-                    DispatchQueue.main.async {
-                        completion(false, 429, "Too many user login requests sended in 1 minute.")
-                    }
+                case 419:
+                    completion(false, 419, "토큰이 만료되었습니다.")
                 case 430:
                     print("Error: Too many API request in 1 minute")
-                    DispatchQueue.main.async {
-                        completion(false, 430, "Too many API request in 1 minute.")
-                    }
+                    completion(false, 430, "Too many API request in 1 minute.")
                 default:
                     break
                 }
@@ -299,7 +306,7 @@ class EventManager: ObservableObject {
         calculateProgress()
     }
     
-    public func changeDateFormat() {
+    public func changeDateFormat(completion: @escaping() -> Void) {
         guard let programs = programs else {
             print("No programs available")
             return
@@ -312,18 +319,19 @@ class EventManager: ObservableObject {
                let formattedStartTime = dateFormatChanger(from: startTime) {
                 updatedPrograms[index].event_start_time = formattedStartTime
             } else {
-                print("Error formatting start time for event at index \(index)")
+                
             }
             
             if let endTime = updatedPrograms[index].event_end_time,
                let formattedEndTime = dateFormatChanger(from: endTime) {
                 updatedPrograms[index].event_end_time = formattedEndTime
             } else {
-                print("Error formatting end time for event at index \(index)")
+                
             }
         }
         
         self.programs = updatedPrograms
+        completion()
     }
     
     private func dateFormatChanger(from iso8601String: String) -> String? {
@@ -334,7 +342,6 @@ class EventManager: ObservableObject {
         isoformatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         
         guard let date = isoformatter.date(from: iso8601String) else {
-            print("Error from here: \(iso8601String)")
             return nil
         }
         
@@ -377,8 +384,8 @@ class EventManager: ObservableObject {
         combinedPrograms.append(Events(
             event_code: getSecurityCode("CLOSE"),
             event_name: "폐회식 및 시상식",
-            description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다.\n1등의 주인공이 되어보세요!",
-            location: "인문과학관 1층 대강당 [6129호]",
+            description: "학술제에 마지막까지 함께해주세요!\n시상식이 끝난 후 학술제 이벤트에 모두 참여하신 분께는 경품 추첨의 기회가 주어집니다.\n1등의 주인공이 되어보세요!",
+            location: "인문과학관 1층 대강당 [6129]",
             event_start_time: dateFormatChanger(from: "2024-11-06T06:00:00.000Z"),
             event_end_time: dateFormatChanger(from: "2024-11-06T07:30:00.000Z"),
             createdAt: "2024-10-18T04:18:16.000Z"

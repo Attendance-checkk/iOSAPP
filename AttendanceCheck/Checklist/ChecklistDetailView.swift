@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChecklistDetailView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject private var eventManager: EventManager
     
@@ -46,8 +47,16 @@ struct ChecklistDetailView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                 ) {
-                    Text("시작 | \(startTime)")
-                    Text("종료 | \(endTime)")
+                    HStack {
+                        Text("시작")
+                        Spacer()
+                        Text(startTime)
+                    }
+                    HStack {
+                        Text("종료")
+                        Spacer()
+                        Text(endTime)
+                    }
                 }
                 
                 Section(header: Text("설명")

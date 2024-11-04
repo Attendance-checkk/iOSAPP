@@ -90,61 +90,57 @@ class UserInformation: ObservableObject {
                     } catch {
                         print("Login JSON parsing error: \(error)")
                     }
-                    
+                case 401:
+                    print("Error: Token is not valid")
+                    DispatchQueue.main.async {
+                        completion(false, 401, "Token is not valid.")
+                    }
                 case 408:
                     print("Error: Request Timeout. Already registered user.")
                     DispatchQueue.main.async {
                         completion(false, 408, "Already registered user.")
                     }
                     return
-                    
                 case 409:
                     print("Error: Conflict. User might already exist.")
                     DispatchQueue.main.async {
                         completion(false, 409, "Conflict. User might already exist.")
                     }
                     return
-                
                 case 412:
                     print("Error: Precondition Failed. Please check your input.")
                     DispatchQueue.main.async {
                         completion(false, 412, "Precondition Failed. Please check your input.")
                     }
                     return
-                
                 case 500:
                     print("Error: Network Error.")
                     DispatchQueue.main.async {
                         completion(false, 500, "Network Error.")
                     }
                     return
-                
                 case 405:
                     print("Error: Password does not match.")
                     DispatchQueue.main.async {
                         completion(false, 405, "Password does not match.")
                     }
                     return
-                
                 case 406:
                     print("Error: Does not match stored user information.")
                     DispatchQueue.main.async {
                         completion(false, 406, "Does not match stored user information.")
                     }
                     return
-                    
                 case 429:
                     print("Error: Too many user login requests sended in 1 minute")
                     DispatchQueue.main.async {
                         completion(false, 429, "Too many user login requests sended in 1 minute.")
                     }
-                    
                 case 430:
                     print("Error: Too many API request in 1 minute")
                     DispatchQueue.main.async {
                         completion(false, 430, "Too many API request in 1 minute.")
                     }
-                
                 default:
                     print("Login failed with code: \(httpResponse.statusCode)")
                 }
@@ -309,6 +305,9 @@ class UserInformation: ObservableObject {
                         completion(false, httpResponse.statusCode, "", "", "")
                     }
                 }
+            case 401:
+                print("Token is not valid.")
+                completion(false, 401, "", "", "")
             case 409:
                 print("Conflict: The request could not be completed due to a conflict with the current state of the target resource.")
                 completion(false, 409, "", "", "")
@@ -355,8 +354,6 @@ class UserInformation: ObservableObject {
             print("refreshToken: \(String(describing: self.refreshToken))")
             print("loginState: \(self.loginState)")
             print("storeLoginState: \(String(describing: self.storedLoginState))")
-            
-            
             
             self.objectWillChange.send()
         }

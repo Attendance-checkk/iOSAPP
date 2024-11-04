@@ -57,6 +57,8 @@ struct CautionView: View {
                         DispatchQueue.main.async {
                             userInformation.loginState = false
                             userInformation.storedLoginState = false
+                            
+                            deleteAccount()
                         }
                     },
                           secondaryButton: .cancel()
