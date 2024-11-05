@@ -20,6 +20,7 @@ struct ContentView: View {
     
     @State private var checkAlertType: CheckAlertType?
     @State private var showAlert: Bool = false
+    @State private var show430Alert: Bool = false
     
     @State private var showAccountAlert: Bool = false
     @State private var accountAlertStatusCode: Int = 0
@@ -51,16 +52,15 @@ struct ContentView: View {
             )
             .environmentObject(userInformation)
         }
-        .alert(isPresented: $showAlert) {
-            return Alert(
-                title: Text("⚠️ 서버 요청 횟수 초과"),
-                message: Text("서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."),
-                dismissButton: .default(Text("확인"))
+        .sheet(isPresented: $show430Alert) {
+            Alert430View(
+                statusCode: 430,
+                title: "⚠️ 서버 요청 횟수 초과",
+                message: "서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."
             )
+            .environmentObject(userInformation)
         }
         .onAppear {
-            print("Current login state: \(userInformation.loginState)")
-            print("Current stored login state: \(userInformation.storedLoginState ?? false)")
             
             notificationManager.requestAuthorization()
             notificationManager.authorizationStatusCheck()
@@ -74,8 +74,9 @@ struct ContentView: View {
                         isLoginLoading = false
                     }
                 } else if statusCode == 401 {
-                    accountAlertStatusCode = 409
+                    accountAlertStatusCode = 401
                     DispatchQueue.main.async {
+                        eventManager.clearEventManager()
                         userInformation.loginState = false
                         isLoginLoading = false
                         showAccountAlert = true
@@ -83,6 +84,7 @@ struct ContentView: View {
                 } else if statusCode == 409 {
                     accountAlertStatusCode = 409
                     DispatchQueue.main.async {
+                        eventManager.clearEventManager()
                         userInformation.loginState = false
                         isLoginLoading = false
                         showAccountAlert = true
@@ -90,12 +92,12 @@ struct ContentView: View {
                 } else if statusCode == 412 {
                     accountAlertStatusCode = 412
                     DispatchQueue.main.async {
+                        eventManager.clearEventManager()
                         isLoginLoading = false
                         showAccountAlert = true
                     }
                 } else if statusCode == 430 {
-                    isLoginLoading = false
-                    showAlert = true
+                    show430Alert = true
                 } else {
                     isLoginLoading = false
                 }

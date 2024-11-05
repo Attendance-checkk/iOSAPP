@@ -28,7 +28,7 @@ enum QRAlertType {
         case .permission: return "권한이 없습니다!"
         case .noUser: return "사용자 정보가 없습니다"
         case .newDevice: return "새 디바이스 등록"
-        case .notYet: return "이벤트 시작 전"
+        case .notYet: return "현재 시간은 이벤트 시간과 맞지 않습니다"
         case .closedEvent: return "이벤트 종료됨"
         case .tooManyAPIRequests: return "⚠️ 서버 요청 횟수 초과"
         }

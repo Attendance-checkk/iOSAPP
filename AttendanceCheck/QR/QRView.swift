@@ -30,6 +30,8 @@ struct QRView: View {
     @State private var qrAlertType: QRAlertType? = nil
     @State private var showProcessingView: Bool = false
     
+    @State private var showSheetBool: Bool = false
+    
     @Binding var selectedIndex: Int
     
     @StateObject private var outputDelegate = ScannerDelegate()
@@ -104,6 +106,9 @@ struct QRView: View {
                     return Alert(title: Text("AlertError"), message: Text("Please notice to developer"), dismissButton: .default(Text("OK")))
                 }
             }
+            .sheet(isPresented: $showSheetBool) {
+                Alert430View()
+            }
             .fullScreenCover(isPresented: $showAccountAlert) {
                 let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)
                 
@@ -167,7 +172,6 @@ struct QRView: View {
             case .inProgress, .notFound:
                 print("inProgress or notFound")
                 eventManager.completeEventByQRCode(code) { success, statusCode, message in
-                    print("\(success) \(String(describing: statusCode)) \(String(describing: message))")
                     
                     switch statusCode {
                     case 200:
@@ -184,6 +188,7 @@ struct QRView: View {
                         accountAlertMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                         accountAlertStatusCode = 401
                         DispatchQueue.main.async {
+                            eventManager.clearEventManager()
                             showAccountAlert = true
                         }
                     case 419:
@@ -191,22 +196,27 @@ struct QRView: View {
                         accountAlertMessage = "토큰이 만료되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                         accountAlertStatusCode = 419
                         DispatchQueue.main.async {
+                            eventManager.clearEventManager()
                             showAccountAlert = true
                         }
                     case 409:
                         accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
                         accountAlertStatusCode = 409
                         DispatchQueue.main.async {
+                            eventManager.clearEventManager()
                             showAccountAlert = true
                         }
                     case 412:
                         accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
                         accountAlertStatusCode = 412
                         DispatchQueue.main.async {
+                            eventManager.clearEventManager()
                             showAccountAlert = true
                         }
                     case 430:
-                        qrAlertType = .tooManyAPIRequests
+                        DispatchQueue.main.async {
+                            showSheetBool = true
+                        }
                     default:
                         qrAlertType = .unknownError
                         print("Unknown error")

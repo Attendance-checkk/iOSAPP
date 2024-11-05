@@ -18,6 +18,7 @@ struct MainView: View {
     
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var show430Alert: Bool = false
     
     @State private var selectedIndex: Int = 2
     
@@ -63,12 +64,13 @@ struct MainView: View {
             )
             .environmentObject(userInformation)
         }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("⚠️ 서버 요청 횟수 초과"),
-                message: Text("서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."),
-                dismissButton: .default(Text("확인"))
+        .sheet(isPresented: $show430Alert) {
+            Alert430View(
+                statusCode: 430,
+                title: "⚠️ 서버 요청 횟수 초과",
+                message: "서버 요청 횟수가 초과 되었습니다. 잠시 후 다시 사용 가능합니다."
             )
+            .environmentObject(userInformation)
         }
         .onAppear {
             eventManager.loadProgramsData { success, statusCode, message in
@@ -84,32 +86,6 @@ struct MainView: View {
                         notificationManager.setupNotifications(eventManager.returnProgramsForTimeline())
                     } else {
                         notificationManager.disableAllNotifications()
-                    }
-                } else {
-                    switch statusCode {
-                    case 401:
-                        print("Token is not valid")
-                        accountAlertMessage = "유효하지 않은 토큰을 사용하고 있습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
-                        accountAlertStatusCode = 401
-                        DispatchQueue.main.async {
-                            showAccountAlert = true
-                        }
-                    case 409:
-                        accountAlertMessage = "서버에서 사용자 정보가 삭제되었습니다.\n다시 로그인하거나, 관리자에게 문의하여 주세요."
-                        accountAlertStatusCode = 409
-                        DispatchQueue.main.async {
-                            showAccountAlert = true
-                        }
-                    case 412:
-                        accountAlertMessage = "새로운 기기에서 로그인되었습니다.\n이전 기기에서 로그인된 정보는 삭제됩니다."
-                        accountAlertStatusCode = 412
-                        DispatchQueue.main.async {
-                            showAccountAlert = true
-                        }
-                    case 430:
-                        alertMessage = "너무 많은 요청을 단시간에 전송하여 접근이 제한되었습니다."
-                        showAlert = true
-                    default: break
                     }
                 }
             }

@@ -21,6 +21,8 @@ struct TimelineView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String?
     
+    @State private var showSheetBool: Bool = false
+    
     @State private var timelinePrograms: [TimelinePrograms] = []
     
     @Binding var isLoading: Bool
@@ -84,29 +86,34 @@ struct TimelineView: View {
                             case 401:
                                 print("Token is not valid")
                                 accountAlertStatusCode = 401
+                                eventManager.clearEventManager()
                                 DispatchQueue.main.async {
                                     showAccountAlert = true
                                 }
                             case 409:
                                 accountAlertStatusCode = 409
                                 DispatchQueue.main.async {
+                                    eventManager.clearEventManager()
                                     showAccountAlert = true
                                 }
                             case 412:
                                 accountAlertStatusCode = 412
+                                eventManager.clearEventManager()
                                 DispatchQueue.main.async {
                                     showAccountAlert = true
                                 }
                             case 430:
-                                showAlert = true
+                                DispatchQueue.main.async {
+                                    showSheetBool = true
+                                }
                             default:
                                 break
                             }
                         }
                     }
                 }
-                .alert(isPresented: $showAlert) {
-                    Alert(title: Text("⚠️ 서버 요청 횟수 초과"), message: Text("서버 요청 횟수가 초괴되었습니다. 잠시 후 다시 사용 가능합니다."), dismissButton: .default(Text("확인")))
+                .sheet(isPresented: $showSheetBool) {
+                    Alert430View()
                 }
                 .fullScreenCover(isPresented: $showAccountAlert) {
                     let warningString = returnWarningTitleAndMessage(statusCode: accountAlertStatusCode)

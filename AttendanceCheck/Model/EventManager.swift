@@ -205,7 +205,7 @@ class EventManager: ObservableObject {
                         self.objectWillChange.send()
                         self.changeDateFormat() {
                             self.isLoading = false
-                            completion(true, statusCode, message)
+                            completion(true, 200, message)
                         }
                     } else {
                         print("No programs found")

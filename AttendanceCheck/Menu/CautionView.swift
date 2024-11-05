@@ -96,6 +96,7 @@ struct CautionView: View {
     private func deleteAccount() {
         
         DispatchQueue.main.async {
+            eventManager.clearEventManager()
             userInformation.loginState = false
             userInformation.storedLoginState = false
         }

@@ -31,6 +31,8 @@
 		FD6B5C662CB4C1ED00771254 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C652CB4C1ED00771254 /* UserInformation.swift */; };
 		FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B5C672CB4EF4200771254 /* AlertType.swift */; };
 		FD7CD9432CD8CAE500EFDDFB /* ChecklistAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7CD9422CD8CAE500EFDDFB /* ChecklistAlertType.swift */; };
+		FD7CD9472CD8E28C00EFDDFB /* Alert430View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7CD9462CD8E28C00EFDDFB /* Alert430View.swift */; };
+		FD7CD9492CD8E68900EFDDFB /* AlertLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7CD9482CD8E68900EFDDFB /* AlertLoginView.swift */; };
 		FDA3FBA02CD54CFC001D5927 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FDA3FB9F2CD54CFC001D5927 /* Config.xcconfig */; };
 		FDABB1EA2CBA990C006CF22D /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1E92CBA990B006CF22D /* EventManager.swift */; };
 		FDABB1F22CBD2F80006CF22D /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */; };
@@ -97,6 +99,8 @@
 		FD6B5C652CB4C1ED00771254 /* UserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
 		FD6B5C672CB4EF4200771254 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		FD7CD9422CD8CAE500EFDDFB /* ChecklistAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistAlertType.swift; sourceTree = "<group>"; };
+		FD7CD9462CD8E28C00EFDDFB /* Alert430View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert430View.swift; sourceTree = "<group>"; };
+		FD7CD9482CD8E68900EFDDFB /* AlertLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLoginView.swift; sourceTree = "<group>"; };
 		FDA3FB9F2CD54CFC001D5927 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FDABB1E92CBA990B006CF22D /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FDABB1EE2CBBA12C006CF22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -191,6 +195,8 @@
 				FD37FE4E2CB282D30077365C /* Item.swift */,
 				FDABB1F12CBD2F80006CF22D /* ProcessingView.swift */,
 				FDFDEF5D2CD7341E0016D6EB /* AccountAlertView.swift */,
+				FD7CD9462CD8E28C00EFDDFB /* Alert430View.swift */,
+				FD7CD9482CD8E68900EFDDFB /* AlertLoginView.swift */,
 				FDDEF2D22CC2287900E7F440 /* WebView.swift */,
 				FD37FE5D2CB282FB0077365C /* Login */,
 				FD37FE642CB283560077365C /* Main */,
@@ -513,6 +519,7 @@
 				FD37FE6E2CB283A80077365C /* ScheduleView.swift in Sources */,
 				FDDEF2D12CC222BA00E7F440 /* Banner.swift in Sources */,
 				FDBC03782CBF40A200531123 /* NotificationData.swift in Sources */,
+				FD7CD9472CD8E28C00EFDDFB /* Alert430View.swift in Sources */,
 				FD37FE682CB283970077365C /* QRView.swift in Sources */,
 				FD37FE762CB28D600077365C /* Permission.swift in Sources */,
 				FD37FE742CB2865D0077365C /* ChecklistDetailView.swift in Sources */,
@@ -525,6 +532,7 @@
 				FDDEF2D32CC2287900E7F440 /* WebView.swift in Sources */,
 				FD37FE542CB282D30077365C /* Item.swift in Sources */,
 				FD6B5C682CB4EF4200771254 /* AlertType.swift in Sources */,
+				FD7CD9492CD8E68900EFDDFB /* AlertLoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

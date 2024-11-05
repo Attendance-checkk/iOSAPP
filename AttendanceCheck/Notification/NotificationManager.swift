@@ -161,8 +161,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
                     notificationTitle = "곧 졸업생 토크콘서트가 시작됩니다!"
                     notificationDescription = "곧 졸업생 토크콘서트가 시작돼요! 선배님들과 즐거운 시간 보내세요! 🙋‍♂️"
                 case getSecurityCode("IESL"):
-                    notificationTitle = "사업체 전문가 특강이 진행될 예정입니다!"
-                    notificationDescription = "사업체 전문가 분들의 특강을 들을 수 있어요! 👨‍🏫"
+                    notificationTitle = "산업체 전문가 특강이 진행될 예정입니다!"
+                    notificationDescription = "산업체 전문가 분들의 특강을 들을 수 있어요! 👨‍🏫"
                 case getSecurityCode("CLOSE"):
                     notificationTitle = "마지막 일정인 폐회식과 시상식이 진행됩니다!"
                     notificationDescription = "학술제의 마지막 행사인 폐회식과 시상식이 진행돼요! 마지막까지 함께해주세요 🏆"

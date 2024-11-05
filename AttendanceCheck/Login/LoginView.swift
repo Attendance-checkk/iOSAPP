@@ -26,6 +26,12 @@ struct LoginView: View {
         case passwordCheck
     }
     
+    enum ShowSheetType: Hashable {
+        case faq
+        case login
+        case alert430
+    }
+    
     @FocusState private var focusedField: Field?
     
     @State private var showDepartmentSelection: Bool = false
@@ -36,6 +42,9 @@ struct LoginView: View {
     @State private var inputPasswordAgain: String = ""
     @State private var showAlert: AlertType? = nil
     @State private var isLoginLoading: Bool = false
+    
+    @State private var showSheetType: ShowSheetType? = nil
+    @State private var showSheetBool: Bool = false
     
     @State private var departmentFormatErrorString: String = "학과 선택"
     @State private var departmentFormatErrorColor: Color = .primary
@@ -403,9 +412,15 @@ struct LoginView: View {
                                                 } else if statusCode == 500 {
                                                     showAlert = .networkError
                                                 } else if statusCode == 429 {
-                                                    showAlert = .tooManyLoginRequests
+                                                    showSheetType = .login
+                                                    DispatchQueue.main.async {
+                                                        showSheetBool = true
+                                                    }
                                                 } else if statusCode == 430 {
-                                                    showAlert = .tooManyAPIRequests
+                                                    showSheetType == .alert430
+                                                    DispatchQueue.main.async {
+                                                        showSheetBool = true
+                                                    }
                                                 } else {
                                                     showAlert = .loginFailed
                                                 }
@@ -435,7 +450,8 @@ struct LoginView: View {
                             }
                             
                             Button(action: {
-                                showWebView = true
+                                showSheetType = .faq
+                                showSheetBool = true
                             }) {
                                 Text("도움이 필요하신가요?")
                             }
@@ -445,12 +461,18 @@ struct LoginView: View {
                             .foregroundStyle(Color.blue)
                         }
                         .padding(30)
+                        
+                        .sheet(isPresented: $showSheetBool) {
+                            if showSheetType == .faq {
+                                WebView(urlString: faqURL)
+                            } else if showSheetType == .login {
+                                AlertLoginView()
+                            } else if showSheetType == .alert430 {
+                                Alert430View()
+                            }
+                        }
                     }
                     .scrollIndicators(.hidden)
-                    
-                    .sheet(isPresented: $showWebView) {
-                        WebView(urlString: faqURL)
-                    }
                     
                     .navigationTitle("👋 환영합니다!")
                     .navigationBarTitleDisplayMode(.inline)

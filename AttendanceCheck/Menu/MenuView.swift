@@ -194,6 +194,12 @@ struct MenuView: View {
             print("Error deleting password: \(status)")
         }
     }
+    
+    private func returnUserInformation(completion: @escaping(Int, String, String, String) -> Void) {
+        userInformation.fetchUserSettingInfo { success, statusCode, major, code, name in
+            
+        }
+    }
 }
 
 

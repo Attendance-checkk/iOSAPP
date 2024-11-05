@@ -17,6 +17,8 @@ struct ChecklistView: View {
     @State private var accountAlertStatusCode: Int = 0
     @State private var accountAlertMessage: String = ""
     
+    @State private var show430Alert: Bool = false
+    
     @State private var currentBannerIndex: Int = 0
     @State private var bannerTimer: Timer? = nil
     @State private var showWebView: Bool = false
@@ -28,6 +30,14 @@ struct ChecklistView: View {
     @State private var alertMessage: String = ""
     
     @Binding var isLoading: Bool
+    
+    enum ShowSheetType: Hashable {
+        case web
+        case alert430
+    }
+    
+    @State private var showSheetType: ShowSheetType? = nil
+    @State private var showSheetBool: Bool = false
     
     private let banners = Banners
     private let animationDuration: Double = 0.5
@@ -56,7 +66,8 @@ struct ChecklistView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 15))
                                     .onTapGesture {
                                         selectedBannerURL = banners[index].bannerURL
-                                        showWebView = true
+                                        showSheetType = .web
+                                        showSheetBool = true
                                     }
                                     .tag(index)
                                     .background((colorScheme == .light) ? Color.white : Color.black)
@@ -69,12 +80,10 @@ struct ChecklistView: View {
                         )
                         .tabViewStyle(PageTabViewStyle())
                         .frame(height: 120)
-                        .padding(.horizontal, 30)
                         .padding(.vertical, 10)
                         .onAppear {
                             startBannerAnimation()
                             eventManager.changeDateFormat() {
-                                
                             }
                         }
                         .onDisappear {
@@ -107,8 +116,12 @@ struct ChecklistView: View {
                         .scrollIndicators(.hidden)
                         .navigationTitle("체크리스트")
                         .navigationBarTitleDisplayMode(.inline)
-                        .sheet(isPresented: $showWebView) {
-                            WebView(urlString: selectedBannerURL)
+                        .sheet(isPresented: $showSheetBool) {
+                            if showSheetType == .web {
+                                WebView(urlString: selectedBannerURL)
+                            } else if showSheetType == .alert430 {
+                                Alert430View()
+                            }
                         }
                     }
                     .refreshable {
@@ -129,21 +142,26 @@ struct ChecklistView: View {
                                     print("Token is not valid")
                                     accountAlertStatusCode = 401
                                     DispatchQueue.main.async {
+                                        eventManager.clearEventManager()
                                         showAccountAlert = true
                                     }
                                 case 409:
                                     accountAlertStatusCode = 409
                                     DispatchQueue.main.async {
+                                        eventManager.clearEventManager()
                                         showAccountAlert = true
                                     }
                                 case 412:
                                     accountAlertStatusCode = 412
                                     DispatchQueue.main.async {
+                                        eventManager.clearEventManager()
                                         showAccountAlert = true
                                     }
                                 case 430:
-                                    checklistAlertType = .tooManyAPIRequests
-                                    showAlert = true
+                                    showSheetType = .alert430
+                                    DispatchQueue.main.async {
+                                        showSheetBool = true
+                                    }
                                 default: break
                                 }
                             }
@@ -158,13 +176,6 @@ struct ChecklistView: View {
                             message: warningString.message
                         )
                         .environmentObject(userInformation)
-                    }
-                    .alert(isPresented: $showAlert) {
-                        if checklistAlertType == .tooManyAPIRequests {
-                            return Alert(title: Text("⚠️ 서버 요청 횟수 초과"), message: Text("서버 요청 횟수가 초과되었습니다."), dismissButton: .default(Text("확인")))
-                        } else {
-                            return Alert(title: Text("알 수 없는 오류"), message: Text("알 수 없는 오류가 발생했습니다..! 관리자에게 문의해주세요!"), dismissButton: .default(Text("확인")))
-                        }
                     }
                     .onAppear {
                         initTimelinePrograms()
@@ -242,6 +253,7 @@ struct ChecklistView: View {
         case getSecurityCode("TALK"): return "TalkConcert"
         case getSecurityCode("IESL"): return "SpecialLecture"
         case getSecurityCode("CLOSE"): return "Award"
+        case getSecurityCode("LAB"): return "Openlab"
         default: return "marker"
         }
     }
@@ -256,6 +268,7 @@ struct ChecklistView: View {
             case getSecurityCode("TALK"): return "SWCUAF_EVENT_4"
             case getSecurityCode("IESL"): return "SWCUAF_EVENT_5"
             case getSecurityCode("CLOSE"): return "SWCUAF_EVENT_6"
+            case getSecurityCode("LAB"): return "SWCUAF_EVENT_7"
             default: return "SWCUAF_Banner_1"
             }
         }
